@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import CustomTable from "../../Components/CustomTable";
-import Pagination from "../../Components/Pagination";
 import {
   getAllAttendance,
   updateAttendance,
@@ -16,14 +15,20 @@ import { useFormik } from "formik";
 import { Spin } from "antd";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { notifyError, notifySuccess } from "../../Components/Toast";
+import SearchById from "../../Components/SearchBar/searchById";
+import SearchByName from "../../Components/SearchBar/searchByName";
+
+import type { AxiosResponse } from "axios";
+import { useDebounce } from "../../Components/Debounce";
 
 const titles = [
   "Employee Id",
+  "Employee Name",
   "Employee Role",
   "Date",
   "CheckIn",
   "CheckOut",
-  "Status",
+  "Checkout Location",
   "Action",
 ];
 
@@ -33,24 +38,43 @@ export default function Attendance() {
   useEffect(() => {
     document.title = "HR-Management | Attendance";
   }, []);
+
+  const [activeTab, setActiveTab] = useState<"Field Staff" | "Office Staff">(
+    "Field Staff"
+  );
+
+  const [searchId, setSearchId] = useState("");
+  const [searchName, setSearchName] = useState("");
+
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
 
-  const { data, refetch } = useQuery({
-    queryKey: ["Attendance"],
-    queryFn: getAllAttendance,
-    staleTime: 5 * 60 * 1000,
+  const debouncedSearchId = useDebounce(searchId, 500);
+  const debouncedSearchName = useDebounce(searchName, 500);
+
+  const searchValue = debouncedSearchId || debouncedSearchName;
+
+  const { data, refetch } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Attendance", searchValue],
+    queryFn: () => getAllAttendance(searchValue),
+    placeholderData: (previousData) => previousData,
+  });
+  const filteredData = data?.data?.filter((v: any) => {
+    if (activeTab === "Office Staff") return v.employeeRole === "Office Staff";
+    if (activeTab === "Field Staff") return v.employeeRole === "Field Staff";
+    return true;
   });
 
   const tableData =
-    data?.data?.map((v: any) => [
+    filteredData?.map((v: any) => [
       v.employeeId,
+      v.employeeName,
       v.employeeRole,
       v.date ? dayjs(v.date).format("YYYY-MM-DD") : "--",
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",
-      v.status,
+      v.checkOut?.location?.address || "--",
       <TbEdit
         key={v._id}
         size={18}
@@ -94,33 +118,56 @@ export default function Attendance() {
           formik.resetForm();
           refetch();
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError("Failed to update Attendance.");
-        })
+        .catch(() => notifyError("Failed to update Attendance"))
         .finally(() => setLoading(false));
     },
   });
+
   const antIcon = (
     <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
   );
+
   return (
-    <>
-      <div className="bg-[#F7F7F7] md:h-[calc(100vh-129px)] h-auto rounded-xl p-4">
-        <p className="text-heading font-medium text-[24px]">Attendance</p>
+    <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
+      <div className="flex gap-4 justify-between flex-wrap-reverse">
+        <div className="flex gap-2">
+          {["Field Staff", "Office Staff"].map((role) => (
+            <div
+              key={role}
+              onClick={() => setActiveTab(role as any)}
+              className={`cursor-pointer rounded-t-2xl h-14 flex justify-center items-center w-30 ${
+                activeTab === role
+                  ? "bg-[#E5EBF7] text-black"
+                  : "bg-white text-[#7d7d7d]"
+              }`}
+            >
+              <p className="text-sm font-medium">{role}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-3">
+          <SearchById value={searchId} onChange={setSearchId} />
+          <SearchByName value={searchName} onChange={setSearchName} />
+        </div>
+      </div>
+      <div
+        className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79vh-0px)] xl:h-[calc(56vh-0px)]  ${
+          activeTab === "Field Staff" ? "rounded-tl-none" : ""
+        }`}
+      >
+        <p className="text-[#7D7D7D] font-medium text-sm">Employee’s List</p>
 
         <div
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
           }}
-          className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(77.8vh-0px)] xl:h-[calc(53vh-0px)]  mt-4 overflow-y-auto scrollbar-none"
+          className="bg-white mt-2 rounded-xl overflow-y-auto"
         >
           <CustomTable titles={titles} data={tableData} />
         </div>
       </div>
-
-      {/* ===== MODAL ===== */}
       {openModel && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="relative p-6 bg-white rounded-xl w-200">
@@ -135,14 +182,12 @@ export default function Attendance() {
 
             <form onSubmit={formik.handleSubmit}>
               <div className="flex gap-6">
-                {/* LEFT */}
                 <div className="w-1/2 space-y-4">
                   <DatePicker
                     label="Date"
                     value={formik.values.date}
                     onChange={(date) => formik.setFieldValue("date", date)}
                   />
-
                   <CustomSelect
                     placeholder="Status"
                     value={formik.values.status}
@@ -152,13 +197,13 @@ export default function Attendance() {
                     }
                   />
                 </div>
+
                 <div className="w-1/2 space-y-4">
                   <TimePicker
                     label="Check In"
                     value={formik.values.checkIn}
                     onChange={(time) => formik.setFieldValue("checkIn", time)}
                   />
-
                   <TimePicker
                     label="Check Out"
                     value={formik.values.checkOut}
@@ -170,7 +215,7 @@ export default function Attendance() {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
-                  className="h-13.75 md:w-50 w-full bg-[#0755E9] text-white rounded-md gap-3 cursor-pointer flex justify-center items-center"
+                  className="h-13.75 md:w-50 w-full bg-[#0755E9] text-white rounded-md flex justify-center items-center"
                 >
                   {isloading ? <Spin indicator={antIcon} /> : "Update"}
                 </button>
@@ -179,6 +224,6 @@ export default function Attendance() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

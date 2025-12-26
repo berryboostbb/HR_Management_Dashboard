@@ -2,22 +2,38 @@ import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import CustomTable from "../../Components/CustomTable";
 import { useQuery } from "@tanstack/react-query";
-import { generatePayroll, getAllPayrolls } from "../../api/payrollsServices";
+import {
+  generatePayroll,
+  getAllPayrolls,
+  updatePayroll,
+} from "../../api/payrollsServices";
 import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import CustomInput from "../../Components/CustomInput";
 import { payrollSchema } from "../../utils/contant";
 import { notifyError, notifySuccess } from "../../Components/Toast";
 import { useFormik } from "formik";
+import { TbEdit } from "react-icons/tb";
+import { Loading3QuartersOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import SearchById from "../../Components/SearchBar/searchById";
+import SearchByName from "../../Components/SearchBar/searchByName";
+import { useDebounce } from "../../Components/Debounce";
+import type { AxiosResponse } from "axios";
 const titles = [
   "Employee Id",
+  "Employee Name",
   "Month",
   "Year",
   "Basic Salary",
   "Total Salary",
   "Action",
+  "Details",
 ];
 export default function Payroll() {
+  const [activeTab, setActiveTab] = useState<"Field Staff" | "Office Staff">(
+    "Field Staff"
+  );
   const navigate = useNavigate();
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
@@ -26,20 +42,35 @@ export default function Payroll() {
   const handleDetails = (v: any) => {
     navigate("/payroll/payrollDetails", { state: { payroll: v } });
   };
-  const { data, refetch } = useQuery({
-    queryKey: ["Payrolls"],
-    queryFn: getAllPayrolls,
-    staleTime: 5 * 60 * 1000,
+  const [searchId, setSearchId] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const debouncedSearchId = useDebounce(searchId, 500);
+  const debouncedSearchName = useDebounce(searchName, 500);
+
+  const { data, refetch } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Payrolls", debouncedSearchId, debouncedSearchName],
+    queryFn: () => getAllPayrolls(debouncedSearchId, debouncedSearchName),
+    placeholderData: (previousData) => previousData,
   });
-  console.log("🚀 ~ ManageAccount ~ data:", data?.data);
 
   const tableData =
     data?.data?.map((v: any) => [
       v?.employeeId,
+      v?.employeeName,
       v?.month,
       v?.year,
       v?.basicSalary,
       v?.totalSalary,
+      <div className="flex items-center gap-2" key={v._id}>
+        <TbEdit
+          onClick={() => {
+            setOpenModel(true);
+            setEditing(v);
+          }}
+          size={18}
+          className="cursor-pointer text-[#0755E9]"
+        />
+      </div>,
       <div
         className="flex gap-3 items-center"
         onClick={() => {
@@ -55,6 +86,7 @@ export default function Payroll() {
     enableReinitialize: true,
     initialValues: {
       employeeId: editing?.employeeId || "",
+      employeeName: editing?.employeeName || "",
       month: editing?.month || "",
       year: editing?.year || "",
       basicSalary: editing?.basicSalary || 0,
@@ -74,40 +106,58 @@ export default function Payroll() {
     validationSchema: payrollSchema,
     onSubmit: (values) => {
       setLoading(true);
-
-      generatePayroll(values)
-        .then(() => {
-          notifySuccess("Payroll generated successfully");
-          setOpenModel(false);
-          formik.resetForm();
-          refetch();
-        })
-        .catch((error) => {
-          console.error(error);
-          notifyError("Failed to generate payroll.");
-        })
-        .finally(() => setLoading(false));
+      if (editing) {
+        updatePayroll(editing._id, values)
+          .then(() => {
+            notifySuccess("Payroll updated successfully");
+            setOpenModel(false);
+            setEditing(null);
+            formik.resetForm();
+            refetch();
+          })
+          .catch((error) => {
+            console.error(error);
+            notifyError("Failed to update Payroll.");
+          })
+          .finally(() => setLoading(false));
+      } else {
+        generatePayroll(values)
+          .then(() => {
+            notifySuccess("Payroll generated successfully");
+            setOpenModel(false);
+            formik.resetForm();
+            refetch();
+          })
+          .catch((error) => {
+            console.error(error);
+            notifyError("Failed to generate payroll.");
+          })
+          .finally(() => setLoading(false));
+      }
     },
   });
 
   useEffect(() => {
     document.title = "HR-Management | Payroll";
   }, []);
-
+  const antIcon = (
+    <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
+  );
   return (
     <>
       {" "}
-      <div className="bg-[#F7F7F7] md:h-[calc(100vh-129px)] h-auto rounded-xl p-4">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <p className="text-heading font-medium text-[22px] sm:text-[24px]">
-            Payroll
-          </p>
-
+      <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
+        <div className="flex flex-wrap justify-end items-center gap-4 w-full md:w-auto">
+          <div className="flex md:flex-nowrap flex-wrap  items-center gap-2">
+            <SearchById value={searchId} onChange={setSearchId} />
+            <SearchByName value={searchName} onChange={setSearchName} />
+          </div>
           <button
             onClick={() => {
               setOpenModel(true);
+              setEditing(null);
             }}
-            className="h-13.75 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
+            className="h-10 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
           >
             <Icon
               icon="mingcute:add-fill"
@@ -118,12 +168,14 @@ export default function Payroll() {
             <p className="text-base font-medium text-white">Add Payroll</p>
           </button>
         </div>
-        <div
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(75.8vh-0px)] xl:h-[calc(53vh-0px)] mt-4 overflow-y-auto scrollbar-none"
-        >
-          {" "}
-          <CustomTable titles={titles} data={tableData} />
+        <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)]">
+          <div
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(75.8vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
+          >
+            {" "}
+            <CustomTable titles={titles} data={tableData} />
+          </div>
         </div>
       </div>
       {openModel && (
@@ -163,6 +215,23 @@ export default function Payroll() {
                       typeof formik.errors.employeeId === "string" && (
                         <div className="text-xs text-red-500">
                           * {formik.errors.employeeId}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Employee Name"
+                      placeholder="Enter Employee Name"
+                      name="employeeName"
+                      value={formik.values.employeeName}
+                      onChange={formik.handleChange}
+                    />
+
+                    {formik.touched.employeeName &&
+                      formik.errors.employeeName &&
+                      typeof formik.errors.employeeName === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeName}
                         </div>
                       )}
                   </div>
@@ -285,12 +354,20 @@ export default function Payroll() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="h-14 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
-              >
-                Generate Salary
-              </button>
+              <div className="flex justify-end mt-5">
+                <button
+                  type="submit"
+                  className="h-14 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
+                >
+                  {isloading ? (
+                    <Spin indicator={antIcon} />
+                  ) : editing ? (
+                    "Update Payroll"
+                  ) : (
+                    "Generate Payroll"
+                  )}
+                </button>
+              </div>
             </form>
           </div>
         </div>

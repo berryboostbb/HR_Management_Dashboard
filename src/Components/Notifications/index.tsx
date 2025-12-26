@@ -43,25 +43,25 @@ export default function Notification() {
     <div className="relative w-full" ref={dropdownRef}>
       <div
         onClick={() => setOpen(!open)}
-        className="w-12 h-12 cursor-pointer bg-[#0755E9] rounded-full flex items-center justify-center relative"
+        className="w-8 h-8 cursor-pointer bg-[#0755E9] rounded-full flex items-center justify-center relative"
       >
-        <FaBell className="text-white text-[24px]" />
+        <FaBell className="text-white text-[16px]" />
         {notifications.length > 0 && (
-          <span className="absolute top-2.5 right-3.5 bg-[#FF7631] text-white text-[10px] font-bold px-[4px] py-[4px] rounded-full"></span>
+          <span className="absolute top-2 right-2 bg-[#FF7631] text-white text-[10px] font-bold p-1 rounded-full"></span>
         )}
       </div>
 
       <div
-        className={`absolute lg:left-1/2 left-0 lg:-translate-x-1/2 mt-2 md:w-[392px] w-[320px] bg-white shadow-xl rounded-xl overflow-hidden z-50 transform transition-all duration-300 ${
+        className={`absolute lg:left-1/2 left-0 lg:-translate-x-1/2 mt-2 md:w-98 w-[320px] bg-white shadow-xl rounded-xl overflow-hidden z-50 transform transition-all duration-300 ${
           open
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
         }`}
       >
         <div className="flex justify-center">
-          <div className="border-t-[1px] w-20 border-[#0755E9] mt-2"></div>
+          <div className="border-t w-20 border-[#0755E9] mt-2"></div>
         </div>
-        <div className="p-3 font-medium border-b-[1px] border-[#7d7d7d]">
+        <div className="p-3 font-medium border-b border-[#7d7d7d]">
           Notifications
         </div>
         <div className="p-4 space-y-2">
@@ -69,7 +69,7 @@ export default function Notification() {
             notifications.map((note, i) => (
               <div
                 key={i}
-                className="p-3 flex items-center justify-between text-sm border border-[#E5EBF7] rounded-[6px] bg-[#f7f7f7] transition"
+                className="p-3 flex items-center justify-between text-sm border border-[#E5EBF7] rounded-md bg-[#f7f7f7] transition"
               >
                 <div className="flex items-center gap-4 ">
                   <div className="relative">
@@ -94,7 +94,7 @@ export default function Notification() {
                 </div>
 
                 <div
-                  className="border border-[#D2D2D2] h-10 rounded-[8px] flex justify-center items-center"
+                  className="border border-[#D2D2D2] h-10 rounded-lg flex justify-center items-center"
                   style={{ minWidth: "2.5rem" }}
                 >
                   <HiDotsHorizontal className="text-heading" size={18} />

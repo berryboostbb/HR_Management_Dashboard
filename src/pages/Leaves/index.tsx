@@ -6,9 +6,14 @@ import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { notifyError, notifySuccess } from "../../Components/Toast";
 import { useSelector } from "react-redux";
+import SearchById from "../../Components/SearchBar/searchById";
+import SearchByName from "../../Components/SearchBar/searchByName";
+import { useDebounce } from "../../Components/Debounce";
+import type { AxiosResponse } from "axios";
 
 const titles = [
   "Employee Id",
+  "Employee Name",
   "Leave Type",
   "Start Date",
   "End Date",
@@ -20,15 +25,22 @@ export default function Leaves() {
   useEffect(() => {
     document.title = "HR-Management | Leaves";
   }, []);
-  const { data, refetch } = useQuery({
-    queryKey: ["Leaves"],
-    queryFn: getAllLeaves,
-    staleTime: 5 * 60 * 1000,
-  });
+  const [searchId, setSearchId] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const debouncedSearchId = useDebounce(searchId, 500);
+  const debouncedSearchName = useDebounce(searchName, 500);
 
+  const searchValue = debouncedSearchId || debouncedSearchName;
+
+  const { data, refetch } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Attendance", searchValue],
+    queryFn: () => getAllLeaves(searchValue),
+    placeholderData: (previousData) => previousData,
+  });
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
+      v.employeeName,
       v.leaveType,
       v.startDate ? dayjs(v.startDate).format("YYYY-MM-DD") : "--",
       v.endDate ? dayjs(v.endDate).format("YYYY-MM-DD") : "--",
@@ -51,18 +63,19 @@ export default function Leaves() {
     ]) || [];
 
   return (
-    <div className="bg-[#F7F7F7] md:h-[calc(100vh-129px)] h-auto rounded-xl p-4">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <p className="text-heading font-medium text-[22px] sm:text-[24px]">
-          Leaves
-        </p>
+    <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
+      <div className="flex justify-end flex-wrap md:flex-nowrap items-center gap-3 w-full">
+        <SearchById value={searchId} onChange={setSearchId} />
+        <SearchByName value={searchName} onChange={setSearchName} />
       </div>
-      <div
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(77.8vh-0px)] xl:h-[calc(53vh-0px)] mt-4 overflow-y-auto scrollbar-none"
-      >
-        {" "}
-        <CustomTable titles={titles} data={tableData} />
+      <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)] ">
+        <div
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(67vh-0px)]  overflow-y-auto scrollbar-none"
+        >
+          {" "}
+          <CustomTable titles={titles} data={tableData} />
+        </div>
       </div>
     </div>
   );

@@ -1,18 +1,39 @@
 import { Avatar } from "antd";
 import Notification from "../Notifications";
 import { useSelector } from "react-redux";
+import { matchPath, useLocation } from "react-router-dom";
 
 export default function SearchBar() {
   const { user } = useSelector((state: any) => state.user);
 
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const routeNames = {
+    "/dashboard": "Dashboard",
+    "/manageAccount": "Manage Account",
+    "/attendance": "Attendance",
+    "/leaves": "Leaves",
+    "/events": "Events",
+    "/payroll": "Payroll",
+    "/payroll/payrollDetails": "Payroll Details",
+  } as const;
+
+  const currentRoute = (
+    Object.keys(routeNames) as Array<keyof typeof routeNames>
+  ).find((path) => matchPath({ path, end: true }, pathname));
+
+  const pageTitle = currentRoute ? routeNames[currentRoute] : "Page";
+
   return (
     <>
-      <div className="bg-[#F7F7F7] px-4  rounded-lg w-full xl:h-20 h-37.5 md:h-20 flex xl:justify-end lg:justify-start justify-end">
-        <div className="flex flex-wrap items-center w-full lg:w-auto ">
+      <div className="bg-[#F7F7F7] md:flex-nowrap flex-wrap md:p-0.5 p-3 rounded-lg w-full items-center gap-5 h-auto flex xl:justify-between lg:justify-start justify-start">
+        <p className="md:pl-5 pl-0 text-2xl font-medium w-max">{pageTitle}</p>
+        <div className="flex items-center w-full lg:w-auto md:mt-0 mt-5 ">
           <div className="mr-4 cursor-pointer">
             <Notification />
           </div>
-          <div className="w-full md:w-62.5 h-14 bg-white rounded-xl px-2 flex gap-3 items-center">
+          <div className="w-full md:w-62.5 h-14 bg-white rounded-[9px] px-2 flex gap-3 items-center">
             <Avatar src={user?.image} size={40} />
             <div>
               <p className="text-[#0755E9] text-sm leading-3.5 w-37.5 truncate">

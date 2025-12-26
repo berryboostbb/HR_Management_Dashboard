@@ -142,6 +142,7 @@ export const AdminSchema = Yup.object().shape({
 });
 export const payrollSchema = Yup.object({
   employeeId: Yup.string().required("Employee ID is required"),
+  employeeName: Yup.string().required("Employee Name is required"),
   month: Yup.string().required("Month is required"),
   year: Yup.number().required("Year is required"),
   basicSalary: Yup.number().required("Basic Salary is required"),
@@ -157,4 +158,19 @@ export const payrollSchema = Yup.object({
     tax: Yup.number().required("Tax is required"),
     custom: Yup.number().required("Custom deduction is required"),
   }),
+});
+
+export const EventSchema = Yup.object().shape({
+  coverImage: Yup.string()
+    .required("Cover image is required")
+    .url("Cover image must be a valid URL"),
+  date: Yup.date()
+    .required("Date is required")
+    .typeError("Please select a valid date"),
+  heading: Yup.string()
+    .required("Heading is required")
+    .min(5, "Heading must be at least 5 characters")
+    .max(100, "Heading can't exceed 100 characters"),
+  overview: Yup.string().required("Overview is required"),
+  category: Yup.string().required("Category is required"),
 });

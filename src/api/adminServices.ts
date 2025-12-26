@@ -12,8 +12,13 @@ export const addAccount = (values: any) => {
   return HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_ADD, values);
 };
 
-export const getAllAccounts = () => {
-  return HTTP_CLIENT.get(ENDPOINTS.ACCOUNTS_GETALL);
+export const getAllAccounts = (search?: string) => {
+  return HTTP_CLIENT.get(ENDPOINTS.ACCOUNTS_GETALL, {
+    params: search ? { search } : {},
+  });
+};
+export const getBirthday = () => {
+  return HTTP_CLIENT.get(ENDPOINTS.ACCOUNTS_BIRTHDAY);
 };
 export const updateAccount = (id: string, values: any) => {
   return HTTP_CLIENT.put(`${ENDPOINTS.ACCOUNTS_UPDATE}/${id}`, values);

@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   ACCOUNTS_UPDATE: "/admin/updateAdmin",
   ACCOUNTS_DELETE: "/admin/deleteAdmin",
   ACCOUNTS_ADD: "/admin/register",
+  ACCOUNTS_BIRTHDAY: "/admin/birthdays",
 
   //   ---------------Attendance----------
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",
@@ -22,9 +23,16 @@ export const ENDPOINTS = {
   //   -----------GENERATE_PAYROLL-------------
 
   GENERATE_PAYROLL: "/payroll/generatePayroll",
-  APPROVE_PAYROLL: "/payroll/approve/:id",
+  APPROVE_PAYROLL: "/payroll/approve",
+  UPDATE_PAYROLL: "/payroll/updatePayroll",
   GET_ALL_PAYROLLS: "/payroll/getAllPayrolls",
-  GET_EMPLOYEE_PAYROLLS: "/payroll/employee/:id",
-  GENERATE_SALARY_SLIP: "/payroll/generateSalarySlip/:id",
-  DOWNLOAD_SALARY_SLIP: "/payroll/salarySlip/:id",
+  GET_EMPLOYEE_PAYROLLS: "/payroll/employee",
+  GENERATE_SALARY_SLIP: "/payroll/generateSalarySlip",
+  DOWNLOAD_SALARY_SLIP: "/payroll/salarySlip",
+  //   -----------Leaves-------------
+  EVENTS_CREATE: "/events/createEvent",
+  EVENTS_GET_ALL: "/events/getAllEvents",
+  EVENTS_GET_SINGLE: "/events/getEventById",
+  EVENTS_UPDATE: "/events/updateEvent",
+  EVENTS_DELETE: "/events/deleteEvent",
 };

@@ -12,8 +12,12 @@ export const approvePayroll = (id: string, values: { approvedBy: string }) => {
   );
 };
 
-export const getAllPayrolls = () => {
-  return HTTP_CLIENT.get(ENDPOINTS.GET_ALL_PAYROLLS);
+export const getAllPayrolls = (employeeId?: string, employeeName?: string) => {
+  const params: any = {};
+  if (employeeId) params.employeeId = employeeId;
+  if (employeeName) params.employeeName = employeeName;
+
+  return HTTP_CLIENT.get(ENDPOINTS.GET_ALL_PAYROLLS, { params });
 };
 
 export const getEmployeePayrolls = (employeeId: string) => {
@@ -22,11 +26,15 @@ export const getEmployeePayrolls = (employeeId: string) => {
   );
 };
 
+export const updatePayroll = (id: string, values: any) => {
+  return HTTP_CLIENT.put(`${ENDPOINTS.UPDATE_PAYROLL}/${id}`, values);
+};
 export const generateSalarySlip = (id: string) => {
   return HTTP_CLIENT.post(ENDPOINTS.GENERATE_SALARY_SLIP.replace(":id", id));
 };
 
 export const downloadSalarySlip = (id: string) => {
-  const url = ENDPOINTS.DOWNLOAD_SALARY_SLIP.replace(":id", id);
-  window.open(url, "_blank");
+  return HTTP_CLIENT.get(`${ENDPOINTS.DOWNLOAD_SALARY_SLIP}/${id}`, {
+    responseType: "blob",
+  });
 };
