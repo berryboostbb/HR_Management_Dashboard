@@ -10,3 +10,7 @@ export const getAllAttendance = (search?: string) => {
 export const updateAttendance = (id: string, values: any) => {
   return HTTP_CLIENT.put(`${ENDPOINTS.LEAVES_APPROVE}/${id}`, values);
 };
+
+export const getAttendanceSummary = () => {
+  return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_SUMMARY);
+};

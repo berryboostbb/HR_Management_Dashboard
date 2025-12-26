@@ -137,7 +137,7 @@ export default function Events() {
               AllEvents.map((e: any, index: number) => (
                 <div
                   key={e._id || index}
-                  className="bg-white rounded-2xl w-[calc(50%-10px)] group h-150 flex flex-col overflow-hidden"
+                  className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group h-150 flex flex-col overflow-hidden"
                 >
                   <div className="p-4 flex-1">
                     <p className="text-[#131313] text-[32px] font-medium border-b-2 w-max border-[#0755E9]">

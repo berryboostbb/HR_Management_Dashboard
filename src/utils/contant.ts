@@ -16,9 +16,9 @@ export const defaultLinks: SidebarLink[] = [
     icon: "material-symbols:dashboard-rounded",
   },
   {
-    name: "Manage Accounts",
+    name: "Employee",
     icon: "material-symbols:manage-accounts-rounded",
-    path: "/manageAccount",
+    path: "/employee",
   },
 
   {

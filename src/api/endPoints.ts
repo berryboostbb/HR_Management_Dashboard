@@ -13,6 +13,7 @@ export const ENDPOINTS = {
   //   ---------------Attendance----------
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",
   ATTENDANCE_UPDATE: "/attendance/UpdateAttendance",
+  ATTENDANCE_SUMMARY: "/attendance/getAttendanceSummary",
   //   -----------UploadFIle-------------
   UPLOAD_FILE: "/upload/uploadFile",
 

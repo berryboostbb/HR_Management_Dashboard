@@ -39,15 +39,14 @@ const titles = [
   "Employee Id",
   "Employee Name",
   "Phone No.",
-  "Email",
-  "Designation",
   "Joining Date",
+  "Postion",
   "Status",
   "Action",
 ];
-export default function ManageAccount() {
+export default function Employee() {
   useEffect(() => {
-    document.title = "HR-Management | Manage Accounts";
+    document.title = "HR-Management | Employee";
   }, []);
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
@@ -83,7 +82,6 @@ export default function ManageAccount() {
       v?.employeeId,
       v?.name,
       v?.phoneNumber,
-      v?.email,
       v?.designation,
       v?.joiningDate ? dayjs(v.joiningDate).format("YYYY-MM-DD") : "-",
       v?.employeeStatus,
@@ -145,7 +143,7 @@ export default function ManageAccount() {
       if (editing) {
         updateAccount(editing._id, values)
           .then(() => {
-            notifySuccess("Account updated successfully");
+            notifySuccess("Employee updated successfully");
             setOpenModel(false);
             setEditing(null);
             formik.resetForm();
@@ -153,20 +151,20 @@ export default function ManageAccount() {
           })
           .catch((error) => {
             console.error(error);
-            notifyError("Failed to update Account.");
+            notifyError("Failed to update Employee.");
           })
           .finally(() => setLoading(false));
       } else {
         addAccount(values)
           .then(() => {
-            notifySuccess("Account added successfully");
+            notifySuccess("Employee added successfully");
             setOpenModel(false);
             formik.resetForm();
             refetch();
           })
           .catch((error) => {
             console.error(error);
-            notifyError("Failed to add Account.");
+            notifyError("Failed to add Employee.");
           })
           .finally(() => setLoading(false));
       }
@@ -178,14 +176,14 @@ export default function ManageAccount() {
     setLoadingDelete(true);
     deleteAccount(editing._id)
       .then(() => {
-        notifySuccess("Account deleted successfully");
+        notifySuccess("Employee deleted successfully");
         setDeleteConfirmation(false);
         setEditing(null);
         refetch();
       })
       .catch((error) => {
-        console.error("Failed to delete Account:", error);
-        notifyError("Failed to delete Account. Please try again.");
+        console.error("Failed to delete Employee:", error);
+        notifyError("Failed to delete Employee. Please try again.");
       })
       .finally(() => setLoadingDelete(false));
   };
@@ -232,7 +230,7 @@ export default function ManageAccount() {
                 width="20"
                 color="#fff"
               />
-              <p className="text-base font-medium text-white">Add Account</p>
+              <p className="text-base font-medium text-white">Add Employee</p>
             </button>
           </div>
         </div>
@@ -250,6 +248,7 @@ export default function ManageAccount() {
           </div>
         </div>
       </div>
+
       {openModel && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div
@@ -261,7 +260,7 @@ export default function ManageAccount() {
           >
             <div className="flex justify-between mb-4">
               <p className="text-xl font-medium">
-                {editing ? "Update Account" : "Add Account"}
+                {editing ? "Update Employee" : "Add Employee"}
               </p>
               <IoMdCloseCircle
                 size={22}
@@ -696,9 +695,9 @@ export default function ManageAccount() {
                   {isloading ? (
                     <Spin indicator={antIcon} />
                   ) : editing ? (
-                    "Update Account"
+                    "Update Employee"
                   ) : (
-                    "Add Account"
+                    "Add Employee"
                   )}
                 </button>
               </div>
@@ -717,7 +716,7 @@ export default function ManageAccount() {
                 Confirm Delete
               </h2>
               <p className="mb-6">
-                Are you sure you want to delete this <strong>Account</strong>?
+                Are you sure you want to delete this <strong>Employee</strong>?
               </p>
             </div>
             <div className="flex justify-between gap-4 mt-5">

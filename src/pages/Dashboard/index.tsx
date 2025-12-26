@@ -2,14 +2,23 @@ import { useEffect } from "react";
 import birthday from "../../assets/Birthday Banner.png";
 import { useQuery } from "@tanstack/react-query";
 import { getBirthday } from "../../api/adminServices";
+import { getAttendanceSummary } from "../../api/attendanceServices";
+import LineChart from "../../Components/LineChart";
+import dummay from "../../assets/Frame 1597884811.png";
 export default function DashBoard() {
-  const { data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: ["Birthday"],
     queryFn: getBirthday,
     staleTime: 5 * 60 * 1000,
   });
+  const { data: summary } = useQuery({
+    queryKey: ["getAttendanceSummary"],
+    queryFn: getAttendanceSummary,
+    staleTime: 5 * 60 * 1000,
+  });
+
   let birthdayData = data?.data?.data;
-  console.log("🚀 ~ ManageAccount ~ data:", data?.data.data);
+
   useEffect(() => {
     document.title = "HR-Management | DashBoard";
   }, []);
@@ -17,7 +26,7 @@ export default function DashBoard() {
     <>
       {birthdayData && birthdayData.length > 0 && (
         <div className="relative">
-          <img src={birthday} className="w-full h-100" />
+          <img src={birthday} className="w-full h-70" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
             <div className="text-3xl text-white w-full">
               It’s{" "}
@@ -39,11 +48,16 @@ export default function DashBoard() {
           </div>
         </div>
       )}
-      <div className="bg-[#F7F7F7] 2xl:h-[calc(58.5vh-0px)] xl:h-[calc(52vh-0px)] h-auto rounded-xl p-4 mt-3">
+      <div
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="bg-[#F7F7F7] 2xl:h-[calc(58vh-0px)] xl:h-[calc(52vh-0px)] overflow-x-auto h-auto rounded-xl p-4 mt-3"
+      >
         <div className="flex flex-wrap items-center gap-3 ">
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex justify-between items-center">
-              <p className="text-3xl text-[#0755E9] font-bold">148</p>
+              <p className="text-3xl text-[#0755E9] font-bold">
+                {summary?.data?.data?.totalEmployees}
+              </p>
               <div className="h-10 w-10 rounded-full bg-[#0755E9]/10 flex justify-center items-center">
                 <svg
                   width="24"
@@ -72,7 +86,10 @@ export default function DashBoard() {
           </div>
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex justify-between items-center">
-              <p className="text-3xl text-[#28A745] font-bold">135</p>
+              <p className="text-3xl text-[#28A745] font-bold">
+                {" "}
+                {summary?.data?.data?.present}
+              </p>
               <div className="h-10 w-10 rounded-full bg-[#28A745]/10 flex justify-center items-center">
                 <svg
                   width="19"
@@ -101,7 +118,10 @@ export default function DashBoard() {
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex justify-between items-center">
-              <p className="text-3xl text-[#F43378] font-bold">09</p>
+              <p className="text-3xl text-[#F43378] font-bold">
+                {" "}
+                {summary?.data?.data?.absent}
+              </p>
               <div className="h-10 w-10 rounded-full bg-[#F43378]/10 flex justify-center items-center">
                 <svg
                   width="19"
@@ -130,7 +150,10 @@ export default function DashBoard() {
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex justify-between items-center">
-              <p className="text-3xl text-[#C47301] font-bold">04</p>
+              <p className="text-3xl text-[#C47301] font-bold">
+                {" "}
+                {summary?.data?.data?.leave}
+              </p>
               <div className="h-10 w-10 rounded-full bg-[#C47301]/10 flex justify-center items-center">
                 <svg
                   width="19"
@@ -168,7 +191,10 @@ export default function DashBoard() {
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex justify-between items-center">
-              <p className="text-3xl text-[#9C27B0] font-bold">12</p>
+              <p className="text-3xl text-[#9C27B0] font-bold">
+                {" "}
+                {summary?.data?.data?.late}
+              </p>
               <div className="h-10 w-10 rounded-full bg-[#9C27B0]/10 flex justify-center items-center">
                 <svg
                   width="19"
@@ -204,6 +230,15 @@ export default function DashBoard() {
               </p>
             </div>
           </div>{" "}
+        </div>
+        <div className=" mt-4 gap-4 flex flex-wrap">
+          <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
+            <LineChart />
+          </div>
+          <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
+            <p className="text-xs text-[#131313] mb-2">Upcoming Events</p>
+            <img src={dummay} className="w-full object-cover h-auto" />
+          </div>
         </div>
       </div>
     </>

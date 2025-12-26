@@ -29,6 +29,7 @@ const titles = [
   "CheckIn",
   "CheckOut",
   "Checkout Location",
+  "Status",
   "Action",
 ];
 
@@ -75,6 +76,7 @@ export default function Attendance() {
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",
       v.checkOut?.location?.address || "--",
+      v?.status,
       <TbEdit
         key={v._id}
         size={18}

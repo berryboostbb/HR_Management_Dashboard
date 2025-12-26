@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import ManageAccount from "../pages/ManageAccounts";
 import Events from "../pages/Events";
 import PayrollDetails from "../pages/Payroll/payrollDetails";
+import Employee from "../pages/Employee";
 const DashBoard = lazy(() => import("../pages/Dashboard"));
 const Leaves = lazy(() => import("../pages/Leaves"));
 const Payroll = lazy(() => import("../pages/Payroll"));
@@ -21,7 +21,7 @@ export default function MainRoutes() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/manageAccount" element={<ManageAccount />} />
+        <Route path="/employee" element={<Employee />} />
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/leaves" element={<Leaves />} />
         <Route path="/events" element={<Events />} />

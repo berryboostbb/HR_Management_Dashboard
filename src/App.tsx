@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
 import Routes from "./Routes";
-import AuthRoutes from "./Routes/authRoutes";
 
 // import { useNavigate } from "react-router-dom";
 // import { setupInterceptors } from "./utils/httpClient";

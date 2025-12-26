@@ -31,9 +31,6 @@ const titles = [
   "Details",
 ];
 export default function Payroll() {
-  const [activeTab, setActiveTab] = useState<"Field Staff" | "Office Staff">(
-    "Field Staff"
-  );
   const navigate = useNavigate();
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
