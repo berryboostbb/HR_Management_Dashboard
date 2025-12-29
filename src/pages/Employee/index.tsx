@@ -430,28 +430,46 @@ export default function Employee() {
                       )}
                   </div>
 
-                  <CustomSelect
-                    placeholder="Select Employee Role"
-                    options={roleOptions} // display titles
-                    value={
-                      roleData.find((r: any) => r.value === formik.values.role)
-                        ?.title || null
-                    }
-                    onChange={(selectedTitle) => {
-                      const selectedRole = roleData.find(
-                        (r: any) => r.title === selectedTitle
-                      );
-                      formik.setFieldValue("role", selectedRole?.value || "");
-                    }}
-                  />
-                  <CustomSelect
-                    placeholder="Select Employee Type"
-                    value={formik.values.employeeType}
-                    options={["Office Staff", "Field Staff"]}
-                    onChange={(val) =>
-                      formik.setFieldValue("employeeType", val)
-                    }
-                  />
+                  <div>
+                    <CustomSelect
+                      placeholder="Select Employee Role"
+                      options={roleOptions} // display titles
+                      value={
+                        roleData.find(
+                          (r: any) => r.value === formik.values.role
+                        )?.title || null
+                      }
+                      onChange={(selectedTitle) => {
+                        const selectedRole = roleData.find(
+                          (r: any) => r.title === selectedTitle
+                        );
+                        formik.setFieldValue("role", selectedRole?.value || "");
+                      }}
+                    />
+                    {formik.touched.role &&
+                      formik.errors.role &&
+                      typeof formik.errors.role === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.role}
+                        </div>
+                      )}
+                    <div></div>
+                    <CustomSelect
+                      placeholder="Select Employee Type"
+                      value={formik.values.employeeType}
+                      options={["Office Staff", "Field Staff"]}
+                      onChange={(val) =>
+                        formik.setFieldValue("employeeType", val)
+                      }
+                    />
+                    {formik.touched.employeeType &&
+                      formik.errors.employeeType &&
+                      typeof formik.errors.employeeType === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeType}
+                        </div>
+                      )}
+                  </div>
                   <div>
                     <CustomInput
                       label="Department"
@@ -468,26 +486,53 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-                  <DatePicker
-                    label="Joining Date"
-                    value={formik.values.joiningDate}
-                    onChange={(date) =>
-                      formik.setFieldValue("joiningDate", date)
-                    }
-                  />
-                  <DatePicker
-                    label="DOB"
-                    value={formik.values.DOB}
-                    onChange={(date) => formik.setFieldValue("DOB", date)}
-                  />
-                  <CustomSelect
-                    placeholder="Select status"
-                    value={formik.values.employeeStatus}
-                    options={["Active", "Inactive"]}
-                    onChange={(val) =>
-                      formik.setFieldValue("employeeStatus", val)
-                    }
-                  />
+                  <div>
+                    <DatePicker
+                      label="Joining Date"
+                      value={formik.values.joiningDate}
+                      onChange={(date) =>
+                        formik.setFieldValue("joiningDate", date)
+                      }
+                    />
+                    {formik.touched.joiningDate &&
+                      formik.errors.joiningDate &&
+                      typeof formik.errors.joiningDate === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.joiningDate}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <DatePicker
+                      label="DOB"
+                      value={formik.values.DOB}
+                      onChange={(date) => formik.setFieldValue("DOB", date)}
+                    />
+                    {formik.touched.DOB &&
+                      formik.errors.DOB &&
+                      typeof formik.errors.DOB === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.DOB}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomSelect
+                      placeholder="Select status"
+                      value={formik.values.employeeStatus}
+                      options={["Active", "Inactive"]}
+                      onChange={(val) =>
+                        formik.setFieldValue("employeeStatus", val)
+                      }
+                    />
+                    {formik.touched.employeeStatus &&
+                      formik.errors.employeeStatus &&
+                      typeof formik.errors.employeeStatus === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeStatus}
+                        </div>
+                      )}
+                  </div>
 
                   <div>
                     <CustomInput
@@ -608,17 +653,28 @@ export default function Employee() {
                       )}
                   </div>
                   <div>
-                    <CustomInput
-                      label="Deductions"
-                      type="number"
-                      value={formik.values.salaryStructure.incentive.deductions}
-                      onChange={(e) =>
-                        formik.setFieldValue(
-                          "salaryStructure.incentive.deductions",
-                          Number(e.target.value)
-                        )
-                      }
-                    />
+                    <div>
+                      <CustomInput
+                        label="Deductions"
+                        type="number"
+                        value={
+                          formik.values.salaryStructure.incentive.deductions
+                        }
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "salaryStructure.incentive.deductions",
+                            Number(e.target.value)
+                          )
+                        }
+                      />
+                      {formik.touched.salaryStructure &&
+                        formik.errors.salaryStructure &&
+                        typeof formik.errors.salaryStructure === "string" && (
+                          <div className="text-xs text-red-500">
+                            * {formik.errors.salaryStructure}
+                          </div>
+                        )}
+                    </div>
                     {formik.touched.salaryStructure &&
                       formik.errors.salaryStructure &&
                       typeof formik.errors.salaryStructure === "string" && (
@@ -687,26 +743,46 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-                  <ImagePicker
-                    label="Upload Image"
-                    placeholder="Upload Image Here..."
-                    fileType="Manage MR"
-                    type="image"
-                    value={formik.values.image}
-                    onChange={(val: any) => formik.setFieldValue("image", val)}
-                  />
-                  <MultiSelect
-                    placeholder="Select leave"
-                    options={leaveOptions}
-                    value={formik.values.leaveMultiSelect}
-                    onChange={(val) => {
-                      formik.setFieldValue("leaveMultiSelect", val);
-                      formik.setFieldValue(
-                        "leaveEntitlements",
-                        multiSelectToObject(val)
-                      );
-                    }}
-                  />
+                  <div>
+                    <ImagePicker
+                      label="Upload Image"
+                      placeholder="Upload Image Here..."
+                      fileType="Manage MR"
+                      type="image"
+                      value={formik.values.image}
+                      onChange={(val: any) =>
+                        formik.setFieldValue("image", val)
+                      }
+                    />
+                    <div>
+                      {formik.touched.image &&
+                        formik.errors.image &&
+                        typeof formik.errors.image === "string" && (
+                          <div className="text-xs text-red-500">
+                            * {formik.errors.image}
+                          </div>
+                        )}
+                    </div>
+                    <MultiSelect
+                      placeholder="Select leave"
+                      options={leaveOptions}
+                      value={formik.values.leaveMultiSelect}
+                      onChange={(val) => {
+                        formik.setFieldValue("leaveMultiSelect", val);
+                        formik.setFieldValue(
+                          "leaveEntitlements",
+                          multiSelectToObject(val)
+                        );
+                      }}
+                    />
+                    {formik.touched.leaveMultiSelect &&
+                      formik.errors.leaveMultiSelect &&
+                      typeof formik.errors.leaveMultiSelect === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.leaveMultiSelect}
+                        </div>
+                      )}
+                  </div>
                 </div>
               </div>
               <div className="flex justify-end mt-6">
