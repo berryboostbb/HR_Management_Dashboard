@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+
+interface SelectedOption {
+  label: string;
+  amount: number;
+}
 
 interface MultiSelectProps {
   options: string[];
-  value?: string[];
-  onChange?: (value: string[]) => void;
+  value?: SelectedOption[];
+  onChange?: (value: SelectedOption[]) => void;
   placeholder?: string;
 }
 
@@ -15,75 +20,97 @@ export default function MultiSelect({
   placeholder = "Select The Options",
 }: MultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (option: string) => {
-    let newValue: string[];
-    if (value.includes(option)) {
-      newValue = value.filter((item) => item !== option);
-    } else {
-      newValue = [...value, option];
-    }
-    if (onChange) onChange(newValue);
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleOption = (option: string) => {
+    const exists = value.find((v) => v.label === option);
+    const newValue = exists
+      ? value.filter((v) => v.label !== option)
+      : [...value, { label: option, amount: 0 }];
+    onChange?.(newValue);
+  };
+
+  const updateAmount = (option: string, amountStr: string) => {
+    const amount = amountStr === "" ? 0 : Number(amountStr);
+    const newValue = value.map((v) =>
+      v.label === option ? { ...v, amount } : v
+    );
+    onChange?.(newValue);
   };
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="relative w-full">
       <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
         {placeholder}
       </label>
+
       <div
-        className="flex items-center min-h-14  justify-between px-4 py-2 border-[#0755E9] border-[0.5px] rounded-md bg-white cursor-pointer"
+        className="flex items-center min-h-14 justify-between px-4 py-2 border-[#0755E9] border rounded-md bg-white cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap gap-2">
           {value.length > 0 ? (
-            <>
-              {value.map((val, idx) => (
-                <span
-                  key={idx}
-                  className="px-2 py-1 mr-1 text-xs text-white rounded-md bg-[#0755E9]"
-                >
-                  {val}
-                </span>
-              ))}
-            </>
+            value.map((item, idx) => (
+              <span
+                key={idx}
+                className="px-2 py-1 text-xs text-white rounded-md bg-[#0755E9]"
+              >
+                {item.label}: {item.amount}
+              </span>
+            ))
           ) : (
             <span className="text-[#7d7d7d] text-sm">Select options</span>
           )}
-        </span>
-
+        </div>
         <IoIosArrowDown
-          className={` min-w-4 transition-transform duration-200 text-[#0755E9] ${
-            isOpen ? "rotate-180" : "rotate-0"
+          className={`transition-transform text-[#0755E9] ${
+            isOpen ? "rotate-180" : ""
           }`}
         />
       </div>
+
       {isOpen && (
-        <ul className="absolute mt-1 w-full bg-[#E5EBF7] border border-gray-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-          {options.length > 0 ? (
-            options.map((option, index) => {
-              const selected = value.includes(option);
-              return (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 px-4 py-2 text-sm cursor-pointer text-heading hover:bg-gray-100"
-                  onClick={() => handleSelect(option)}
+        <ul className="absolute mt-1 w-full bg-[#E5EBF7] rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+          {options.map((option, idx) => {
+            const selected = value.find((v) => v.label === option);
+
+            return (
+              <li
+                key={idx}
+                className="flex items-center justify-between gap-2 px-4 py-2 text-sm"
+              >
+                <div
+                  className={`cursor-pointer ${
+                    selected ? "text-[#0755E9]" : "text-[#131313]"
+                  }`}
+                  onClick={() => toggleOption(option)}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selected}
-                    readOnly
-                    className="cursor-pointer"
-                  />
                   {option}
-                </li>
-              );
-            })
-          ) : (
-            <li className="px-4 py-3 text-sm text-[#7d7d7d] text-center">
-              No Data Found
-            </li>
-          )}
+                </div>
+                {selected && (
+                  <input
+                    type="number"
+                    value={selected.amount}
+                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onChange={(e) => updateAmount(option, e.target.value)}
+                    className="w-20 px-2 py-1 text-sm border rounded-md border-[#7d7d7d]/48 focus:outline-0"
+                  />
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

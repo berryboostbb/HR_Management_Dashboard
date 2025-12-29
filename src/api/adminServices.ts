@@ -20,6 +20,9 @@ export const getAllAccounts = (search?: string) => {
 export const getBirthday = () => {
   return HTTP_CLIENT.get(ENDPOINTS.ACCOUNTS_BIRTHDAY);
 };
+export const getRole = () => {
+  return HTTP_CLIENT.get(ENDPOINTS.ACCOUNTS_ROLE);
+};
 export const updateAccount = (id: string, values: any) => {
   return HTTP_CLIENT.put(`${ENDPOINTS.ACCOUNTS_UPDATE}/${id}`, values);
 };

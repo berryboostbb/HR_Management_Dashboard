@@ -27,7 +27,7 @@ export default function SideBar({ link }: any) {
     const { token } = store.getState().user;
 
     HTTP_CLIENT.post(
-      "/admin/logoutAdmin",
+      "/auth/logout",
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     )

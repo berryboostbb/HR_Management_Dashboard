@@ -14,12 +14,13 @@ import type { AxiosResponse } from "axios";
 const titles = [
   "Employee Id",
   "Employee Name",
-  "Leave Type",
-  "Start Date",
-  "End Date",
-  "Reason",
+  "Leave Tye",
+  "From",
+  "To",
+  "Duration",
   "Approved By",
   "Status",
+  "Action",
 ];
 export default function Leaves() {
   useEffect(() => {
@@ -44,7 +45,6 @@ export default function Leaves() {
       v.leaveType,
       v.startDate ? dayjs(v.startDate).format("YYYY-MM-DD") : "--",
       v.endDate ? dayjs(v.endDate).format("YYYY-MM-DD") : "--",
-      v.reason,
       v?.approvedBy || "Not Approved",
       <StatusDropdown
         key={v._id}
@@ -64,7 +64,7 @@ export default function Leaves() {
 
   return (
     <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-      <div className="flex justify-end flex-wrap md:flex-nowrap items-center gap-3 w-full">
+      <div className="flex flex-wrap items-center justify-end w-full gap-3 md:flex-nowrap">
         <SearchById value={searchId} onChange={setSearchId} />
         <SearchByName value={searchName} onChange={setSearchName} />
       </div>

@@ -2,13 +2,14 @@ export const BASE_URL = "http://localhost:5001";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------
-  ACCOUNTS_LOGIN: "/admin/login",
-  ACCOUNTS_LOGOUT: "/admin/logoutAdmin",
-  ACCOUNTS_GETALL: "/admin/getAllAdmins",
-  ACCOUNTS_UPDATE: "/admin/updateAdmin",
-  ACCOUNTS_DELETE: "/admin/deleteAdmin",
-  ACCOUNTS_ADD: "/admin/register",
-  ACCOUNTS_BIRTHDAY: "/admin/birthdays",
+  ACCOUNTS_LOGIN: "/auth/login",
+  ACCOUNTS_LOGOUT: "/auth/logout",
+  ACCOUNTS_GETALL: "/auth/getAllUsers",
+  ACCOUNTS_UPDATE: "/auth/updateUser",
+  ACCOUNTS_DELETE: "/auth/deleteUser",
+  ACCOUNTS_ADD: "/auth/register",
+  ACCOUNTS_BIRTHDAY: "/auth/birthdays",
+  ACCOUNTS_ROLE: "/auth/getRoles",
 
   //   ---------------Attendance----------
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",

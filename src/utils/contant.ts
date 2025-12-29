@@ -16,9 +16,9 @@ export const defaultLinks: SidebarLink[] = [
     icon: "material-symbols:dashboard-rounded",
   },
   {
-    name: "Employee",
+    name: "Employees",
     icon: "material-symbols:manage-accounts-rounded",
-    path: "/employee",
+    path: "/employees",
   },
 
   {
@@ -60,9 +60,9 @@ export const employeeSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
 
-  designation: Yup.string().required("Designation is required"),
+  role: Yup.string().required("role is required"),
 
-  employeeRole: Yup.string().required("Employee role is required"),
+  employeeType: Yup.string().required("Employee role is required"),
 
   image: Yup.string().url("Invalid image URL").required("Image is required"),
 
@@ -106,11 +106,12 @@ export const AdminSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
+  gender: Yup.string().required("gender is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
-  designation: Yup.string().required("Designation is required"),
-  employeeRole: Yup.string().required("Employee role is required"),
+  role: Yup.string().required("role is required"),
+  employeeType: Yup.string().required("Employee role is required"),
   department: Yup.string().required("Department is required"),
   joiningDate: Yup.date().nullable().required("Joining date is required"),
   DOB: Yup.date().nullable().required("Date of Birth is required"),
@@ -136,9 +137,13 @@ export const AdminSchema = Yup.object().shape({
   image: Yup.string()
     .url("Invalid URL format")
     .required("Image URL is required"),
-  leaveEntitlements: Yup.array()
-    .of(Yup.string().required())
-    .min(1, "Select at least one leave entitlement"),
+  leaveEntitlements: Yup.object().shape({
+    casualLeave: Yup.number().required(),
+    sickLeave: Yup.number().required(),
+    annualLeave: Yup.number().required(),
+    maternityLeave: Yup.number().required(),
+    paternityLeave: Yup.number().required(),
+  }),
 });
 export const payrollSchema = Yup.object({
   employeeId: Yup.string().required("Employee ID is required"),

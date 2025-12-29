@@ -4,14 +4,17 @@ import { useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router-dom";
 
 export default function SearchBar() {
-  const { user } = useSelector((state: any) => state.user);
+  const { user } = useSelector((state: any) => {
+    return state.user;
+  });
+  console.log("🚀 ~ SearchBar ~ user:", user);
 
   const location = useLocation();
   const pathname = location.pathname;
 
   const routeNames = {
     "/dashboard": "Dashboard",
-    "/employee": "Employee",
+    "/employees": "Employees",
     "/attendance": "Attendance",
     "/leaves": "Leaves",
     "/events": "Events",
@@ -28,8 +31,8 @@ export default function SearchBar() {
   return (
     <>
       <div className="bg-[#F7F7F7] md:flex-nowrap flex-wrap md:p-0.5 p-3 rounded-lg w-full items-center gap-5 h-auto flex xl:justify-between lg:justify-start justify-start">
-        <p className="md:pl-5 pl-0 text-2xl font-medium w-max">{pageTitle}</p>
-        <div className="flex items-center w-full lg:w-auto md:mt-0 mt-5 ">
+        <p className="pl-0 text-2xl font-medium md:pl-5 w-max">{pageTitle}</p>
+        <div className="flex items-center w-full mt-5 lg:w-auto md:mt-0 ">
           <div className="mr-4 cursor-pointer">
             <Notification />
           </div>

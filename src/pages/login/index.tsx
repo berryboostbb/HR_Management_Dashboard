@@ -33,6 +33,7 @@ const Login = () => {
     try {
       const response = await adminLogin(values);
       const data = response.data;
+      console.log("🚀 ~ handleLogin ~ response.data:", response.data);
 
       const position = data.admin?.position;
 
@@ -41,7 +42,7 @@ const Login = () => {
         setLoading(false);
         return;
       }
-      dispatch(setUser({ user: data.admin, token: data.token }));
+      dispatch(setUser({ user: data.user, token: data.token }));
       dispatch(setIsLoggedIn(true));
       dispatch(setToken(data.token));
       notifySuccess("Successfully Logged In");

@@ -21,7 +21,7 @@ export default function MainRoutes() {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/employee" element={<Employee />} />
+        <Route path="/employees" element={<Employee />} />
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/leaves" element={<Leaves />} />
         <Route path="/events" element={<Events />} />

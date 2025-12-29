@@ -26,9 +26,9 @@ export default function DashBoard() {
     <>
       {birthdayData && birthdayData.length > 0 && (
         <div className="relative">
-          <img src={birthday} className="w-full h-70" />
+          <img src={birthday} className="w-full xl:h-70 2xl:h-60" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
-            <div className="text-3xl text-white w-full">
+            <div className="w-full text-3xl text-white">
               It’s{" "}
               <strong>
                 {birthdayData.map((v: any, index: number) => (
@@ -41,7 +41,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="text-lg text-white lg:w-200 w-full">
+            <p className="w-full text-lg text-white lg:w-200">
               You have 1 birthday today, post on the social handle and also
               celebrate in the office.
             </p>
@@ -50,11 +50,16 @@ export default function DashBoard() {
       )}
       <div
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        className="bg-[#F7F7F7] 2xl:h-[calc(58vh-0px)] xl:h-[calc(52vh-0px)] overflow-x-auto h-auto rounded-xl p-4 mt-3"
+        className={`bg-[#F7F7F7] overflow-x-auto h-auto rounded-xl p-4 mt-3 
+    ${
+      birthdayData && birthdayData.length > 0
+        ? "2xl:h-[calc(62vh-0px)] xl:h-[calc(37.6vh-0px)]"
+        : "2xl:h-[calc(88.7vh-0px)] xl:h-[calc(83vh-0px)]"
+    }`}
       >
         <div className="flex flex-wrap items-center gap-3 ">
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <p className="text-3xl text-[#0755E9] font-bold">
                 {summary?.data?.data?.totalEmployees}
               </p>
@@ -85,7 +90,7 @@ export default function DashBoard() {
             </div>
           </div>
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <p className="text-3xl text-[#28A745] font-bold">
                 {" "}
                 {summary?.data?.data?.present}
@@ -117,7 +122,7 @@ export default function DashBoard() {
             </div>
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <p className="text-3xl text-[#F43378] font-bold">
                 {" "}
                 {summary?.data?.data?.absent}
@@ -149,7 +154,7 @@ export default function DashBoard() {
             </div>
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <p className="text-3xl text-[#C47301] font-bold">
                 {" "}
                 {summary?.data?.data?.leave}
@@ -190,7 +195,7 @@ export default function DashBoard() {
             </div>
           </div>{" "}
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <p className="text-3xl text-[#9C27B0] font-bold">
                 {" "}
                 {summary?.data?.data?.late}
@@ -231,13 +236,13 @@ export default function DashBoard() {
             </div>
           </div>{" "}
         </div>
-        <div className=" mt-4 gap-4 flex flex-wrap">
+        <div className="flex flex-wrap gap-4 mt-4 ">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
             <LineChart />
           </div>
           <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
             <p className="text-xs text-[#131313] mb-2">Upcoming Events</p>
-            <img src={dummay} className="w-full object-cover h-auto" />
+            <img src={dummay} className="object-cover w-full h-auto" />
           </div>
         </div>
       </div>
