@@ -7,7 +7,6 @@ import {
   getAllPayrolls,
   updatePayroll,
 } from "../../api/payrollsServices";
-import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import CustomInput from "../../Components/CustomInput";
 import { payrollSchema } from "../../utils/contant";
@@ -30,15 +29,28 @@ const titles = [
   "Action",
   "Details",
 ];
+const titlesww = [
+  "Employee ID",
+  "Employee Name",
+  "Position",
+  "Present Days",
+  "Approved Leaves",
+  "Basic Salary",
+  "Allowance",
+  "Gross Salary",
+  "Loan Deduction",
+  "Tax Deduction",
+  "Others Deduction",
+  "Net Pay",
+  "Payroll Status",
+  "Action",
+];
+
 export default function Payroll() {
-  const navigate = useNavigate();
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
 
-  const handleDetails = (v: any) => {
-    navigate("/payroll/payrollDetails", { state: { payroll: v } });
-  };
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const debouncedSearchId = useDebounce(searchId, 500);
@@ -68,12 +80,7 @@ export default function Payroll() {
           className="cursor-pointer text-[#0755E9]"
         />
       </div>,
-      <div
-        className="flex gap-3 items-center"
-        onClick={() => {
-          handleDetails(v);
-        }}
-      >
+      <div className="flex items-center gap-3">
         <Icon icon="iconoir:notes" height="16" width="16" color="#7d7d7d" />
         Details
       </div>,
@@ -144,8 +151,8 @@ export default function Payroll() {
     <>
       {" "}
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-        <div className="flex flex-wrap justify-end items-center gap-4 w-full md:w-auto">
-          <div className="flex md:flex-nowrap flex-wrap  items-center gap-2">
+        <div className="flex flex-wrap items-center justify-end w-full gap-4 md:w-auto">
+          <div className="flex flex-wrap items-center gap-2 md:flex-nowrap">
             <SearchById value={searchId} onChange={setSearchId} />
             <SearchByName value={searchName} onChange={setSearchName} />
           </div>
@@ -165,7 +172,7 @@ export default function Payroll() {
             <p className="text-base font-medium text-white">Add Payroll</p>
           </button>
         </div>
-        <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)]">
+        <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(75.8vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
@@ -285,7 +292,7 @@ export default function Payroll() {
                 </div>
 
                 <div className="flex-1 space-y-4 min-w-70">
-                  <h3 className="font-semibold text-lg">Allowances</h3>
+                  <h3 className="text-lg font-semibold">Allowances</h3>
                   {Object.keys(formik.values.allowances).map((key) => (
                     <div key={key}>
                       <CustomInput
@@ -317,7 +324,7 @@ export default function Payroll() {
                     </div>
                   ))}
 
-                  <h3 className="font-semibold text-lg mt-4">Deductions</h3>
+                  <h3 className="mt-4 text-lg font-semibold">Deductions</h3>
                   {Object.keys(formik.values.deductions).map((key) => (
                     <div key={key}>
                       <CustomInput

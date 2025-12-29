@@ -19,6 +19,9 @@ export const ENDPOINTS = {
   UPLOAD_FILE: "/upload/uploadFile",
 
   //   -----------Leaves-------------
+  LEAVES_UPDATE: "/leave/updateLeave",
+  LEAVES_DELETE: "/leave/deleteLeave",
+  LEAVES_APPLY: "/leave/apply",
   LEAVES_GET_ALL: "/leave/getAllLeaves",
   LEAVES_APPROVE: "/leave/updateLeaveStatus",
 

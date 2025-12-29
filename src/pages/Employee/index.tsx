@@ -55,6 +55,7 @@ export default function Employee() {
   useEffect(() => {
     document.title = "HR-Management | Employees";
   }, []);
+  const [openActionId, setOpenActionId] = useState<string | null>(null);
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const [editing, setEditing] = useState<any>(null);
@@ -133,27 +134,50 @@ export default function Employee() {
         >
           {v?.employeeStatus}
         </div>,
+        <div className="relative">
+          <Icon
+            icon="ph:dots-three-outline-vertical-duotone"
+            className="text-2xl text-[#0755E9] cursor-pointer"
+            onClick={() =>
+              setOpenActionId(openActionId === v._id ? null : v._id)
+            }
+          />
 
-        // <div className="flex items-center gap-2" key={v._id}>
-        //   <TbEdit
-        //     onClick={() => {
-        //       setOpenModel(true);
-        //       setEditing(v);
-        //     }}
-        //     size={18}
-        //     className="cursor-pointer text-[#0755E9]"
-        //   />
-        //   <Icon
-        //     color="#E90761"
-        //     height="18"
-        //     width="20"
-        //     icon="mingcute:delete-fill"
-        //     onClick={() => {
-        //       setDeleteConfirmation(true);
-        //       setEditing(v);
-        //     }}
-        //   />
-        // </div>,
+          {openActionId === v._id && (
+            <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
+              {/* Edit */}
+              <div
+                onClick={() => {
+                  setEditing(v);
+                  setOpenModel(true);
+                  setOpenActionId(null);
+                }}
+                className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              >
+                <TbEdit size={16} />
+                Edit
+              </div>
+
+              {/* Activate / Inactivate */}
+              <div
+                onClick={() => handleToggleStatus(v)}
+                className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              >
+                {v.employeeStatus === "Active" ? (
+                  <>
+                    <Icon icon="mdi:account-cancel-outline" />
+                    Inactivate
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="mdi:account-check-outline" />
+                    Activate
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>,
       ];
     }) || [];
 
@@ -249,8 +273,6 @@ export default function Employee() {
         .finally(() => setLoading(false));
     },
   });
-  console.log("🚀 ~ Employee ~ formik:", formik.errors);
-  console.log("🚀 ~ Employee ~ formik values:", formik.values);
   const handleDelete = () => {
     if (!editing?._id) return;
     setLoadingDelete(true);
@@ -271,6 +293,18 @@ export default function Employee() {
   const roleData = Role?.data || [];
 
   const roleOptions = roleData.map((r: any) => r.title);
+  const handleToggleStatus = (employee: any) => {
+    const newStatus =
+      employee.employeeStatus === "Active" ? "Inactive" : "Active";
+
+    updateAccount(employee._id, { employeeStatus: newStatus })
+      .then(() => {
+        notifySuccess(`Employee ${newStatus} successfully`);
+        refetch();
+        setOpenActionId(null);
+      })
+      .catch(() => notifyError("Failed to update status"));
+  };
 
   return (
     <>
@@ -314,14 +348,14 @@ export default function Employee() {
           </div>
         </div>
         <div
-          className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)] ${
+          className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.5vh-0px)] ${
             activeTab === "Field Staff" ? "rounded-tl-none" : "rounded-tl-xl"
           }`}
         >
           <p className="text-[#7D7D7D] font-medium text-sm">Employees List</p>
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="scroll-smooth bg-white rounded-xl mt-2 2xl:h-[calc(73vh-0px)] xl:h-[calc(54vh-0px)]  overflow-y-auto scrollbar-none"
+            className="scroll-smooth bg-white rounded-xl mt-2 2xl:h-[calc(73vh-0px)] xl:h-[calc(60vh-0px)]  overflow-y-auto scrollbar-none"
           >
             <CustomTable data={tableData} titles={titles} />
           </div>

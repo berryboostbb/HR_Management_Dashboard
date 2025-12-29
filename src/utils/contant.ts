@@ -179,3 +179,24 @@ export const EventSchema = Yup.object().shape({
   overview: Yup.string().required("Overview is required"),
   category: Yup.string().required("Category is required"),
 });
+
+export const LeaveSchema = Yup.object().shape({
+  employeeId: Yup.string().required("Employee ID is required"),
+
+  employeeName: Yup.string().required("Employee name is required"),
+
+  leaveType: Yup.string().required("Leave type is required"),
+
+  startDate: Yup.date()
+    .required("Start date is required")
+    .typeError("Invalid start date"),
+
+  endDate: Yup.date()
+    .required("End date is required")
+    .typeError("Invalid end date")
+    .min(Yup.ref("startDate"), "End date cannot be before start date"),
+
+  reason: Yup.string()
+    .max(500, "Reason cannot exceed 500 characters")
+    .nullable(),
+});

@@ -106,7 +106,7 @@ export default function Events() {
     <>
       {" "}
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-        <div className="flex flex-wrap items-start justify-end  gap-4">
+        <div className="flex flex-wrap items-start justify-end gap-4">
           <button
             onClick={() => {
               setOpenModel(true);
@@ -125,12 +125,12 @@ export default function Events() {
         </div>
         <div
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          className="bg-[#E5EBF7] overflow-y-auto mt-4 p-4 rounded-lg 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)] "
+          className="bg-[#E5EBF7] overflow-y-auto mt-4 p-4 rounded-lg 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]"
         >
           <p className="text-sm text-[#7d7d7d] leading-[100%]">Events List</p>
-          <div className="my-4 flex flex-wrap gap-5 items-center">
+          <div className="flex flex-wrap items-center gap-5 my-4">
             {isLoading || isFetching ? (
-              <div className="w-full flex justify-center items-center py-10">
+              <div className="flex items-center justify-center w-full py-10">
                 <Spin indicator={antIcon22} />
               </div>
             ) : AllEvents && AllEvents.length > 0 ? (
@@ -139,7 +139,7 @@ export default function Events() {
                   key={e._id || index}
                   className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group h-150 flex flex-col overflow-hidden"
                 >
-                  <div className="p-4 flex-1">
+                  <div className="flex-1 p-4">
                     <p className="text-[#131313] text-[32px] font-medium border-b-2 w-max border-[#0755E9]">
                       {e.heading}
                     </p>
@@ -148,14 +148,14 @@ export default function Events() {
                     </p>
                   </div>
 
-                  <div className="relative h-100 overflow-hidden">
+                  <div className="relative overflow-hidden h-100">
                     <img
                       src={e.coverImage}
-                      className="w-full h-full object-cover rounded-b-lg"
+                      className="object-cover w-full h-full rounded-b-lg"
                       alt={e.heading}
                     />
-                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-white flex justify-center items-center cursor-pointer rounded-full h-12 w-12">
+                    <div className="absolute inset-0 flex items-center justify-center gap-4 transition-opacity duration-300 opacity-0 bg-black/70 group-hover:opacity-100">
+                      <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full cursor-pointer">
                         <button
                           onClick={() => {
                             setEditing(e);
@@ -165,7 +165,7 @@ export default function Events() {
                           <TbEdit className="text-blue-500" size={22} />
                         </button>
                       </div>
-                      <div className="bg-white flex justify-center items-center cursor-pointer rounded-full h-12 w-12">
+                      <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full cursor-pointer">
                         <button
                           onClick={() => {
                             setEditing(e);
@@ -185,7 +185,7 @@ export default function Events() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center w-full py-10">
+              <p className="w-full py-10 text-center text-gray-500">
                 No events found.
               </p>
             )}

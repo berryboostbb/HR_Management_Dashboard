@@ -1,7 +1,13 @@
 import CustomTable from "../../Components/CustomTable";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { getAllLeaves, updateLeavesStatus } from "../../api/leaveServices";
+import {
+  applyLeave,
+  deleteLeave,
+  getAllLeaves,
+  updateLeave,
+  updateLeavesStatus,
+} from "../../api/leaveServices";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { notifyError, notifySuccess } from "../../Components/Toast";
@@ -10,6 +16,16 @@ import SearchById from "../../Components/SearchBar/searchById";
 import SearchByName from "../../Components/SearchBar/searchByName";
 import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
+import { IoMdCloseCircle } from "react-icons/io";
+import CustomInput from "../../Components/CustomInput";
+import DatePicker from "../../Components/DatePicker";
+import CustomSelect from "../../Components/Select";
+import { Spin } from "antd";
+import { RiAlertFill } from "react-icons/ri";
+import { Loading3QuartersOutlined } from "@ant-design/icons";
+import { useFormik } from "formik";
+import { LeaveSchema } from "../../utils/contant";
+import Dummay from "../../assets/Holiday SVG.png";
 
 const titles = [
   "Employee Id",
@@ -22,15 +38,28 @@ const titles = [
   "Status",
   "Action",
 ];
+const leaveOptions = [
+  "Casual Leave",
+  "Sick Leave",
+  "Annual Leave",
+  "Maternity Leave",
+  "Paternity Leave",
+];
 export default function Leaves() {
   useEffect(() => {
     document.title = "HR-Management | Leaves";
   }, []);
+  const [openActionId, setOpenActionId] = useState<string | null>(null);
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const debouncedSearchId = useDebounce(searchId, 500);
   const debouncedSearchName = useDebounce(searchName, 500);
 
+  const [editing, setEditing] = useState<any>(null);
+  const [openModel, setOpenModel] = useState(false);
+  const [isloading, setLoading] = useState(false);
+  const [isloadingDelete, setLoadingDelete] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const searchValue = debouncedSearchId || debouncedSearchName;
 
   const { data, refetch } = useQuery<AxiosResponse<any>>({
@@ -45,6 +74,9 @@ export default function Leaves() {
       v.leaveType,
       v.startDate ? dayjs(v.startDate).format("YYYY-MM-DD") : "--",
       v.endDate ? dayjs(v.endDate).format("YYYY-MM-DD") : "--",
+      v.startDate && v.endDate
+        ? `${dayjs(v.endDate).diff(dayjs(v.startDate), "day") + 1} days`
+        : "--",
       v?.approvedBy || "Not Approved",
       <StatusDropdown
         key={v._id}
@@ -60,26 +92,310 @@ export default function Leaves() {
           }
         }}
       />,
-    ]) || [];
+      <div className="relative">
+        <Icon
+          icon="ph:dots-three-outline-vertical-duotone"
+          className="text-2xl text-[#0755E9] cursor-pointer"
+          onClick={() => setOpenActionId(openActionId === v._id ? null : v._id)}
+        />
 
+        {openActionId === v._id && (
+          <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
+            <div
+              onClick={() => {
+                setEditing(v);
+                setOpenModel(true);
+                setOpenActionId(null);
+              }}
+              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+            >
+              Edit
+            </div>
+
+            <div
+              onClick={() => {
+                setDeleteConfirmation(true);
+                setEditing(v);
+              }}
+              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+            >
+              Delte
+            </div>
+          </div>
+        )}
+      </div>,
+    ]) || [];
+  const antIcon = (
+    <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
+  );
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      employeeId: editing?.employeeId || "",
+      employeeName: editing?.employeeName || "",
+      leaveType: editing?.leaveType || "",
+      startDate: editing?.startDate ? dayjs(editing.startDate) : null,
+      endDate: editing?.endDate ? dayjs(editing.endDate) : null,
+      reason: editing?.reason || "",
+    },
+    validationSchema: LeaveSchema,
+    onSubmit: (values) => {
+      setLoading(true);
+
+      const payload = {
+        ...values,
+        startDate: values.startDate?.toISOString(),
+        endDate: values.endDate?.toISOString(),
+      };
+
+      if (editing) {
+        updateLeave(editing._id, payload)
+          .then(() => {
+            notifySuccess("Leaves updated successfully");
+            setOpenModel(false);
+            setEditing(null);
+            formik.resetForm();
+            refetch();
+          })
+          .catch(() => notifyError("Failed to update Leaves."))
+          .finally(() => setLoading(false));
+      } else {
+        applyLeave(payload)
+          .then(() => {
+            notifySuccess("Leaves added successfully");
+            setOpenModel(false);
+            formik.resetForm();
+            refetch();
+          })
+          .catch(() => notifyError("Failed to add Leaves."))
+          .finally(() => setLoading(false));
+      }
+    },
+  });
+  const handleDelete = () => {
+    if (!editing?._id) return;
+    setLoadingDelete(true);
+    deleteLeave(editing._id)
+      .then(() => {
+        notifySuccess("Leaves deleted successfully");
+        setDeleteConfirmation(false);
+        setEditing(null);
+        refetch();
+      })
+      .catch((error) => {
+        console.error("Failed to delete Leaves:", error);
+        notifyError("Failed to delete Leaves. Please try again.");
+      })
+      .finally(() => setLoadingDelete(false));
+  };
   return (
-    <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-      <div className="flex flex-wrap items-center justify-end w-full gap-3 md:flex-nowrap">
-        <SearchById value={searchId} onChange={setSearchId} />
-        <SearchByName value={searchName} onChange={setSearchName} />
-      </div>
-      <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)] ">
-        <div
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(67vh-0px)]  overflow-y-auto scrollbar-none"
-        >
-          {" "}
-          <CustomTable titles={titles} data={tableData} />
+    <>
+      <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
+        <div className="flex flex-wrap items-center justify-end gap-2 md:gap-4 lg:gap-2">
+          <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
+            <SearchById value={searchId} onChange={setSearchId} />
+            <SearchByName value={searchName} onChange={setSearchName} />
+          </div>
+          <button
+            onClick={() => {
+              setEditing(null);
+              setOpenModel(true);
+            }}
+            className="h-10 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
+          >
+            <Icon
+              icon="mingcute:add-fill"
+              height="20"
+              width="20"
+              color="#fff"
+            />
+            <p className="text-base font-medium text-white">Add Leave</p>
+          </button>
+        </div>
+        <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
+          <div
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"
+          >
+            {" "}
+            <CustomTable titles={titles} data={tableData} />
+          </div>
         </div>
       </div>
-    </div>
+      {openModel && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="relative p-6 bg-white rounded-xl w-250 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between mb-4">
+              <p className="text-xl font-medium">
+                {editing ? "Update Leaves" : "Add Leaves"}
+              </p>
+              <IoMdCloseCircle
+                size={22}
+                onClick={() => setOpenModel(false)}
+                className="cursor-pointer text-[#0755E9]"
+              />
+            </div>
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
+              <div className="flex flex-wrap gap-6">
+                <div className="flex-1 space-y-4 min-w-70">
+                  <div>
+                    <CustomInput
+                      label="Employee Id"
+                      placeholder="Enter Employee Id"
+                      value={formik.values.employeeId}
+                      onChange={formik.handleChange}
+                      name="employeeId"
+                    />{" "}
+                    {formik.touched.employeeId &&
+                      formik.errors.employeeId &&
+                      typeof formik.errors.employeeId === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeId}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Employee Name"
+                      placeholder="Enter name"
+                      value={formik.values.employeeName}
+                      onChange={formik.handleChange}
+                      name="employeeName"
+                    />{" "}
+                    {formik.touched.employeeName &&
+                      formik.errors.employeeName &&
+                      typeof formik.errors.employeeName === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeName}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomSelect
+                      placeholder="Select Leave Type"
+                      value={formik.values.leaveType}
+                      options={leaveOptions}
+                      onChange={(val) => formik.setFieldValue("leaveType", val)}
+                    />{" "}
+                    {formik.touched.leaveType &&
+                      formik.errors.leaveType &&
+                      typeof formik.errors.leaveType === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.leaveType}
+                        </div>
+                      )}
+                  </div>
+                </div>
+                <div className="flex-1 space-y-4 min-w-70">
+                  <div>
+                    {" "}
+                    <DatePicker
+                      label="Start Date"
+                      value={formik.values.startDate}
+                      onChange={(date) =>
+                        formik.setFieldValue("startDate", date)
+                      }
+                    />
+                    {formik.touched.startDate &&
+                      formik.errors.startDate &&
+                      typeof formik.errors.startDate === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.startDate}
+                        </div>
+                      )}
+                  </div>
+
+                  <div>
+                    <DatePicker
+                      label="End Date"
+                      value={formik.values.endDate}
+                      onChange={(date) => formik.setFieldValue("endDate", date)}
+                    />
+                    {formik.touched.endDate &&
+                      formik.errors.endDate &&
+                      typeof formik.errors.endDate === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.endDate}
+                        </div>
+                      )}
+                  </div>
+
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Reason"
+                      placeholder="Enter Reason"
+                      value={formik.values.reason}
+                      onChange={formik.handleChange}
+                      name="reason"
+                    />{" "}
+                    {formik.touched.reason &&
+                      formik.errors.reason &&
+                      typeof formik.errors.reason === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.reason}
+                        </div>
+                      )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end mt-6">
+                <button
+                  type="submit"
+                  className="h-14 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
+                >
+                  {isloading ? (
+                    <Spin indicator={antIcon} />
+                  ) : editing ? (
+                    "Update Leaves"
+                  ) : (
+                    "Add Leaves"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {deleteConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="relative h-auto p-6 overflow-x-auto bg-white shadow-xl rounded-xl w-125">
+            <RiAlertFill className="text-[120px] text-yellow-500 text-center mx-auto mb-2" />
+            <div className="text-center">
+              <h2 className="mt-5 text-xl font-semibold text-primary">
+                Confirm Delete
+              </h2>
+              <p className="mb-6">
+                Are you sure you want to delete this <strong>Leave</strong>?
+              </p>
+            </div>
+            <div className="flex justify-between gap-4 mt-5">
+              <button
+                onClick={() => setDeleteConfirmation(false)}
+                className="py-2 bg-gray-200 rounded cursor-pointer px-7 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-7 py-2 bg-[#E90761] cursor-pointer text-white rounded"
+              >
+                {isloadingDelete ? <Spin indicator={antIcon} /> : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
+
 interface StatusDropdownProps {
   initialValue: "Pending" | "Approved" | "Rejected";
   order: any;
@@ -93,20 +409,28 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<string>(initialValue);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState<
+    "Approved" | "Rejected" | null
+  >(null);
+
   const { user } = useSelector((state: any) => state.user);
 
-  const handleApproveClick = () => {
-    const approvedBy = user?.employeeId;
-    onStatusChange(order._id, "Approved", approvedBy);
-    setStatus("Approved");
+  const openConfirm = (status: "Approved" | "Rejected") => {
+    setPendingStatus(status);
+    setConfirmOpen(true);
     setOpen(false);
   };
 
-  const handleRejectClick = () => {
+  const handleConfirm = () => {
+    if (!pendingStatus) return;
+
     const approvedBy = user?.employeeId;
-    onStatusChange(order._id, "Rejected", approvedBy);
-    setStatus("Rejected");
-    setOpen(false);
+    onStatusChange(order._id, pendingStatus, approvedBy);
+
+    setStatus(pendingStatus);
+    setConfirmOpen(false);
+    setPendingStatus(null);
   };
 
   const statusStyles: { [key: string]: string } = {
@@ -116,31 +440,82 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
   };
 
   return (
-    <div className="relative w-40">
-      <div
-        onClick={() => setOpen(!open)}
-        className={`border p-2 rounded cursor-pointer flex justify-between items-center ${statusStyles[status]}`}
-      >
-        {status}
-        <Icon icon="formkit:down" height={20} width={20} />
+    <>
+      {/* STATUS DROPDOWN */}
+      <div className="relative w-40">
+        <div
+          onClick={() => setOpen(!open)}
+          className={`border p-2 rounded cursor-pointer flex justify-between items-center ${statusStyles[status]}`}
+        >
+          {status}
+          <Icon icon="formkit:down" height={20} width={20} />
+        </div>
+
+        {open && status === "Pending" && (
+          <div className="absolute left-0 z-20 w-full mt-1 bg-white border rounded shadow">
+            <div
+              onClick={() => openConfirm("Approved")}
+              className="p-2 text-green-700 cursor-pointer hover:bg-gray-100"
+            >
+              Approve
+            </div>
+            <div
+              onClick={() => openConfirm("Rejected")}
+              className="p-2 text-red-700 cursor-pointer hover:bg-gray-100"
+            >
+              Reject
+            </div>
+          </div>
+        )}
       </div>
 
-      {open && status === "Pending" && (
-        <div className="absolute left-0 z-20 w-full mt-1 bg-white border rounded shadow">
-          <div
-            onClick={handleApproveClick}
-            className="flex justify-between p-2 cursor-pointer hover:bg-gray-100"
-          >
-            <span className="text-green-800">Approve</span>
-          </div>
-          <div
-            onClick={handleRejectClick}
-            className="flex justify-between p-2 cursor-pointer hover:bg-gray-100"
-          >
-            <span className="text-red-800">Reject</span>
+      {confirmOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-[#E5EBF7] rounded-xl w-120">
+            <div className="flex justify-between p-6">
+              <p className="text-xl font-medium">Confirm {pendingStatus}</p>
+              <IoMdCloseCircle
+                size={22}
+                onClick={() => setConfirmOpen(false)}
+                className="cursor-pointer text-[#0755E9]"
+              />
+            </div>
+            <div className="p-6 bg-white rounded-b-xl">
+              <img src={Dummay} className="h-auto mx-auto mb-5 w-30" />
+
+              <p className="text-[#131313] text-2xl text-center">
+                Are you sure to confirm the leaves?{" "}
+              </p>
+              <p className="text-[#7d7d7d] text-sm text-center">
+                Once you confirm the approval it will not be revert
+              </p>
+
+              <div className="flex justify-end gap-3 mt-5">
+                <button
+                  onClick={() => {
+                    setConfirmOpen(false);
+                    setPendingStatus(null);
+                  }}
+                  className="px-4 py-2 cursor-pointer bg-[#F2FAFD] rounded hover:bg-[#F2FAFD]"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleConfirm}
+                  className={`px-4 py-2 rounded cursor-pointer text-white ${
+                    pendingStatus === "Approved"
+                      ? "bg-[#0755E9] hover:bg-[#0755E9]"
+                      : "bg-red-600 hover:bg-red-700"
+                  }`}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
