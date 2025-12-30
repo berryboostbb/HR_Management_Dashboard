@@ -88,7 +88,7 @@ export default function DashBoard() {
             <div>
               <p className="text-[#131313] mb-1 font-medium text-sm leading-[100%]">
                 Total Employees
-              </p>{" "}
+              </p>
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
                 {summary?.data?.data?.totalNewUsers} new employees added
               </p>

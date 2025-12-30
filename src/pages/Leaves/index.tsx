@@ -281,7 +281,7 @@ export default function Leaves() {
                       value={formik.values.leaveType}
                       options={leaveOptions}
                       onChange={(val) => formik.setFieldValue("leaveType", val)}
-                    />{" "}
+                    />
                     {formik.touched.leaveType &&
                       formik.errors.leaveType &&
                       typeof formik.errors.leaveType === "string" && (
@@ -293,7 +293,6 @@ export default function Leaves() {
                 </div>
                 <div className="flex-1 space-y-4 min-w-70">
                   <div>
-                    {" "}
                     <DatePicker
                       label="Start Date"
                       value={formik.values.startDate}

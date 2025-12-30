@@ -53,6 +53,7 @@ export const LoginSchema = Yup.object({
 });
 export const employeeSchema = Yup.object({
   name: Yup.string().required("Name is required"),
+  gender: Yup.string().required("Gender is Required"),
 
   email: Yup.string().email("Invalid email").required("Email is required"),
   phoneNumber: Yup.string().required("phoneNumber is required"),

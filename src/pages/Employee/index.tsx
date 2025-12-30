@@ -398,7 +398,6 @@ export default function Employee() {
                       )}
                   </div>
                   <div>
-                    {" "}
                     <CustomSelect
                       placeholder="Select Gender"
                       value={formik.values.gender}
@@ -790,7 +789,7 @@ export default function Employee() {
                           multiSelectToObject(val)
                         );
                       }}
-                    />{" "}
+                    />
                     {formik.touched.leaveMultiSelect &&
                       formik.errors.leaveMultiSelect &&
                       typeof formik.errors.leaveMultiSelect === "string" && (
