@@ -209,7 +209,7 @@ export default function Payroll() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="relative p-6 bg-white rounded-xl w-250 max-h-[90vh] overflow-y-auto"
+            className="relative p-6 bg-white mx-3 rounded-xl w-250 max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between mb-4">
               <p className="text-xl font-medium">

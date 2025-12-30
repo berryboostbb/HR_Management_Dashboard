@@ -140,10 +140,10 @@ export default function Events() {
                   className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group h-150 flex flex-col overflow-hidden"
                 >
                   <div className="flex-1 p-4">
-                    <p className="text-[#131313] text-[32px] font-medium border-b-2 w-max border-[#0755E9]">
+                    <p className="text-[#131313] md:text-[32px] text-[18px] font-medium border-b-2 w-max border-[#0755E9]">
                       {e.heading}
                     </p>
-                    <p className="mt-5 text-base text-[#7d7d7d]">
+                    <p className="mt-5 text-sm md:text-base text-[#7d7d7d]">
                       {e.overview}
                     </p>
                   </div>
@@ -199,7 +199,7 @@ export default function Events() {
               scrollbarWidth: "none",
               msOverflowStyle: "none",
             }}
-            className="relative p-6 bg-white rounded-xl w-250 max-h-[90vh] overflow-y-auto"
+            className="relative p-6 bg-white mx-3 rounded-xl w-250 max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between mb-4">
               <p className="text-xl font-medium">
