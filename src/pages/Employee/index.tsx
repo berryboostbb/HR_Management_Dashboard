@@ -313,7 +313,7 @@ export default function Employee() {
               <div
                 key={role}
                 onClick={() => setActiveTab(role as any)}
-                className={`cursor-pointer rounded-t-2xl h-14 flex justify-center items-center sm:w-30 w-full ${
+                className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30 w-full ${
                   activeTab === role
                     ? "bg-[#E5EBF7] text-black"
                     : "bg-white text-[#7d7d7d]"
