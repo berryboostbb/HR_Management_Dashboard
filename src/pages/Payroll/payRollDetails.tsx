@@ -10,7 +10,6 @@ export default function PayrollDetails() {
   const [isloading, setLoading] = useState(false);
   const location = useLocation();
   const payroll = location.state?.payroll;
-  console.log("🚀 ~ PayrollDetails ~ payroll:", payroll);
   const navigate = useNavigate();
   const handleGOBack = () => {
     navigate("/payroll");

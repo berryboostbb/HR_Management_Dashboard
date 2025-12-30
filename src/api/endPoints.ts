@@ -1,4 +1,5 @@
-export const BASE_URL = "https://hr-management-backend-beta.vercel.app/";
+// export const BASE_URL = "http://localhost:5001";
+export const BASE_URL = "https://hr-management-backend-beta.vercel.app";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------
@@ -19,6 +20,9 @@ export const ENDPOINTS = {
   UPLOAD_FILE: "/upload/uploadFile",
 
   //   -----------Leaves-------------
+  LEAVES_UPDATE: "/leave/updateLeave",
+  LEAVES_DELETE: "/leave/deleteLeave",
+  LEAVES_APPLY: "/leave/apply",
   LEAVES_GET_ALL: "/leave/getAllLeaves",
   LEAVES_APPROVE: "/leave/updateLeaveStatus",
 

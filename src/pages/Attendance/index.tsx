@@ -131,7 +131,7 @@ export default function Attendance() {
 
   return (
     <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-      <div className="flex gap-4 justify-between flex-wrap-reverse">
+      <div className="flex flex-wrap-reverse justify-between gap-4">
         <div className="flex gap-2">
           {["Field Staff", "Office Staff"].map((role) => (
             <div
@@ -148,13 +148,13 @@ export default function Attendance() {
           ))}
         </div>
 
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
           <SearchById value={searchId} onChange={setSearchId} />
           <SearchByName value={searchName} onChange={setSearchName} />
         </div>
       </div>
       <div
-        className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79vh-0px)] xl:h-[calc(56vh-0px)]  ${
+        className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.5vh-0px)] xl:h-[calc(69.4vh-0px)]  ${
           activeTab === "Field Staff" ? "rounded-tl-none" : ""
         }`}
       >
@@ -165,7 +165,7 @@ export default function Attendance() {
             scrollbarWidth: "none",
             msOverflowStyle: "none",
           }}
-          className="bg-white mt-2 rounded-xl overflow-y-auto"
+          className="mt-2 overflow-y-auto bg-white rounded-xl 2xl:h-[calc(73.2vh-0px)] xl:h-[calc(60vh-0px)]"
         >
           <CustomTable titles={titles} data={tableData} />
         </div>

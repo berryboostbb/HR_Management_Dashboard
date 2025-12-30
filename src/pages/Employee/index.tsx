@@ -16,7 +16,6 @@ import { notifyError, notifySuccess } from "../../Components/Toast";
 import { useFormik } from "formik";
 import { RiAlertFill } from "react-icons/ri";
 import CustomTable from "../../Components/CustomTable";
-import { AdminSchema } from "../../utils/contant";
 import CustomInput from "../../Components/CustomInput";
 import CustomSelect from "../../Components/Select";
 import DatePicker from "../../Components/DatePicker";
@@ -28,6 +27,7 @@ import SearchById from "../../Components/SearchBar/searchById";
 import SearchByName from "../../Components/SearchBar/searchByName";
 import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
+import { employeeSchema } from "../../utils/contant";
 
 export interface SelectedOption {
   label: string;
@@ -41,6 +41,7 @@ const leaveOptions = [
   "Maternity Leave",
   "Paternity Leave",
 ];
+
 const titles = [
   "Employees Id",
   "Employees Name",
@@ -55,6 +56,7 @@ export default function Employee() {
   useEffect(() => {
     document.title = "HR-Management | Employees";
   }, []);
+  const [openActionId, setOpenActionId] = useState<string | null>(null);
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const [editing, setEditing] = useState<any>(null);
@@ -81,7 +83,6 @@ export default function Employee() {
     queryFn: () => getRole(),
     staleTime: 5 * 60 * 1000,
   });
-  console.log("🚀 ~ Employee ~ Role:", Role);
   const filteredData = data?.data?.filter((v: any) => {
     if (activeTab === "Office Staff") return v.employeeType === "Office Staff";
     if (activeTab === "Field Staff") return v.employeeType === "Field Staff";
@@ -133,27 +134,50 @@ export default function Employee() {
         >
           {v?.employeeStatus}
         </div>,
+        <div className="relative">
+          <Icon
+            icon="ph:dots-three-outline-vertical-duotone"
+            className="text-2xl text-[#0755E9] cursor-pointer"
+            onClick={() =>
+              setOpenActionId(openActionId === v._id ? null : v._id)
+            }
+          />
 
-        // <div className="flex items-center gap-2" key={v._id}>
-        //   <TbEdit
-        //     onClick={() => {
-        //       setOpenModel(true);
-        //       setEditing(v);
-        //     }}
-        //     size={18}
-        //     className="cursor-pointer text-[#0755E9]"
-        //   />
-        //   <Icon
-        //     color="#E90761"
-        //     height="18"
-        //     width="20"
-        //     icon="mingcute:delete-fill"
-        //     onClick={() => {
-        //       setDeleteConfirmation(true);
-        //       setEditing(v);
-        //     }}
-        //   />
-        // </div>,
+          {openActionId === v._id && (
+            <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
+              {/* Edit */}
+              <div
+                onClick={() => {
+                  setEditing(v);
+                  setOpenModel(true);
+                  setOpenActionId(null);
+                }}
+                className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              >
+                <TbEdit size={16} />
+                Edit
+              </div>
+
+              {/* Activate / Inactivate */}
+              <div
+                onClick={() => handleToggleStatus(v)}
+                className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              >
+                {v.employeeStatus === "Active" ? (
+                  <>
+                    <Icon icon="mdi:account-cancel-outline" />
+                    Inactivate
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="mdi:account-check-outline" />
+                    Activate
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>,
       ];
     }) || [];
 
@@ -204,7 +228,7 @@ export default function Employee() {
         paternityLeave: 0,
       },
     },
-    validationSchema: AdminSchema,
+    validationSchema: employeeSchema,
     onSubmit: (values) => {
       setLoading(true);
       const payload = {
@@ -249,8 +273,6 @@ export default function Employee() {
         .finally(() => setLoading(false));
     },
   });
-  console.log("🚀 ~ Employee ~ formik:", formik.errors);
-  console.log("🚀 ~ Employee ~ formik values:", formik.values);
   const handleDelete = () => {
     if (!editing?._id) return;
     setLoadingDelete(true);
@@ -271,6 +293,18 @@ export default function Employee() {
   const roleData = Role?.data || [];
 
   const roleOptions = roleData.map((r: any) => r.title);
+  const handleToggleStatus = (employee: any) => {
+    const newStatus =
+      employee.employeeStatus === "Active" ? "Inactive" : "Active";
+
+    updateAccount(employee._id, { employeeStatus: newStatus })
+      .then(() => {
+        notifySuccess(`Employee ${newStatus} successfully`);
+        refetch();
+        setOpenActionId(null);
+      })
+      .catch(() => notifyError("Failed to update status"));
+  };
 
   return (
     <>
@@ -291,7 +325,7 @@ export default function Employee() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 lg:gap-2">
+          <div className="flex flex-wrap items-center gap-5 md:gap-4">
             <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
               <SearchById value={searchId} onChange={setSearchId} />
               <SearchByName value={searchName} onChange={setSearchName} />
@@ -314,14 +348,14 @@ export default function Employee() {
           </div>
         </div>
         <div
-          className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(56vh-0px)] ${
+          className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.5vh-0px)] ${
             activeTab === "Field Staff" ? "rounded-tl-none" : "rounded-tl-xl"
           }`}
         >
           <p className="text-[#7D7D7D] font-medium text-sm">Employees List</p>
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="scroll-smooth bg-white rounded-xl mt-2 2xl:h-[calc(73vh-0px)] xl:h-[calc(54vh-0px)]  overflow-y-auto scrollbar-none"
+            className="scroll-smooth bg-white rounded-xl mt-2 2xl:h-[calc(73vh-0px)] xl:h-[calc(60vh-0px)]  overflow-y-auto scrollbar-none"
           >
             <CustomTable data={tableData} titles={titles} />
           </div>
@@ -429,7 +463,6 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-
                   <div>
                     <CustomSelect
                       placeholder="Select Employee Role"
@@ -445,7 +478,7 @@ export default function Employee() {
                         );
                         formik.setFieldValue("role", selectedRole?.value || "");
                       }}
-                    />
+                    />{" "}
                     {formik.touched.role &&
                       formik.errors.role &&
                       typeof formik.errors.role === "string" && (
@@ -453,7 +486,8 @@ export default function Employee() {
                           * {formik.errors.role}
                         </div>
                       )}
-                    <div></div>
+                  </div>
+                  <div>
                     <CustomSelect
                       placeholder="Select Employee Type"
                       value={formik.values.employeeType}
@@ -461,7 +495,7 @@ export default function Employee() {
                       onChange={(val) =>
                         formik.setFieldValue("employeeType", val)
                       }
-                    />
+                    />{" "}
                     {formik.touched.employeeType &&
                       formik.errors.employeeType &&
                       typeof formik.errors.employeeType === "string" && (
@@ -524,7 +558,7 @@ export default function Employee() {
                       onChange={(val) =>
                         formik.setFieldValue("employeeStatus", val)
                       }
-                    />
+                    />{" "}
                     {formik.touched.employeeStatus &&
                       formik.errors.employeeStatus &&
                       typeof formik.errors.employeeStatus === "string" && (
@@ -533,7 +567,6 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-
                   <div>
                     <CustomInput
                       label="Phone No"
@@ -572,26 +605,29 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-                  <div>
-                    <CustomInput
-                      label="Incentive - Flue"
-                      type="number"
-                      value={formik.values.salaryStructure.incentive.flue}
-                      onChange={(e) =>
-                        formik.setFieldValue(
-                          "salaryStructure.incentive.flue",
-                          Number(e.target.value)
-                        )
-                      }
-                    />
-                    {formik.touched.salaryStructure &&
-                      formik.errors.salaryStructure &&
-                      typeof formik.errors.salaryStructure === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.salaryStructure}
-                        </div>
-                      )}
-                  </div>
+                  <CustomInput
+                    label="Flue"
+                    type="number"
+                    value={formik.values.salaryStructure.incentive.flue}
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "salaryStructure.incentive.flue",
+                        Number(e.target.value)
+                      )
+                    }
+                    onBlur={() =>
+                      formik.setFieldTouched(
+                        "salaryStructure.incentive.flue",
+                        true
+                      )
+                    }
+                  />
+                  {formik.errors.salaryStructure?.incentive?.flue && (
+                    <div className="text-xs text-red-500">
+                      * {String(formik.errors.salaryStructure.incentive.flue)}
+                    </div>
+                  )}
+
                   <div>
                     <CustomInput
                       label="Incentive - Medical"
@@ -705,26 +741,6 @@ export default function Employee() {
                   </div>
                   <div>
                     <CustomInput
-                      label="Loan"
-                      type="number"
-                      value={formik.values.loanPF.loan}
-                      onChange={(e) =>
-                        formik.setFieldValue(
-                          "loanPF.loan",
-                          Number(e.target.value)
-                        )
-                      }
-                    />
-                    {formik.touched.loanPF &&
-                      formik.errors.loanPF &&
-                      typeof formik.errors.loanPF === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.loanPF}
-                        </div>
-                      )}
-                  </div>
-                  <div>
-                    <CustomInput
                       label="PF"
                       type="number"
                       value={formik.values.loanPF.pf}
@@ -754,15 +770,15 @@ export default function Employee() {
                         formik.setFieldValue("image", val)
                       }
                     />
-                    <div>
-                      {formik.touched.image &&
-                        formik.errors.image &&
-                        typeof formik.errors.image === "string" && (
-                          <div className="text-xs text-red-500">
-                            * {formik.errors.image}
-                          </div>
-                        )}
-                    </div>
+                    {formik.touched.image &&
+                      formik.errors.image &&
+                      typeof formik.errors.image === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.image}
+                        </div>
+                      )}
+                  </div>
+                  <div>
                     <MultiSelect
                       placeholder="Select leave"
                       options={leaveOptions}
@@ -774,7 +790,7 @@ export default function Employee() {
                           multiSelectToObject(val)
                         );
                       }}
-                    />
+                    />{" "}
                     {formik.touched.leaveMultiSelect &&
                       formik.errors.leaveMultiSelect &&
                       typeof formik.errors.leaveMultiSelect === "string" && (

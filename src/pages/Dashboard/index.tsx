@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import birthday from "../../assets/Birthday Banner.png";
+import birthday2 from "../../assets/Birthday Banner2.png";
 import { useQuery } from "@tanstack/react-query";
 import { getBirthday } from "../../api/adminServices";
 import { getAttendanceSummary } from "../../api/attendanceServices";
@@ -26,9 +27,13 @@ export default function DashBoard() {
     <>
       {birthdayData && birthdayData.length > 0 && (
         <div className="relative">
-          <img src={birthday} className="w-full xl:h-70 2xl:h-60" />
+          <img
+            src={birthday}
+            className="hidden w-full lg:block lg:h-70 2xl:h-60"
+          />
+          <img src={birthday2} className="block w-full lg:hidden" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
-            <div className="w-full text-3xl text-white">
+            <div className="w-full text-base text-white lg:text-3xl">
               It’s{" "}
               <strong>
                 {birthdayData.map((v: any, index: number) => (
@@ -41,7 +46,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="w-full text-lg text-white lg:w-200">
+            <p className="w-full text-xs text-white lg:text-lg lg:w-200">
               You have 1 birthday today, post on the social handle and also
               celebrate in the office.
             </p>
@@ -85,7 +90,7 @@ export default function DashBoard() {
                 Total Employees
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                6 new employees added
+                {summary?.data?.data?.totalNewUsers} new employees added
               </p>
             </div>
           </div>
@@ -117,7 +122,17 @@ export default function DashBoard() {
                 Today’s Present
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                2% decrees than today
+                {summary?.data?.data?.presentChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.presentChange)}%{" "}
+                    {summary.data.data.presentChange > 0
+                      ? "increase"
+                      : summary.data.data.presentChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -149,7 +164,17 @@ export default function DashBoard() {
                 Today’s Absent
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                5% increase than yesterday
+                {summary?.data?.data?.absentChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.absentChange)}%{" "}
+                    {summary.data.data.absentChange > 0
+                      ? "increase"
+                      : summary.data.data.absentChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -190,7 +215,17 @@ export default function DashBoard() {
                 Today’s Leaves
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                2% increase than yesterday
+                {summary?.data?.data?.leaveChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.leaveChange)}%{" "}
+                    {summary.data.data.leaveChange > 0
+                      ? "increase"
+                      : summary.data.data.leaveChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -231,7 +266,17 @@ export default function DashBoard() {
                 Today’s Late Arrival
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                8% increase than yesterday
+                {summary?.data?.data?.lateChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.lateChange)}%{" "}
+                    {summary.data.data.lateChange > 0
+                      ? "increase"
+                      : summary.data.data.lateChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}

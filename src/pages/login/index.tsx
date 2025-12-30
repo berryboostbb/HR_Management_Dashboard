@@ -33,11 +33,9 @@ const Login = () => {
     try {
       const response = await adminLogin(values);
       const data = response.data;
-      console.log("🚀 ~ handleLogin ~ response.data:", response.data);
 
-      const position = data.admin?.position;
-
-      if (position === "MedicalRep(MR)" || position === "MR") {
+      const Role = data?.user?.role;
+      if (Role !== "Admin") {
         notifyError("You are not allowed to login.");
         setLoading(false);
         return;
@@ -70,7 +68,7 @@ const Login = () => {
         </div>
         <div className="bg-[#F7F7F7] xl:px-11.5 px-6 py-8 text-center mt-5 rounded-[1px]">
           <p className="text-heading text-[24px] font-medium">Sign In</p>
-          <p className="text-[#7D7D7D] text-[18px] font-medium mt-5">
+          <p className="text-[#7D7D7D] md:text-[18px] text-sm font-medium mt-5">
             Welcome Back! Please enter your details
           </p>
           <form
@@ -142,7 +140,7 @@ const Login = () => {
                   className="[&_.ant-checkbox-inner]:border-[#0755E9] 
                   [&_.ant-checkbox-checked_.ant-checkbox-inner]:bg-[#0755E9]"
                 />
-                <p className="text-heading text-[14px] font-medium">
+                <p className="text-heading sm:text-[14px] text-xs font-medium">
                   Remember for 30 Days
                 </p>
               </div>
