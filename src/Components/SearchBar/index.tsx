@@ -7,7 +7,6 @@ export default function SearchBar() {
   const { user } = useSelector((state: any) => {
     return state.user;
   });
-  console.log("🚀 ~ SearchBar ~ user:", user);
 
   const location = useLocation();
   const pathname = location.pathname;

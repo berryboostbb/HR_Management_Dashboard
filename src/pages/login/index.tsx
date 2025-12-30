@@ -33,11 +33,9 @@ const Login = () => {
     try {
       const response = await adminLogin(values);
       const data = response.data;
-      console.log("🚀 ~ handleLogin ~ response.data:", response.data);
 
-      const position = data.admin?.position;
-
-      if (position === "MedicalRep(MR)" || position === "MR") {
+      const Role = data?.user?.role;
+      if (Role !== "Admin") {
         notifyError("You are not allowed to login.");
         setLoading(false);
         return;

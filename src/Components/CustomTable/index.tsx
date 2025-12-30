@@ -25,7 +25,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
 }) => {
   return (
     <div style={{ height: height ? height : "auto" }} className="flex-1 w-full">
-      <table className="w-full border-collapse min-w-200">
+      <table className="w-full border-collapse min-w-200 ">
         <thead className="sticky top-0 bg-white z-1 h-14">
           <tr>
             {titles?.map((title, index) => (
@@ -60,7 +60,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                   cell !== null ? (
                     <td
                       key={colIndex}
-                      className="px-5 py-2  border-b-[0.5px] border-[#0755E9] text-[13px] font-normal text-[#131313] break-words"
+                      className="px-5 py-2  border-b-[0.5px] border-[#0755E9] text-[13px] font-normal text-[#131313]"
                     >
                       {cell}
                     </td>

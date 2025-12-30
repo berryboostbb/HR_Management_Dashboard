@@ -16,7 +16,6 @@ import { notifyError, notifySuccess } from "../../Components/Toast";
 import { useFormik } from "formik";
 import { RiAlertFill } from "react-icons/ri";
 import CustomTable from "../../Components/CustomTable";
-import { AdminSchema } from "../../utils/contant";
 import CustomInput from "../../Components/CustomInput";
 import CustomSelect from "../../Components/Select";
 import DatePicker from "../../Components/DatePicker";
@@ -28,6 +27,7 @@ import SearchById from "../../Components/SearchBar/searchById";
 import SearchByName from "../../Components/SearchBar/searchByName";
 import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
+import { employeeSchema } from "../../utils/contant";
 
 export interface SelectedOption {
   label: string;
@@ -41,6 +41,7 @@ const leaveOptions = [
   "Maternity Leave",
   "Paternity Leave",
 ];
+
 const titles = [
   "Employees Id",
   "Employees Name",
@@ -82,7 +83,6 @@ export default function Employee() {
     queryFn: () => getRole(),
     staleTime: 5 * 60 * 1000,
   });
-  console.log("🚀 ~ Employee ~ Role:", Role);
   const filteredData = data?.data?.filter((v: any) => {
     if (activeTab === "Office Staff") return v.employeeType === "Office Staff";
     if (activeTab === "Field Staff") return v.employeeType === "Field Staff";
@@ -228,7 +228,7 @@ export default function Employee() {
         paternityLeave: 0,
       },
     },
-    validationSchema: AdminSchema,
+    validationSchema: employeeSchema,
     onSubmit: (values) => {
       setLoading(true);
       const payload = {
@@ -304,6 +304,10 @@ export default function Employee() {
         setOpenActionId(null);
       })
       .catch(() => notifyError("Failed to update status"));
+  };
+  const getError = (path: any) => {
+    const error = path;
+    return typeof error === "string" ? error : String(error);
   };
 
   return (
@@ -381,122 +385,232 @@ export default function Employee() {
             <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div className="flex flex-wrap gap-6">
                 <div className="flex-1 space-y-4 min-w-70">
-                  <CustomInput
-                    label="Name"
-                    placeholder="Enter name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    name="name"
-                  />
-                  <CustomSelect
-                    placeholder="Select Gender"
-                    value={formik.values.gender}
-                    options={["Male", "Female"]}
-                    onChange={(val) => formik.setFieldValue("gender", val)}
-                  />
-                  <CustomInput
-                    label="Email"
-                    placeholder="Enter email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    name="email"
-                  />
-                  <div className="relative w-full">
-                    <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
-                      Password
-                    </label>
-                    <input
-                      id="password"
-                      name="password"
-                      type={passwordVisible ? "text" : "password"}
-                      placeholder="Password"
+                  <div>
+                    <CustomInput
+                      label="Name"
+                      placeholder="Enter name"
+                      value={formik.values.name}
                       onChange={formik.handleChange}
-                      value={formik.values.password}
-                      className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
+                      name="name"
                     />
-                    <span
-                      className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
-                      onClick={() => setPasswordVisible(!passwordVisible)}
-                    >
-                      {passwordVisible ? (
-                        <FiEye style={{ fontSize: "20px" }} />
-                      ) : (
-                        <FiEyeOff style={{ fontSize: "20px" }} />
+                    {formik.touched.name &&
+                      formik.errors.name &&
+                      typeof formik.errors.name === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.name}
+                        </div>
                       )}
-                    </span>
                   </div>
-
-                  <CustomSelect
-                    placeholder="Select Employee Role"
-                    options={roleOptions} // display titles
-                    value={
-                      roleData.find((r: any) => r.value === formik.values.role)
-                        ?.title || null
-                    }
-                    onChange={(selectedTitle) => {
-                      const selectedRole = roleData.find(
-                        (r: any) => r.title === selectedTitle
-                      );
-                      formik.setFieldValue("role", selectedRole?.value || "");
-                    }}
-                  />
-                  <CustomSelect
-                    placeholder="Select Employee Type"
-                    value={formik.values.employeeType}
-                    options={["Office Staff", "Field Staff"]}
-                    onChange={(val) =>
-                      formik.setFieldValue("employeeType", val)
-                    }
-                  />
-                  <CustomInput
-                    label="Department"
-                    placeholder="Enter department"
-                    value={formik.values.department}
-                    onChange={formik.handleChange}
-                    name="department"
-                  />
-                  <DatePicker
-                    label="Joining Date"
-                    value={formik.values.joiningDate}
-                    onChange={(date) =>
-                      formik.setFieldValue("joiningDate", date)
-                    }
-                  />
-                  <DatePicker
-                    label="DOB"
-                    value={formik.values.DOB}
-                    onChange={(date) => formik.setFieldValue("DOB", date)}
-                  />
-                  <CustomSelect
-                    placeholder="Select status"
-                    value={formik.values.employeeStatus}
-                    options={["Active", "Inactive"]}
-                    onChange={(val) =>
-                      formik.setFieldValue("employeeStatus", val)
-                    }
-                  />
-                  <CustomInput
-                    label="Phone No"
-                    placeholder="Enter Phone No"
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                    name="phoneNumber"
-                  />
+                  <div>
+                    {" "}
+                    <CustomSelect
+                      placeholder="Select Gender"
+                      value={formik.values.gender}
+                      options={["Male", "Female"]}
+                      onChange={(val) => formik.setFieldValue("gender", val)}
+                    />
+                    {formik.touched.gender &&
+                      formik.errors.gender &&
+                      typeof formik.errors.gender === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.gender}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Email"
+                      placeholder="Enter email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      name="email"
+                    />
+                    {formik.touched.email &&
+                      formik.errors.email &&
+                      typeof formik.errors.email === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.email}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <div className="relative w-full">
+                      <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
+                        Password
+                      </label>
+                      <input
+                        id="password"
+                        name="password"
+                        type={passwordVisible ? "text" : "password"}
+                        placeholder="Password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
+                      />
+                      <span
+                        className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        {passwordVisible ? (
+                          <FiEye style={{ fontSize: "20px" }} />
+                        ) : (
+                          <FiEyeOff style={{ fontSize: "20px" }} />
+                        )}
+                      </span>
+                    </div>
+                    {formik.touched.password &&
+                      formik.errors.password &&
+                      typeof formik.errors.password === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.password}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomSelect
+                      placeholder="Select Employee Role"
+                      options={roleOptions} // display titles
+                      value={
+                        roleData.find(
+                          (r: any) => r.value === formik.values.role
+                        )?.title || null
+                      }
+                      onChange={(selectedTitle) => {
+                        const selectedRole = roleData.find(
+                          (r: any) => r.title === selectedTitle
+                        );
+                        formik.setFieldValue("role", selectedRole?.value || "");
+                      }}
+                    />{" "}
+                    {formik.touched.role &&
+                      formik.errors.role &&
+                      typeof formik.errors.role === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.role}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomSelect
+                      placeholder="Select Employee Type"
+                      value={formik.values.employeeType}
+                      options={["Office Staff", "Field Staff"]}
+                      onChange={(val) =>
+                        formik.setFieldValue("employeeType", val)
+                      }
+                    />{" "}
+                    {formik.touched.employeeType &&
+                      formik.errors.employeeType &&
+                      typeof formik.errors.employeeType === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeType}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Department"
+                      placeholder="Enter department"
+                      value={formik.values.department}
+                      onChange={formik.handleChange}
+                      name="department"
+                    />
+                    {formik.touched.department &&
+                      formik.errors.department &&
+                      typeof formik.errors.department === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.department}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <DatePicker
+                      label="Joining Date"
+                      value={formik.values.joiningDate}
+                      onChange={(date) =>
+                        formik.setFieldValue("joiningDate", date)
+                      }
+                    />
+                    {formik.touched.joiningDate &&
+                      formik.errors.joiningDate &&
+                      typeof formik.errors.joiningDate === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.joiningDate}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <DatePicker
+                      label="DOB"
+                      value={formik.values.DOB}
+                      onChange={(date) => formik.setFieldValue("DOB", date)}
+                    />
+                    {formik.touched.DOB &&
+                      formik.errors.DOB &&
+                      typeof formik.errors.DOB === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.DOB}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomSelect
+                      placeholder="Select status"
+                      value={formik.values.employeeStatus}
+                      options={["Active", "Inactive"]}
+                      onChange={(val) =>
+                        formik.setFieldValue("employeeStatus", val)
+                      }
+                    />{" "}
+                    {formik.touched.employeeStatus &&
+                      formik.errors.employeeStatus &&
+                      typeof formik.errors.employeeStatus === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeStatus}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Phone No"
+                      placeholder="Enter Phone No"
+                      value={formik.values.phoneNumber}
+                      onChange={formik.handleChange}
+                      name="phoneNumber"
+                    />
+                    {formik.touched.phoneNumber &&
+                      formik.errors.phoneNumber &&
+                      typeof formik.errors.phoneNumber === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.phoneNumber}
+                        </div>
+                      )}
+                  </div>
                 </div>
                 <div className="flex-1 space-y-4 min-w-70">
+                  <div>
+                    <CustomInput
+                      label="Basic Salary"
+                      type="number"
+                      value={formik.values.salaryStructure.basic}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.basic",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
                   <CustomInput
-                    label="Basic Salary"
-                    type="number"
-                    value={formik.values.salaryStructure.basic}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "salaryStructure.basic",
-                        Number(e.target.value)
-                      )
-                    }
-                  />
-                  <CustomInput
-                    label="Incentive - Flue"
+                    label="Flue"
                     type="number"
                     value={formik.values.salaryStructure.incentive.flue}
                     onChange={(e) =>
@@ -505,90 +619,179 @@ export default function Employee() {
                         Number(e.target.value)
                       )
                     }
-                  />
-                  <CustomInput
-                    label="Incentive - Medical"
-                    type="number"
-                    value={formik.values.salaryStructure.incentive.medical}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "salaryStructure.incentive.medical",
-                        Number(e.target.value)
+                    onBlur={() =>
+                      formik.setFieldTouched(
+                        "salaryStructure.incentive.flue",
+                        true
                       )
                     }
                   />
-                  <CustomInput
-                    label="Incentive - Others"
-                    type="number"
-                    value={formik.values.salaryStructure.incentive.others}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "salaryStructure.incentive.others",
-                        Number(e.target.value)
-                      )
-                    }
-                  />
-                  <CustomInput
-                    label="Deductions"
-                    type="number"
-                    value={formik.values.salaryStructure.incentive.deductions}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "salaryStructure.incentive.deductions",
-                        Number(e.target.value)
-                      )
-                    }
-                  />
-                  <CustomInput
-                    label="Tax"
-                    type="number"
-                    value={formik.values.salaryStructure.tax}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "salaryStructure.tax",
-                        Number(e.target.value)
-                      )
-                    }
-                  />
-                  <CustomInput
-                    label="Loan"
-                    type="number"
-                    value={formik.values.loanPF.loan}
-                    onChange={(e) =>
-                      formik.setFieldValue(
-                        "loanPF.loan",
-                        Number(e.target.value)
-                      )
-                    }
-                  />
-                  <CustomInput
-                    label="PF"
-                    type="number"
-                    value={formik.values.loanPF.pf}
-                    onChange={(e) =>
-                      formik.setFieldValue("loanPF.pf", Number(e.target.value))
-                    }
-                  />
-                  <ImagePicker
-                    label="Upload Image"
-                    placeholder="Upload Image Here..."
-                    fileType="Manage MR"
-                    type="image"
-                    value={formik.values.image}
-                    onChange={(val: any) => formik.setFieldValue("image", val)}
-                  />
-                  <MultiSelect
-                    placeholder="Select leave"
-                    options={leaveOptions}
-                    value={formik.values.leaveMultiSelect}
-                    onChange={(val) => {
-                      formik.setFieldValue("leaveMultiSelect", val);
-                      formik.setFieldValue(
-                        "leaveEntitlements",
-                        multiSelectToObject(val)
-                      );
-                    }}
-                  />
+                  {formik.errors.salaryStructure?.incentive?.flue && (
+                    <div className="text-xs text-red-500">
+                      * {String(formik.errors.salaryStructure.incentive.flue)}
+                    </div>
+                  )}
+
+                  <div>
+                    <CustomInput
+                      label="Incentive - Medical"
+                      type="number"
+                      value={formik.values.salaryStructure.incentive.medical}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.incentive.medical",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Incentive - Others"
+                      type="number"
+                      value={formik.values.salaryStructure.incentive.others}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.incentive.others",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Incentive - Others"
+                      type="number"
+                      value={formik.values.salaryStructure.incentive.others}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.incentive.others",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Deductions"
+                      type="number"
+                      value={formik.values.salaryStructure.incentive.deductions}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.incentive.deductions",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Tax"
+                      type="number"
+                      value={formik.values.salaryStructure.tax}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "salaryStructure.tax",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.salaryStructure &&
+                      formik.errors.salaryStructure &&
+                      typeof formik.errors.salaryStructure === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.salaryStructure}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="PF"
+                      type="number"
+                      value={formik.values.loanPF.pf}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          "loanPF.pf",
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                    {formik.touched.loanPF &&
+                      formik.errors.loanPF &&
+                      typeof formik.errors.loanPF === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.loanPF}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <ImagePicker
+                      label="Upload Image"
+                      placeholder="Upload Image Here..."
+                      fileType="Manage MR"
+                      type="image"
+                      value={formik.values.image}
+                      onChange={(val: any) =>
+                        formik.setFieldValue("image", val)
+                      }
+                    />
+                    {formik.touched.image &&
+                      formik.errors.image &&
+                      typeof formik.errors.image === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.image}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <MultiSelect
+                      placeholder="Select leave"
+                      options={leaveOptions}
+                      value={formik.values.leaveMultiSelect}
+                      onChange={(val) => {
+                        formik.setFieldValue("leaveMultiSelect", val);
+                        formik.setFieldValue(
+                          "leaveEntitlements",
+                          multiSelectToObject(val)
+                        );
+                      }}
+                    />{" "}
+                    {formik.touched.leaveMultiSelect &&
+                      formik.errors.leaveMultiSelect &&
+                      typeof formik.errors.leaveMultiSelect === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.leaveMultiSelect}
+                        </div>
+                      )}
+                  </div>
                 </div>
               </div>
               <div className="flex justify-end mt-6">

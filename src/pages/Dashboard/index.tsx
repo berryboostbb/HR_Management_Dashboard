@@ -85,7 +85,7 @@ export default function DashBoard() {
                 Total Employees
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                6 new employees added
+                {summary?.data?.data?.totalNewUsers} new employees added
               </p>
             </div>
           </div>
@@ -117,7 +117,17 @@ export default function DashBoard() {
                 Today’s Present
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                2% decrees than today
+                {summary?.data?.data?.presentChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.presentChange)}%{" "}
+                    {summary.data.data.presentChange > 0
+                      ? "increase"
+                      : summary.data.data.presentChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -149,7 +159,17 @@ export default function DashBoard() {
                 Today’s Absent
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                5% increase than yesterday
+                {summary?.data?.data?.absentChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.absentChange)}%{" "}
+                    {summary.data.data.absentChange > 0
+                      ? "increase"
+                      : summary.data.data.absentChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -190,7 +210,17 @@ export default function DashBoard() {
                 Today’s Leaves
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                2% increase than yesterday
+                {summary?.data?.data?.leaveChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.leaveChange)}%{" "}
+                    {summary.data.data.leaveChange > 0
+                      ? "increase"
+                      : summary.data.data.leaveChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
@@ -231,7 +261,17 @@ export default function DashBoard() {
                 Today’s Late Arrival
               </p>{" "}
               <p className="text-[#7D7D7D] text-xs leading-[100%]">
-                8% increase than yesterday
+                {summary?.data?.data?.lateChange !== undefined && (
+                  <span>
+                    {Math.abs(summary.data.data.lateChange)}%{" "}
+                    {summary.data.data.lateChange > 0
+                      ? "increase"
+                      : summary.data.data.lateChange < 0
+                      ? "decrease"
+                      : "no change"}{" "}
+                    than yesterday
+                  </span>
+                )}
               </p>
             </div>
           </div>{" "}
