@@ -86,6 +86,7 @@ export default function Employee() {
   const filteredData = data?.data?.filter((v: any) => {
     if (activeTab === "Office Staff") return v.employeeType === "Office Staff";
     if (activeTab === "Field Staff") return v.employeeType === "Field Staff";
+    if (activeTab === "Admin") return v.employeeType === "Admin";
     return true;
   });
 
@@ -124,7 +125,7 @@ export default function Employee() {
         v?.name,
         v?.phoneNumber,
         v?.joiningDate ? dayjs(v.joiningDate).format("YYYY-MM-DD") : "-",
-        roleObj?.title || "-",
+        <p className="capitalize">{roleObj?.title || v?.role}</p>,
         <div
           className={`px-2 py-0.5 w-max rounded-sm text-sm font-medium border ${
             v?.employeeStatus === "Active"
@@ -145,7 +146,6 @@ export default function Employee() {
 
           {openActionId === v._id && (
             <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
-              {/* Edit */}
               <div
                 onClick={() => {
                   setEditing(v);
@@ -157,8 +157,6 @@ export default function Employee() {
                 <TbEdit size={16} />
                 Edit
               </div>
-
-              {/* Activate / Inactivate */}
               <div
                 onClick={() => handleToggleStatus(v)}
                 className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
@@ -309,26 +307,30 @@ export default function Employee() {
   return (
     <>
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-        <div className="flex flex-wrap-reverse items-center justify-between w-full gap-4 md:w-auto">
-          <div className="flex gap-4">
-            {["Field Staff", "Office Staff"].map((role) => (
+        <div className="flex flex-wrap-reverse items-center justify-between w-full gap-4 xl:flex-nowrap md:w-auto">
+          <div className="flex flex-wrap w-full gap-4 mb-4 xl:w-auto md:mb-0 ">
+            {["Field Staff", "Office Staff", "Admin"].map((role) => (
               <div
                 key={role}
                 onClick={() => setActiveTab(role as any)}
-                className={`cursor-pointer rounded-t-2xl h-14 flex justify-center items-center w-30 ${
+                className={`cursor-pointer rounded-t-2xl h-14 flex justify-center items-center sm:w-30 w-full ${
                   activeTab === role
                     ? "bg-[#E5EBF7] text-black"
                     : "bg-white text-[#7d7d7d]"
                 }`}
               >
-                <p className="text-sm font-medium">{role}</p>
+                <p className="text-xs font-medium lg:text-sm">{role}</p>
               </div>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-5 md:gap-4">
             <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-              <SearchById value={searchId} onChange={setSearchId} />
-              <SearchByName value={searchName} onChange={setSearchName} />
+              <div className="w-50 md:w-60 lg:w-80 xl:w-50">
+                <SearchById value={searchId} onChange={setSearchId} />
+              </div>
+              <div className="w-50 md:w-60 lg:w-80 xl:w-50">
+                <SearchByName value={searchName} onChange={setSearchName} />
+              </div>
             </div>
             <button
               onClick={() => {

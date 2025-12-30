@@ -7,19 +7,21 @@ interface Props {
 
 export default function SearchByName({ value, onChange }: Props) {
   return (
-    <div className="flex items-center gap-2 w-full">
-      <p className="text-[#131313] text-sm font-medium w-20">Emp Name:</p>
+    <div className="flex items-center w-full gap-2">
+      <p className="text-[#131313] text-sm font-medium w-[calc(30%-6px)]">
+        Emp Name:
+      </p>
 
-      <div className="relative">
+      <div className="relative w-[calc(70%-6px)]">
         <input
           placeholder="Search"
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="border pl-9 w-40 lg:w-45 border-[#0755E9] h-10 pr-4 rounded-lg focus:outline-none"
+          className="border pl-9 w-full border-[#0755E9] h-10 pr-4 rounded-lg focus:outline-none"
         />
 
-        <div className="absolute inset-y-0 left-0 flex gap-3 items-center pl-3 pointer-events-none">
+        <div className="absolute inset-y-0 left-0 flex items-center gap-3 pl-3 pointer-events-none">
           <Icon icon="circum:search" color="#7d7d7d" />
         </div>
       </div>
