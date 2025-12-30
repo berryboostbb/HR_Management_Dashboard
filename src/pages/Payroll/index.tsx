@@ -161,7 +161,7 @@ export default function Payroll() {
   return (
     <>
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-        <div className="flex flex-wrap items-center justify-end w-full gap-4 md:w-auto">
+        <div className="flex flex-wrap items-center justify-end w-full gap-5 md:gap-4 md:w-auto">
           <div className="flex flex-wrap items-center gap-2 md:flex-nowrap">
             <SearchById value={searchId} onChange={setSearchId} />
             <SearchByName value={searchName} onChange={setSearchName} />

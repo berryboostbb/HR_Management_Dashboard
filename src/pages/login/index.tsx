@@ -140,7 +140,7 @@ const Login = () => {
                   className="[&_.ant-checkbox-inner]:border-[#0755E9] 
                   [&_.ant-checkbox-checked_.ant-checkbox-inner]:bg-[#0755E9]"
                 />
-                <p className="text-heading text-[14px] font-medium">
+                <p className="text-heading sm:text-[14px] text-xs font-medium">
                   Remember for 30 Days
                 </p>
               </div>

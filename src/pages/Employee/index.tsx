@@ -325,7 +325,7 @@ export default function Employee() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-2 md:gap-4 lg:gap-2">
+          <div className="flex flex-wrap items-center gap-5 md:gap-4">
             <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
               <SearchById value={searchId} onChange={setSearchId} />
               <SearchByName value={searchName} onChange={setSearchName} />
