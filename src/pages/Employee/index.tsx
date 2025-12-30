@@ -323,8 +323,8 @@ export default function Employee() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-5 md:gap-4">
-            <div className="flex flex-wrap items-center w-full gap-3 md:flex-nowrap">
+          <div className="flex flex-wrap items-center w-auto gap-5 xl:flex-nowrap md:gap-4">
+            <div className="flex flex-wrap items-center w-full gap-3 lg:w-auto md:flex-nowrap">
               <div className="w-full md:w-60 lg:w-80 xl:w-50">
                 <SearchById value={searchId} onChange={setSearchId} />
               </div>
