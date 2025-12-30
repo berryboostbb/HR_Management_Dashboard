@@ -351,7 +351,9 @@ export default function Employee() {
         </div>
         <div
           className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.5vh-0px)] ${
-            activeTab === "Field Staff" ? "rounded-tl-none" : "rounded-tl-xl"
+            activeTab === "Field Staff"
+              ? "md:rounded-tl-none :rounded-tl-2xl "
+              : "rounded-tl-xl"
           }`}
         >
           <p className="text-[#7D7D7D] font-medium text-sm">Employees List</p>
