@@ -35,7 +35,7 @@ const Login = () => {
       const data = response.data;
 
       const Role = data?.user?.role;
-      if (Role !== "Admin") {
+      if (Role !== "admin") {
         notifyError("You are not allowed to login.");
         setLoading(false);
         return;
