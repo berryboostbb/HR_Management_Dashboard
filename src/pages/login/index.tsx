@@ -68,7 +68,7 @@ const Login = () => {
         </div>
         <div className="bg-[#F7F7F7] xl:px-11.5 px-6 py-8 text-center mt-5 rounded-[1px]">
           <p className="text-heading text-[24px] font-medium">Sign In</p>
-          <p className="text-[#7D7D7D] text-[18px] font-medium mt-5">
+          <p className="text-[#7D7D7D] md:text-[18px] text-sm font-medium mt-5">
             Welcome Back! Please enter your details
           </p>
           <form
