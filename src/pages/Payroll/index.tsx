@@ -154,9 +154,9 @@ export default function Payroll() {
     document.title = "HR-Management | Payroll";
   }, []);
 
-  const antIcon = (
-    <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
-  );
+  // const antIcon = (
+  //   <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
+  // );
 
   return (
     <>

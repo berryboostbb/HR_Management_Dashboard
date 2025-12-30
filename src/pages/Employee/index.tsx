@@ -305,10 +305,6 @@ export default function Employee() {
       })
       .catch(() => notifyError("Failed to update status"));
   };
-  const getError = (path: any) => {
-    const error = path;
-    return typeof error === "string" ? error : String(error);
-  };
 
   return (
     <>
