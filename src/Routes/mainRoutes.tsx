@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import Events from "../pages/Events";
 import Employee from "../pages/Employee";
+import PayrollDetails from "../pages/Payroll/payRollDetails";
 const DashBoard = lazy(() => import("../pages/Dashboard"));
 const Leaves = lazy(() => import("../pages/Leaves"));
 const Payroll = lazy(() => import("../pages/Payroll"));
@@ -25,6 +26,7 @@ export default function MainRoutes() {
         <Route path="/leaves" element={<Leaves />} />
         <Route path="/events" element={<Events />} />
         <Route path="/payroll" element={<Payroll />} />
+        <Route path="/payroll/payrollDetails" element={<PayrollDetails />} />
         <Route path="/salary" element={<Salary />} />
       </Routes>
     </Suspense>

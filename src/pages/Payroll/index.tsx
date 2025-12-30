@@ -19,6 +19,7 @@ import SearchById from "../../Components/SearchBar/searchById";
 import SearchByName from "../../Components/SearchBar/searchByName";
 import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 const tableHeaders = [
   "Employee ID",
@@ -41,9 +42,11 @@ const tableHeaders = [
   "Net Pay",
   "Payroll Status",
   "Action",
+  "View",
 ];
 
 export default function Payroll() {
+  const navigate = useNavigate();
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
@@ -58,7 +61,9 @@ export default function Payroll() {
     queryFn: () => getAllPayrolls(debouncedSearchId, debouncedSearchName),
     placeholderData: (previousData) => previousData,
   });
-
+  const handleGoToDetails = (v: any) => {
+    navigate("/payroll/payrollDetails", { state: { data: v } });
+  };
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
@@ -90,6 +95,13 @@ export default function Payroll() {
           className="cursor-pointer text-[#0755E9]"
         />
       </div>,
+      <p
+        onClick={() => {
+          handleGoToDetails(v);
+        }}
+      >
+        Details
+      </p>,
     ]) || [];
 
   const formik = useFormik({
@@ -186,7 +198,7 @@ export default function Payroll() {
         <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="scroll-smooth w-full overflow-x-auto bg-white rounded-xl 2xl:h-[calc(75.8vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
+            className="scroll-smooth w-full overflow-x-auto bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
           >
             <CustomTable titles={tableHeaders} data={tableData} />
           </div>
@@ -197,7 +209,7 @@ export default function Payroll() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="relative p-6 bg-white rounded-xl w-250 max-h-[90vh] overflow-y-auto"
+            className="relative p-6 bg-white mx-3 rounded-xl w-250 max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between mb-4">
               <p className="text-xl font-medium">

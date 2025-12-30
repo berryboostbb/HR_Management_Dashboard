@@ -227,7 +227,7 @@ export default function Leaves() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="relative p-6 bg-white rounded-xl w-250 max-h-[90vh] overflow-y-auto"
+            className="relative p-6 bg-white rounded-xl mx-3 w-250 max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between mb-4">
               <p className="text-xl font-medium">
@@ -364,7 +364,7 @@ export default function Leaves() {
 
       {deleteConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="relative h-auto p-6 overflow-x-auto bg-white shadow-xl rounded-xl w-125">
+          <div className="relative h-auto p-6 mx-3 overflow-x-auto bg-white shadow-xl rounded-xl w-125">
             <RiAlertFill className="text-[120px] text-yellow-500 text-center mx-auto mb-2" />
             <div className="text-center">
               <h2 className="mt-5 text-xl font-semibold text-primary">
@@ -470,7 +470,7 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
 
       {confirmOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="bg-[#E5EBF7] rounded-xl w-120">
+          <div className="bg-[#E5EBF7] mx-3 rounded-xl w-120">
             <div className="flex justify-between p-6">
               <p className="text-xl font-medium">Confirm {pendingStatus}</p>
               <IoMdCloseCircle
