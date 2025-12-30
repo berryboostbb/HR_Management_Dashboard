@@ -324,11 +324,11 @@ export default function Employee() {
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-5 md:gap-4">
-            <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-              <div className="w-50 md:w-60 lg:w-80 xl:w-50">
+            <div className="flex flex-wrap items-center w-full gap-3 md:flex-nowrap">
+              <div className="w-full md:w-60 lg:w-80 xl:w-50">
                 <SearchById value={searchId} onChange={setSearchId} />
               </div>
-              <div className="w-50 md:w-60 lg:w-80 xl:w-50">
+              <div className="w-full md:w-60 lg:w-80 xl:w-50">
                 <SearchByName value={searchName} onChange={setSearchName} />
               </div>
             </div>
