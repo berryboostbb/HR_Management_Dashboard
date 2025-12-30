@@ -39,7 +39,7 @@ export default function SearchBar() {
             <Avatar src={user?.image} size={40} />
             <div>
               <p className="text-[#0755E9] text-sm leading-3.5 w-37.5 truncate">
-                {user?.employeeRole}
+                {user?.role}
               </p>
               <p className="text-heading text-sm leading-3.5">{user?.name}</p>
               <p className="text-[12px] text-[#979797] leading-3">

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import birthday from "../../assets/Birthday Banner.png";
+import birthday2 from "../../assets/Birthday Banner2.png";
 import { useQuery } from "@tanstack/react-query";
 import { getBirthday } from "../../api/adminServices";
 import { getAttendanceSummary } from "../../api/attendanceServices";
@@ -26,9 +27,13 @@ export default function DashBoard() {
     <>
       {birthdayData && birthdayData.length > 0 && (
         <div className="relative">
-          <img src={birthday} className="w-full xl:h-70 2xl:h-60" />
+          <img
+            src={birthday}
+            className="hidden w-full lg:block lg:h-70 2xl:h-60"
+          />
+          <img src={birthday2} className="block w-full lg:hidden" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
-            <div className="w-full text-3xl text-white">
+            <div className="w-full text-base text-white lg:text-3xl">
               It’s{" "}
               <strong>
                 {birthdayData.map((v: any, index: number) => (
@@ -41,7 +46,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="w-full text-lg text-white lg:w-200">
+            <p className="w-full text-xs text-white lg:text-lg lg:w-200">
               You have 1 birthday today, post on the social handle and also
               celebrate in the office.
             </p>
