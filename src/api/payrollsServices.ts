@@ -5,17 +5,22 @@ export const generatePayroll = (values: any) => {
   return HTTP_CLIENT.post(ENDPOINTS.GENERATE_PAYROLL, values);
 };
 
-export const approvePayroll = (id: string, values: { approvedBy: string }) => {
-  return HTTP_CLIENT.put(
-    `${ENDPOINTS.APPROVE_PAYROLL.replace(":id", id)}`,
-    values
-  );
+// Frontend API call
+export const approvePayroll = (id: string) => {
+  return HTTP_CLIENT.put(`${ENDPOINTS.APPROVE_PAYROLL.replace(":id", id)}`);
 };
 
-export const getAllPayrolls = (employeeId?: string, employeeName?: string) => {
+export const getAllPayrolls = (
+  employeeId?: string,
+  employeeName?: string,
+  month?: string,
+  year?: number
+) => {
   const params: any = {};
   if (employeeId) params.employeeId = employeeId;
   if (employeeName) params.employeeName = employeeName;
+  if (month) params.month = month;
+  if (year) params.year = year;
 
   return HTTP_CLIENT.get(ENDPOINTS.GET_ALL_PAYROLLS, { params });
 };

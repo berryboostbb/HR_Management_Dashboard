@@ -73,11 +73,12 @@ export default function Employee() {
   const debouncedSearchName = useDebounce(searchName, 500);
   const searchValue = debouncedSearchId || debouncedSearchName;
 
-  const { data, refetch } = useQuery<AxiosResponse<any>>({
+  const { data, refetch, isFetching } = useQuery<AxiosResponse<any>>({
     queryKey: ["Accounts", searchValue],
     queryFn: () => getAllAccounts(searchValue),
     placeholderData: (prev) => prev,
   });
+
   const { data: Role } = useQuery({
     queryKey: ["Role"],
     queryFn: () => getRole(),
@@ -325,10 +326,10 @@ export default function Employee() {
           </div>
           <div className="flex flex-wrap items-center w-auto gap-5 xl:flex-nowrap md:gap-4">
             <div className="flex flex-wrap items-center w-full gap-3 lg:w-auto md:flex-nowrap">
-              <div className="w-full md:w-60 lg:w-80 xl:w-50">
+              <div className="w-full md:w-60 lg:w-80 xl:w-50 2xl:w-80">
                 <SearchById value={searchId} onChange={setSearchId} />
               </div>
-              <div className="w-full md:w-60 lg:w-80 xl:w-50">
+              <div className="w-full md:w-60 lg:w-80 xl:w-50 2xl:w-80">
                 <SearchByName value={searchName} onChange={setSearchName} />
               </div>
             </div>
@@ -361,7 +362,11 @@ export default function Employee() {
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             className="scroll-smooth bg-white rounded-xl mt-2 2xl:h-[calc(73vh-0px)] xl:h-[calc(60vh-0px)]  overflow-y-auto scrollbar-none"
           >
-            <CustomTable data={tableData} titles={titles} />
+            <CustomTable
+              data={tableData}
+              titles={titles}
+              isFetching={isFetching}
+            />
           </div>
         </div>
       </div>

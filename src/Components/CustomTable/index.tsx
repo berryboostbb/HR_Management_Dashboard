@@ -54,7 +54,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
                 key={rowIndex}
                 className="hover:bg-[#E5EBF7] h-14 hover:text-black cursor-pointer"
                 style={{ cursor: show ? show : "pointer" }}
-                onClick={() => handleGoToDetail?.(rowIndex)}
+                onClick={() => handleGoToDetail?.(row)}
               >
                 {row.map((cell: any, colIndex: number) =>
                   cell !== null ? (

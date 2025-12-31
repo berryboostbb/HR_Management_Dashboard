@@ -1,5 +1,5 @@
-export const BASE_URL = "http://localhost:5001";
-// export const BASE_URL = "https://hr-management-backend-beta.vercel.app";
+// export const BASE_URL = "http://localhost:5001";
+export const BASE_URL = "https://hr-management-backend-beta.vercel.app";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------
@@ -29,7 +29,7 @@ export const ENDPOINTS = {
   //   -----------GENERATE_PAYROLL-------------
 
   GENERATE_PAYROLL: "/payroll/generatePayroll",
-  APPROVE_PAYROLL: "/payroll/approve",
+  APPROVE_PAYROLL: "/payroll/approve/:id",
   UPDATE_PAYROLL: "/payroll/updatePayroll",
   GET_ALL_PAYROLLS: "/payroll/getAllPayrolls",
   GET_EMPLOYEE_PAYROLLS: "/payroll/employee",

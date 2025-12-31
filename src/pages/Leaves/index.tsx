@@ -62,8 +62,8 @@ export default function Leaves() {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const searchValue = debouncedSearchId || debouncedSearchName;
 
-  const { data, refetch } = useQuery<AxiosResponse<any>>({
-    queryKey: ["Attendance", searchValue],
+  const { data, refetch, isFetching } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Leaves", searchValue],
     queryFn: () => getAllLeaves(searchValue),
     placeholderData: (previousData) => previousData,
   });
@@ -219,7 +219,11 @@ export default function Leaves() {
             className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"
           >
             {" "}
-            <CustomTable titles={titles} data={tableData} />
+            <CustomTable
+              titles={titles}
+              data={tableData}
+              isFetching={isFetching}
+            />
           </div>
         </div>
       </div>
