@@ -105,8 +105,8 @@ export default function PayrollDetails() {
             </p>
           </div>
 
-          <div className="w-full md:w-1/3 bg-[#FFDDE5] p-4 md:p-9 text-center font-medium">
-            <p className="text-[20px] mt-2">Confidential</p>
+          <div className="w-full md:w-1/3 bg-[#FFDDE5] p-4 md:p-9 text-center">
+            <p className="text-[20px] mt-3 md:mt-10">Confidential</p>
           </div>
         </div>
 
