@@ -109,6 +109,7 @@ export const payrollSchema = Yup.object({
   month: Yup.string().required("Month is required"),
   year: Yup.number().required("Year is required"),
   basicSalary: Yup.number().required("Basic Salary is required"),
+  totalWorkingDays: Yup.number().required("Total Working Days is required"),
   allowances: Yup.object({
     medical: Yup.number().required("Medical Allowance is required"),
     transport: Yup.number().required("Transport Allowance is required"),
@@ -119,7 +120,7 @@ export const payrollSchema = Yup.object({
     loan: Yup.number().required("Loan is required"),
     advanceSalary: Yup.number().required("Advance Salary is required"),
     tax: Yup.number().required("Tax is required"),
-    custom: Yup.number().required("Custom deduction is required"),
+    others: Yup.number().required("others deduction is required"),
   }),
 });
 

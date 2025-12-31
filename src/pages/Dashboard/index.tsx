@@ -33,7 +33,7 @@ export default function DashBoard() {
           />
           <img src={birthday2} className="block w-full lg:hidden" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
-            <div className="w-full text-base text-white lg:text-3xl">
+            <div className="w-full text-base text-white lg:text-3xl md:text-xl">
               It’s{" "}
               <strong>
                 {birthdayData.map((v: any, index: number) => (
@@ -47,8 +47,8 @@ export default function DashBoard() {
               Today{" "}
             </div>{" "}
             <p className="w-full text-xs text-white lg:text-lg lg:w-200">
-              You have 1 birthday today, post on the social handle and also
-              celebrate in the office.
+              You have {birthdayData.length} birthday today, post on the social
+              handle and also celebrate in the office.
             </p>
           </div>
         </div>

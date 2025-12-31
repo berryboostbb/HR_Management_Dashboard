@@ -245,7 +245,7 @@ export default function Employee() {
         salaryStructure: values.salaryStructure,
         loanPF: values.loanPF,
         image: values.image,
-        leaveEntitlements: multiSelectToObject(values.leaveMultiSelect), // convert array to object
+        leaveEntitlements: multiSelectToObject(values.leaveMultiSelect),
       };
 
       const action = editing
@@ -474,7 +474,7 @@ export default function Employee() {
                   <div>
                     <CustomSelect
                       placeholder="Select Employee Role"
-                      options={roleOptions} // display titles
+                      options={roleOptions}
                       value={
                         roleData.find(
                           (r: any) => r.value === formik.values.role
@@ -499,7 +499,7 @@ export default function Employee() {
                     <CustomSelect
                       placeholder="Select Employee Type"
                       value={formik.values.employeeType}
-                      options={["Office Staff", "Field Staff"]}
+                      options={["Office Staff", "Field Staff", "admin"]}
                       onChange={(val) =>
                         formik.setFieldValue("employeeType", val)
                       }

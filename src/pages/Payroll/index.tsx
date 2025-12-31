@@ -191,6 +191,7 @@ export default function Payroll() {
       position: editing?.position || "",
       month: editing?.month || "",
       year: editing?.year || "",
+      totalWorkingDays: editing?.totalWorkingDays || "",
       presentDays: editing?.presentDays || 0,
       approvedLeaves: editing?.approvedLeaves || 0,
       basicSalary: editing?.basicSalary || 0,
@@ -240,7 +241,7 @@ export default function Payroll() {
       }
     },
   });
-
+  console.log("🚀 ~ Payroll ~ formik:", formik.errors);
   useEffect(() => {
     document.title = "HR-Management | Payroll";
   }, []);
@@ -349,6 +350,13 @@ export default function Payroll() {
                     placeholder="Enter Present Days"
                     name="presentDays"
                     value={formik.values.presentDays}
+                    onChange={formik.handleChange}
+                  />
+                  <CustomInput
+                    label="Working Days"
+                    placeholder="Enter Working Days"
+                    name="totalWorkingDays"
+                    value={formik.values.totalWorkingDays}
                     onChange={formik.handleChange}
                   />
                   <CustomInput
