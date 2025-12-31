@@ -20,6 +20,7 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 
 import type { AxiosResponse } from "axios";
 import { useDebounce } from "../../Components/Debounce";
+import { Icon } from "@iconify/react";
 // import { Icon } from "@iconify/react";
 
 const titles = [
@@ -32,6 +33,20 @@ const titles = [
   "Checkout Location",
   "Status",
   "Action",
+];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const optionStatus = ["Present", "Late", "Absent", "Half-day", "On Leave"];
@@ -47,19 +62,37 @@ export default function Attendance() {
 
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
-
+  const [rotated, setRotated] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
 
   const debouncedSearchId = useDebounce(searchId, 500);
   const debouncedSearchName = useDebounce(searchName, 500);
+  const handleClickRefech = () => {
+    setRotated(true);
+    refetch();
+    setTimeout(() => setRotated(false), 500);
+  };
 
   const searchValue = debouncedSearchId || debouncedSearchName;
 
+  const [selectedMonthYear, setSelectedMonthYear] = useState<{
+    month: number;
+    year: number;
+  }>({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+  });
+
   const { data, refetch, isFetching } = useQuery<AxiosResponse<any>>({
-    queryKey: ["Attendance", searchValue],
-    queryFn: () => getAllAttendance(searchValue),
+    queryKey: ["Attendance", searchValue, selectedMonthYear],
+    queryFn: () =>
+      getAllAttendance({
+        search: searchValue,
+        month: selectedMonthYear.month,
+        year: selectedMonthYear.year,
+      }),
     placeholderData: (previousData) => previousData,
   });
 
@@ -165,28 +198,31 @@ export default function Attendance() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center justify-end gap-5 md:gap-4">
-          <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-            <SearchById value={searchId} onChange={setSearchId} />
-            <SearchByName value={searchName} onChange={setSearchName} />
-          </div>
-          {/* <button
-            onClick={() => {
-              setEditing(null);
-              setOpenModel(true);
-            }}
-            className="h-10 w-full md:w-50 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
+        <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
+          <div
+            onClick={handleClickRefech}
+            className="flex items-center justify-center h-10 bg-[#E5EBF7] rounded-md cursor-pointer min-w-10"
           >
             <Icon
-              icon="mingcute:add-fill"
-              height="20"
-              width="20"
-              color="#fff"
+              icon="ion:reload-outline"
+              className={`text-xl ${
+                rotated ? "animate-spin" : ""
+              } transition-transform duration-200`}
             />
-            <p className="text-base font-medium text-white">
-              Create Attendance
-            </p>
-          </button> */}
+          </div>
+          <div className="w-[calc(100%-60px)] md:w-50">
+            <MonthYearPickerNumber
+              value={selectedMonthYear}
+              onChange={setSelectedMonthYear}
+            />{" "}
+          </div>
+          <div className="md:w-50 lg:w-auto">
+            {" "}
+            <SearchById value={searchId} onChange={setSearchId} />
+          </div>
+          <div className="md:w-50 lg:w-auto">
+            <SearchByName value={searchName} onChange={setSearchName} />
+          </div>
         </div>
       </div>
       <div
@@ -274,3 +310,72 @@ export default function Attendance() {
     </div>
   );
 }
+
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 20 }, (_, i) => currentYear - 10 + i);
+interface MonthYearPickerProps {
+  value: { month: number; year: number }; // month is number now
+  onChange: (val: { month: number; year: number }) => void;
+}
+
+const MonthYearPickerNumber: React.FC<MonthYearPickerProps> = ({
+  value,
+  onChange,
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const handleMonthChange = (month: number) => {
+    onChange({ ...value, month });
+  };
+
+  const handleYearChange = (year: number) => {
+    onChange({ ...value, year });
+  };
+
+  return (
+    <div className="relative inline-block w-full h-10 lg:w-45">
+      <div
+        className="flex items-center justify-between px-3 py-2 text-sm text-[#131313] border border-[#0755E9] rounded-lg cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <div className="flex items-center gap-2">
+          <Icon icon="mdi:calendar" width={20} height={20} color="#0755E9" />
+          <span>{`${value.month}-${value.year}`}</span>
+        </div>
+        <Icon
+          icon={open ? "mdi:chevron-up" : "mdi:chevron-down"}
+          width={20}
+          height={20}
+        />
+      </div>
+
+      {open && (
+        <div className="absolute z-50 flex w-full gap-2 p-3 mt-1 text-xs bg-[#E5EBF7] rounded shadow-lg">
+          <select
+            className="flex-1 p-1 border border-[#0755E9] rounded"
+            value={value.month}
+            onChange={(e) => handleMonthChange(Number(e.target.value))}
+          >
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="flex-1 p-1 border-[#0755E9] border rounded"
+            value={value.year}
+            onChange={(e) => handleYearChange(Number(e.target.value))}
+          >
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+    </div>
+  );
+};
