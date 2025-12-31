@@ -139,19 +139,22 @@ export default function Events() {
                   key={e._id || index}
                   className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group flex flex-col overflow-hidden"
                 >
-                  <div className="flex-1 p-4">
+                  <div className="flex-1 p-4 ">
                     <p className="text-[#131313] md:text-[32px] text-[18px] font-medium lg:w-max w-auto border-b-2 border-[#0755E9]">
                       {e.heading}
                     </p>
-                    <p className="mt-5 text-sm md:text-base text-[#7d7d7d]">
-                      {e.overview}
-                    </p>
+                    <div className="h-auto lg:h-30">
+                      {" "}
+                      <p className="mt-5 text-sm md:text-base text-[#7d7d7d]">
+                        {e.overview}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="relative overflow-hidden ">
                     <img
                       src={e.coverImage}
-                      className="object-cover w-full h-auto rounded-b-lg"
+                      className="object-cover w-full h-auto rounded-b-lg lg:h-100"
                       alt={e.heading}
                     />
                     <div className="absolute inset-0 flex items-center justify-center gap-4 transition-opacity duration-300 opacity-50 md:opacity-0 bg-black/70 group-hover:opacity-100">
@@ -162,7 +165,10 @@ export default function Events() {
                             setOpenModel(true);
                           }}
                         >
-                          <TbEdit className="text-blue-500" size={22} />
+                          <TbEdit
+                            className="text-blue-500 cursor-pointer"
+                            size={22}
+                          />
                         </button>
                       </div>
                       <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full cursor-pointer">
@@ -173,6 +179,7 @@ export default function Events() {
                           }}
                         >
                           <Icon
+                            className="cursor-pointer "
                             color="#E90761"
                             height="18"
                             width="24"
