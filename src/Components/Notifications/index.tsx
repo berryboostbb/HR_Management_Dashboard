@@ -8,20 +8,20 @@ export default function Notification() {
 
   const notifications = [
     {
-      title: "Requisition Approved",
-      message: "Dr. Umair Requisition Approved",
+      title: "Attendance Approved",
+      message: "Attendance for Mr. Umair has been approved",
     },
     {
-      title: "New Doctor Added",
-      message: "Dr. Sarah Khan was successfully added to the list",
+      title: "Check-In Recorded",
+      message: "Mr. Sarah Khan checked in successfully",
     },
     {
-      title: "Strategy Updated",
-      message: "North Punjab strategy updated successfully",
+      title: "Check-Out Recorded",
+      message: "Mr. Sarah Khan checked out successfully",
     },
     {
-      title: "Target Achieved",
-      message: "Monthly sales target achieved by MR Bilal Hassan",
+      title: "Attendance Updated",
+      message: "Attendance record updated for Mr. Bilal Hassan",
     },
   ];
 

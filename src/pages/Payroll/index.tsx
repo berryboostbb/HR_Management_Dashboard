@@ -95,7 +95,6 @@ export default function Payroll() {
       });
     }
   };
-  console.log("🚀 ~ Payroll ~  data?.data:", data?.data);
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,

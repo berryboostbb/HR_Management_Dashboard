@@ -128,7 +128,7 @@ export default function Events() {
           className="bg-[#E5EBF7] overflow-y-auto mt-4 p-4 rounded-lg 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]"
         >
           <p className="text-sm text-[#7d7d7d] leading-[100%]">Events List</p>
-          <div className="flex flex-wrap items-center gap-5 my-4">
+          <div className="flex flex-wrap items-center gap-5 mt-4">
             {isLoading || isFetching ? (
               <div className="flex items-center justify-center w-full py-10">
                 <Spin indicator={antIcon22} />
@@ -137,10 +137,10 @@ export default function Events() {
               AllEvents.map((e: any, index: number) => (
                 <div
                   key={e._id || index}
-                  className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group h-150 flex flex-col overflow-hidden"
+                  className="bg-white rounded-2xl lg:w-[calc(50%-10px)] w-full group flex flex-col overflow-hidden"
                 >
                   <div className="flex-1 p-4">
-                    <p className="text-[#131313] md:text-[32px] text-[18px] font-medium border-b-2 w-max border-[#0755E9]">
+                    <p className="text-[#131313] md:text-[32px] text-[18px] font-medium lg:w-max w-auto border-b-2 border-[#0755E9]">
                       {e.heading}
                     </p>
                     <p className="mt-5 text-sm md:text-base text-[#7d7d7d]">
@@ -148,13 +148,13 @@ export default function Events() {
                     </p>
                   </div>
 
-                  <div className="relative overflow-hidden h-100">
+                  <div className="relative overflow-hidden ">
                     <img
                       src={e.coverImage}
-                      className="object-cover w-full h-full rounded-b-lg"
+                      className="object-cover w-full h-auto rounded-b-lg"
                       alt={e.heading}
                     />
-                    <div className="absolute inset-0 flex items-center justify-center gap-4 transition-opacity duration-300 opacity-0 bg-black/70 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex items-center justify-center gap-4 transition-opacity duration-300 opacity-50 md:opacity-0 bg-black/70 group-hover:opacity-100">
                       <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full cursor-pointer">
                         <button
                           onClick={() => {
@@ -301,7 +301,7 @@ export default function Events() {
       )}
       {deleteConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="relative h-auto p-6 overflow-x-auto bg-white shadow-xl rounded-xl w-125">
+          <div className="relative h-auto p-6 mx-3 overflow-x-auto bg-white shadow-xl rounded-xl w-125">
             <RiAlertFill className="text-[120px] text-yellow-500 text-center mx-auto mb-2" />
             <div className="text-center">
               <h2 className="mt-5 text-xl font-semibold text-primary">

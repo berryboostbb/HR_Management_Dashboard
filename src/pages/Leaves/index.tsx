@@ -487,10 +487,10 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
             <div className="p-6 bg-white rounded-b-xl">
               <img src={Dummay} className="h-auto mx-auto mb-5 w-30" />
 
-              <p className="text-[#131313] text-2xl text-center">
+              <p className="text-[#131313] md:text-2xl text-base text-center">
                 Are you sure to confirm the leaves?{" "}
               </p>
-              <p className="text-[#7d7d7d] text-sm text-center">
+              <p className="text-[#7d7d7d] md:text-sm text-xs text-center">
                 Once you confirm the approval it will not be revert
               </p>
 
