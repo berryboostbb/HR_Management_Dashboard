@@ -1,9 +1,7 @@
 import { FaShareSquare, FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { downloadSalarySlip } from "../../api/payrollsServices";
 import { useState } from "react";
 import Calender from "../../assets/calender.svg";
-import { notifyError, notifySuccess } from "../../Components/Toast";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import Logo from "../../assets/logo.svg";
@@ -14,6 +12,7 @@ export default function PayrollDetails() {
   console.log("🚀 ~ PayrollDetails ~ rowData:", rowData);
   const navigate = useNavigate();
   const [isloading, setLoading] = useState(false);
+  console.log("🚀 ~ PayrollDetails ~ setLoading:", setLoading);
   const handleGOBack = () => navigate("/payroll");
 
   const antIcon = (
