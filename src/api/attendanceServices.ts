@@ -1,9 +1,13 @@
 import { HTTP_CLIENT } from "../utils/httpClient";
 import { ENDPOINTS } from "./endPoints";
 
-export const getAllAttendance = (search?: string) => {
+export const getAllAttendance = (params?: {
+  search?: string;
+  month?: number;
+  year?: number;
+}) => {
   return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_GETALL, {
-    params: search ? { search } : {},
+    params,
   });
 };
 

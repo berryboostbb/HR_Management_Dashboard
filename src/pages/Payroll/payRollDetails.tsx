@@ -9,11 +9,10 @@ import { Spin } from "antd";
 import Logo from "../../assets/logo.svg";
 
 export default function PayrollDetails() {
-  const [isloading, setLoading] = useState(false);
   const location = useLocation();
   const payroll = location.state?.data;
   const navigate = useNavigate();
-
+  const [isloading, setLoading] = useState(false);
   const handleGOBack = () => navigate("/payroll");
 
   const handleDownloadSalarySlip = async () => {
@@ -71,7 +70,7 @@ export default function PayrollDetails() {
           </p> */}
         </div>
 
-        <div className="flex flex-wrap gap-2 w-full md:w-auto">
+        <div className="flex flex-wrap w-full gap-2 md:w-auto">
           <div className="h-12 w-12 md:w-12.5 bg-[#0755E9] rounded-md flex items-center justify-center">
             <FaShareSquare className="w-5 h-5 text-white" />
           </div>

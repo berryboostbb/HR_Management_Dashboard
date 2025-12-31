@@ -29,7 +29,7 @@ export const ENDPOINTS = {
   //   -----------GENERATE_PAYROLL-------------
 
   GENERATE_PAYROLL: "/payroll/generatePayroll",
-  APPROVE_PAYROLL: "/payroll/approve",
+  APPROVE_PAYROLL: "/payroll/approve/:id",
   UPDATE_PAYROLL: "/payroll/updatePayroll",
   GET_ALL_PAYROLLS: "/payroll/getAllPayrolls",
   GET_EMPLOYEE_PAYROLLS: "/payroll/employee",

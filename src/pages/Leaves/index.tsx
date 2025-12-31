@@ -62,8 +62,8 @@ export default function Leaves() {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const searchValue = debouncedSearchId || debouncedSearchName;
 
-  const { data, refetch } = useQuery<AxiosResponse<any>>({
-    queryKey: ["Attendance", searchValue],
+  const { data, refetch, isFetching } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Leaves", searchValue],
     queryFn: () => getAllLeaves(searchValue),
     placeholderData: (previousData) => previousData,
   });
@@ -219,7 +219,11 @@ export default function Leaves() {
             className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"
           >
             {" "}
-            <CustomTable titles={titles} data={tableData} />
+            <CustomTable
+              titles={titles}
+              data={tableData}
+              isFetching={isFetching}
+            />
           </div>
         </div>
       </div>
@@ -482,10 +486,10 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
             <div className="p-6 bg-white rounded-b-xl">
               <img src={Dummay} className="h-auto mx-auto mb-5 w-30" />
 
-              <p className="text-[#131313] text-2xl text-center">
+              <p className="text-[#131313] md:text-2xl text-base text-center">
                 Are you sure to confirm the leaves?{" "}
               </p>
-              <p className="text-[#7d7d7d] text-sm text-center">
+              <p className="text-[#7d7d7d] md:text-sm text-xs text-center">
                 Once you confirm the approval it will not be revert
               </p>
 

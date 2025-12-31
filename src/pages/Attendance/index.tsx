@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 import CustomSelect from "../../Components/Select";
 import TimePicker from "../../Components/TimePicker";
-import DatePicker from "../../Components/DatePicker";
+// import DatePicker from "../../Components/DatePicker";
 import { useFormik } from "formik";
 import { Spin } from "antd";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
@@ -20,6 +20,8 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 
 import type { AxiosResponse } from "axios";
 import { useDebounce } from "../../Components/Debounce";
+import { Icon } from "@iconify/react";
+// import { Icon } from "@iconify/react";
 
 const titles = [
   "Employee Id",
@@ -31,6 +33,20 @@ const titles = [
   "Checkout Location",
   "Status",
   "Action",
+];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const optionStatus = ["Present", "Late", "Absent", "Half-day", "On Leave"];
@@ -46,32 +62,66 @@ export default function Attendance() {
 
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
-
+  const [rotated, setRotated] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
 
   const debouncedSearchId = useDebounce(searchId, 500);
   const debouncedSearchName = useDebounce(searchName, 500);
+  const handleClickRefech = () => {
+    setRotated(true);
+    refetch();
+    setTimeout(() => setRotated(false), 500);
+  };
 
   const searchValue = debouncedSearchId || debouncedSearchName;
 
-  const { data, refetch } = useQuery<AxiosResponse<any>>({
-    queryKey: ["Attendance", searchValue],
-    queryFn: () => getAllAttendance(searchValue),
+  const [selectedMonthYear, setSelectedMonthYear] = useState<{
+    month: number;
+    year: number;
+  }>({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+  });
+
+  const { data, refetch, isFetching } = useQuery<AxiosResponse<any>>({
+    queryKey: ["Attendance", searchValue, selectedMonthYear],
+    queryFn: () =>
+      getAllAttendance({
+        search: searchValue,
+        month: selectedMonthYear.month,
+        year: selectedMonthYear.year,
+      }),
     placeholderData: (previousData) => previousData,
   });
-  const filteredData = data?.data?.filter((v: any) => {
-    if (activeTab === "Office Staff") return v.employeeRole === "Office Staff";
-    if (activeTab === "Field Staff") return v.employeeRole === "Field Staff";
+
+  const filteredData = data?.data.filter((v: any) => {
+    if (activeTab === "Office Staff")
+      return v.employee.employeeType === "Office Staff";
+    if (activeTab === "Field Staff")
+      return v.employee.employeeType === "Field Staff";
+    if (activeTab === "Admin") return v.employee.employeeType === "Admin";
     return true;
   });
 
   const tableData =
     filteredData?.map((v: any) => [
-      v.employeeId,
-      v.employeeName,
-      v.employeeRole,
+      v.employee?.employeeId,
+      v.employee.employeeName,
+      <p>
+        {v.employee.employeeRole === "mr"
+          ? "Medical Rep"
+          : v.employee.employeeRole === "am"
+          ? "Area Manager"
+          : v.employee.employeeRole === "rm"
+          ? "Regional Manager"
+          : v.employee.employeeRole === "hr"
+          ? "HR"
+          : v.employee.employeeRole === "admin"
+          ? "Admin"
+          : "Unknown Role"}
+      </p>,
       v.date ? dayjs(v.date).format("YYYY-MM-DD") : "--",
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",
@@ -131,26 +181,48 @@ export default function Attendance() {
 
   return (
     <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-      <div className="flex flex-wrap-reverse justify-between gap-4">
-        <div className="flex gap-2">
-          {["Field Staff", "Office Staff"].map((role) => (
+      <div className="flex flex-wrap-reverse items-center justify-between w-full gap-4 xl:flex-nowrap md:w-auto">
+        <div className="flex flex-wrap w-full gap-4 mb-4 xl:w-auto md:mb-0 ">
+          {["Field Staff", "Office Staff", "Admin"].map((role) => (
             <div
               key={role}
               onClick={() => setActiveTab(role as any)}
-              className={`cursor-pointer rounded-t-2xl h-14 flex justify-center items-center w-30 ${
+              className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30 w-full ${
                 activeTab === role
                   ? "bg-[#E5EBF7] text-black"
                   : "bg-white text-[#7d7d7d]"
               }`}
             >
-              <p className="text-sm font-medium">{role}</p>
+              <p className="text-xs font-medium lg:text-sm">{role}</p>
             </div>
           ))}
         </div>
 
         <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-          <SearchById value={searchId} onChange={setSearchId} />
-          <SearchByName value={searchName} onChange={setSearchName} />
+          <div
+            onClick={handleClickRefech}
+            className="flex items-center justify-center h-10 bg-[#E5EBF7] rounded-md cursor-pointer min-w-10"
+          >
+            <Icon
+              icon="ion:reload-outline"
+              className={`text-xl ${
+                rotated ? "animate-spin" : ""
+              } transition-transform duration-200`}
+            />
+          </div>
+          <div className="w-[calc(100%-60px)] md:w-50">
+            <MonthYearPickerNumber
+              value={selectedMonthYear}
+              onChange={setSelectedMonthYear}
+            />{" "}
+          </div>
+          <div className="md:w-50 lg:w-auto">
+            {" "}
+            <SearchById value={searchId} onChange={setSearchId} />
+          </div>
+          <div className="md:w-50 lg:w-auto">
+            <SearchByName value={searchName} onChange={setSearchName} />
+          </div>
         </div>
       </div>
       <div
@@ -167,14 +239,18 @@ export default function Attendance() {
           }}
           className="mt-2 overflow-y-auto bg-white rounded-xl 2xl:h-[calc(73.2vh-0px)] xl:h-[calc(60vh-0px)]"
         >
-          <CustomTable titles={titles} data={tableData} />
+          <CustomTable
+            titles={titles}
+            data={tableData}
+            isFetching={isFetching}
+          />
         </div>
       </div>
       {openModel && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="relative p-6 bg-white rounded-xl w-200">
-            <div className="flex justify-between mb-4">
-              <p className="text-xl font-medium">Update Attendance</p>
+          <div className="relative mx-3 bg-white rounded-xl w-150">
+            <div className="flex justify-between p-6 bg-[#E5EBF7] rounded-t-xl">
+              <p className="text-xl font-medium">Updated Attendance</p>
               <IoMdCloseCircle
                 size={22}
                 onClick={() => setOpenModel(false)}
@@ -182,36 +258,37 @@ export default function Attendance() {
               />
             </div>
 
-            <form onSubmit={formik.handleSubmit}>
-              <div className="flex gap-6">
-                <div className="w-1/2 space-y-4">
-                  <DatePicker
-                    label="Date"
-                    value={formik.values.date}
-                    onChange={(date) => formik.setFieldValue("date", date)}
-                  />
-                  <CustomSelect
-                    placeholder="Status"
-                    value={formik.values.status}
-                    options={optionStatus}
-                    onChange={(val: string) =>
-                      formik.setFieldValue("status", val)
-                    }
-                  />
-                </div>
-
-                <div className="w-1/2 space-y-4">
-                  <TimePicker
-                    label="Check In"
-                    value={formik.values.checkIn}
-                    onChange={(time) => formik.setFieldValue("checkIn", time)}
-                  />
-                  <TimePicker
-                    label="Check Out"
-                    value={formik.values.checkOut}
-                    onChange={(time) => formik.setFieldValue("checkOut", time)}
-                  />
-                </div>
+            <form onSubmit={formik.handleSubmit} className="p-6">
+              <div className="space-y-4">
+                {" "}
+                <CustomSelect
+                  placeholder="Update Status"
+                  value={formik.values.status}
+                  options={optionStatus}
+                  onChange={(val: string) =>
+                    formik.setFieldValue("status", val)
+                  }
+                />
+                {/* <SearchSelect /> */}
+                {/* <DatePicker
+                  label="Date"
+                  value={formik.values.date}
+                  onChange={(date) => formik.setFieldValue("date", date)}
+                /> */}
+                <TimePicker
+                  label="CheckIn"
+                  value={formik.values.checkIn}
+                  onChange={(checkIn) =>
+                    formik.setFieldValue("checkIn", checkIn)
+                  }
+                />{" "}
+                <TimePicker
+                  label="Check out"
+                  value={formik.values.checkOut}
+                  onChange={(checkOut) =>
+                    formik.setFieldValue("checkout", checkOut)
+                  }
+                />
               </div>
 
               <div className="flex justify-end mt-6">
@@ -219,7 +296,11 @@ export default function Attendance() {
                   type="submit"
                   className="h-13.75 md:w-50 w-full bg-[#0755E9] text-white rounded-md flex justify-center items-center"
                 >
-                  {isloading ? <Spin indicator={antIcon} /> : "Update"}
+                  {isloading ? (
+                    <Spin indicator={antIcon} />
+                  ) : (
+                    "Updated Attendaence"
+                  )}
                 </button>
               </div>
             </form>
@@ -229,3 +310,72 @@ export default function Attendance() {
     </div>
   );
 }
+
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 20 }, (_, i) => currentYear - 10 + i);
+interface MonthYearPickerProps {
+  value: { month: number; year: number }; // month is number now
+  onChange: (val: { month: number; year: number }) => void;
+}
+
+const MonthYearPickerNumber: React.FC<MonthYearPickerProps> = ({
+  value,
+  onChange,
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const handleMonthChange = (month: number) => {
+    onChange({ ...value, month });
+  };
+
+  const handleYearChange = (year: number) => {
+    onChange({ ...value, year });
+  };
+
+  return (
+    <div className="relative inline-block w-full h-10 lg:w-45">
+      <div
+        className="flex items-center justify-between px-3 py-2 text-sm text-[#131313] border border-[#0755E9] rounded-lg cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <div className="flex items-center gap-2">
+          <Icon icon="mdi:calendar" width={20} height={20} color="#0755E9" />
+          <span>{`${value.month}-${value.year}`}</span>
+        </div>
+        <Icon
+          icon={open ? "mdi:chevron-up" : "mdi:chevron-down"}
+          width={20}
+          height={20}
+        />
+      </div>
+
+      {open && (
+        <div className="absolute z-50 flex w-full gap-2 p-3 mt-1 text-xs bg-[#E5EBF7] rounded shadow-lg">
+          <select
+            className="flex-1 p-1 border border-[#0755E9] rounded"
+            value={value.month}
+            onChange={(e) => handleMonthChange(Number(e.target.value))}
+          >
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="flex-1 p-1 border-[#0755E9] border rounded"
+            value={value.year}
+            onChange={(e) => handleYearChange(Number(e.target.value))}
+          >
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+    </div>
+  );
+};

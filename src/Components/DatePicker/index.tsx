@@ -28,7 +28,7 @@ export default function DatePicker({
         style={{
           height: "56px",
           width: "100%",
-          border: "1px solid #0755E9",
+          border: "0.5px solid #0755E9",
           boxShadow: "none",
         }}
         format="YYYY-MM-DD"
