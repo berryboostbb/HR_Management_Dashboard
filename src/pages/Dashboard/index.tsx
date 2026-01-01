@@ -321,7 +321,7 @@ export default function DashBoard() {
           <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
             <p className="text-xs text-[#131313] mb-3">Upcoming Events</p>
             <div className="flex items-end justify-between">
-              <p className="font-semibold text-xl border-b-2 w-max border-[#0755E9] mb-2">
+              <p className="font-semibold text-base border-b-2 w-max border-[#0755E9] mb-2">
                 {upcomingEvent?.heading}
               </p>{" "}
               <p className="mb-2 text-sm text-[#7d7d7d]">
