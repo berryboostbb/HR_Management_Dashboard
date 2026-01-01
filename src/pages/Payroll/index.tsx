@@ -275,10 +275,10 @@ export default function Payroll() {
             </button>
           </div>
         </div>
-        <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
+        <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl h-auto">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="scroll-smooth w-full overflow-x-auto bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
+            className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"
           >
             <CustomTable
               titles={tableHeaders}

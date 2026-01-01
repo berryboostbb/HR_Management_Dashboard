@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getBirthday } from "../../api/adminServices";
 import { getAttendanceSummary } from "../../api/attendanceServices";
 import LineChart from "../../Components/LineChart";
-import dummay from "../../assets/Frame 1597884811.png";
+import { Icon } from "@iconify/react";
+import { getAllEvents } from "../../api/eventsServices";
 export default function DashBoard() {
   const { data } = useQuery({
     queryKey: ["Birthday"],
@@ -17,8 +18,21 @@ export default function DashBoard() {
     queryFn: getAttendanceSummary,
     staleTime: 5 * 60 * 1000,
   });
-
   let birthdayData = data?.data?.data;
+  const { data: Events } = useQuery({
+    queryKey: ["AllEvents"],
+    queryFn: () => getAllEvents(),
+    staleTime: 5 * 60 * 1000,
+  });
+  let AllEvents = Events?.data;
+
+  const today = new Date();
+
+  const upcomingEvent = AllEvents.filter(
+    (event: any) => new Date(event.date) >= today
+  ).sort(
+    (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  )[0];
 
   useEffect(() => {
     document.title = "HR-Management | DashBoard";
@@ -283,11 +297,35 @@ export default function DashBoard() {
         </div>
         <div className="flex flex-wrap gap-4 mt-4 ">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
+            <div className="flex items-center gap-4 px-5 text-[#131313]">
+              <p className="text-xl font-semibold">Employee Work Hours</p>{" "}
+              <div className="border border-l-[#000000]/20 h-5"></div>{" "}
+              <div className="flex items-center">
+                <Icon
+                  icon="radix-icons:dot-filled"
+                  className="text-2xl text-[#1ADDFA]"
+                />
+                <p className="text-sm">Work</p>{" "}
+              </div>{" "}
+              <div className="flex items-center">
+                <Icon
+                  icon="radix-icons:dot-filled"
+                  className="text-2xl text-[#0755E9]"
+                />
+                <p className="text-sm">Overtime</p>{" "}
+              </div>
+            </div>
             <LineChart />
           </div>
           <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
             <p className="text-xs text-[#131313] mb-2">Upcoming Events</p>
-            <img src={dummay} className="object-cover w-full h-auto" />
+            <p className="font-semibold border-b-2 w-max border-[#0755E9] mb-2">
+              {upcomingEvent?.heading}
+            </p>
+            <img
+              src={upcomingEvent?.coverImage}
+              className="object-cover w-full rounded-lg h-80"
+            />
           </div>
         </div>
       </div>

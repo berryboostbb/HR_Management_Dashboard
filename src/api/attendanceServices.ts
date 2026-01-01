@@ -14,6 +14,12 @@ export const getAllAttendance = (params?: {
 export const updateAttendance = (id: string, values: any) => {
   return HTTP_CLIENT.put(`${ENDPOINTS.LEAVES_APPROVE}/${id}`, values);
 };
+export const updateAttendanceAdmin = (id: string, values: any) => {
+  return HTTP_CLIENT.put(
+    `${ENDPOINTS.ATTENDANCE_UpdateAttendanceAdmin}/${id}`,
+    values
+  );
+};
 
 export const getAttendanceSummary = () => {
   return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_SUMMARY);

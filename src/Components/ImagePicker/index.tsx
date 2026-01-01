@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RiFolderUploadFill } from "react-icons/ri";
 import { uploadFile } from "../../api/uploadServices";
+import { notifyError } from "../Toast";
 
 interface ImagePickerProps {
   label?: string;
@@ -68,7 +69,7 @@ export default function ImagePicker({
       }
     } catch (err) {
       console.error("Upload failed:", err);
-      alert("File upload failed. Please try again.");
+      notifyError("File upload failed. Please try again.");
     } finally {
       setUploading(false);
       setTimeout(() => setUserSelected(false), 500);

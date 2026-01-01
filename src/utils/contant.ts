@@ -53,56 +53,42 @@ export const LoginSchema = Yup.object({
 });
 export const employeeSchema = Yup.object({
   name: Yup.string().required("Name is required"),
-  gender: Yup.string().required("Gender is Required"),
-
+  gender: Yup.string().required("Gender is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  phoneNumber: Yup.string().required("phoneNumber is required"),
+  phoneNumber: Yup.string().required("Phone number is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
-
-  role: Yup.string().required("role is required"),
-
-  employeeType: Yup.string().required("Employee role is required"),
-
+  role: Yup.string().required("Role is required"),
+  employeeType: Yup.string().required("Employee type is required"),
   image: Yup.string().url("Invalid image URL").required("Image is required"),
-
   department: Yup.string().required("Department is required"),
-
   joiningDate: Yup.mixed().required("Joining date is required"),
 
-  salaryStructure: Yup.object({
-    basic: Yup.number().min(0).required("Basic salary is required"),
-
-    incentive: Yup.object({
-      flue: Yup.number().min(0).required(),
-      medical: Yup.number().min(0).required(),
-      others: Yup.number().min(0).required(),
-      deductions: Yup.number().min(0).required(),
-    }),
-
-    tax: Yup.number().min(0).required("Tax is required"),
-  }),
-
-  loanPF: Yup.object({
-    loan: Yup.number().min(0).required("Loan amount is required"),
-    pf: Yup.number().min(0).required("PF amount is required"),
-  }),
-
-  DOB: Yup.mixed().required("Date of birth is required"),
-
-  employeeStatus: Yup.string()
-    .oneOf(["Active", "Inactive"])
-    .required("Employee status is required"),
+  // Make leaveEntitlements optional
   leaveEntitlements: Yup.object({
-    casualLeave: Yup.number().min(0).required(),
-    sickLeave: Yup.number().min(0).required(),
-    annualLeave: Yup.number().min(0).required(),
-    maternityLeave: Yup.number().min(0).required(),
-    paternityLeave: Yup.number().min(0).required(),
-  }),
+    casualLeave: Yup.object({
+      total: Yup.number().min(0),
+      used: Yup.number().min(0),
+    }),
+    sickLeave: Yup.object({
+      total: Yup.number().min(0),
+      used: Yup.number().min(0),
+    }),
+    annualLeave: Yup.object({
+      total: Yup.number().min(0),
+      used: Yup.number().min(0),
+    }),
+    maternityLeave: Yup.object({
+      total: Yup.number().min(0),
+      used: Yup.number().min(0),
+    }),
+    paternityLeave: Yup.object({
+      total: Yup.number().min(0),
+      used: Yup.number().min(0),
+    }),
+  }).optional(),
 });
-
 export const payrollSchema = Yup.object({
   employeeId: Yup.string().required("Employee ID is required"),
   employeeName: Yup.string().required("Employee Name is required"),

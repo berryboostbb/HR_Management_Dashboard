@@ -106,15 +106,20 @@ export default function Employee() {
 
   const multiSelectToObject = (arr: SelectedOption[]) => {
     const result: any = {
-      casualLeave: 0,
-      sickLeave: 0,
-      annualLeave: 0,
-      maternityLeave: 0,
-      paternityLeave: 0,
+      casualLeave: { total: 0, consumed: 0 },
+      sickLeave: { total: 0, consumed: 0 },
+      annualLeave: { total: 0, consumed: 0 },
+      maternityLeave: { total: 0, consumed: 0 },
+      paternityLeave: { total: 0, consumed: 0 },
     };
+
     arr.forEach((item) => {
-      result[leaveLabelMap[item.label]] = item.amount;
+      result[leaveLabelMap[item.label]] = {
+        total: Number(item.amount),
+        consumed: 0, // start with 0 consumed
+      };
     });
+
     return result;
   };
 
@@ -314,7 +319,7 @@ export default function Employee() {
               <div
                 key={role}
                 onClick={() => setActiveTab(role as any)}
-                className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30 w-full ${
+                className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30  xl:w-25  w-full ${
                   activeTab === role
                     ? "bg-[#E5EBF7] text-black"
                     : "bg-white text-[#7d7d7d]"
@@ -351,7 +356,7 @@ export default function Employee() {
           </div>
         </div>
         <div
-          className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.5vh-0px)] ${
+          className={`bg-[#E5EBF7] p-4 rounded-xl h-auto ${
             activeTab === "Field Staff"
               ? "md:rounded-tl-none :rounded-tl-2xl "
               : "rounded-tl-xl"
@@ -499,7 +504,7 @@ export default function Employee() {
                     <CustomSelect
                       placeholder="Select Employee Type"
                       value={formik.values.employeeType}
-                      options={["Office Staff", "Field Staff", "admin"]}
+                      options={["Office Staff", "Field Staff"]}
                       onChange={(val) =>
                         formik.setFieldValue("employeeType", val)
                       }
@@ -614,7 +619,7 @@ export default function Employee() {
                       )}
                   </div>
                   <CustomInput
-                    label="Flue"
+                    label="Fuel"
                     type="number"
                     value={formik.values.salaryStructure.incentive.flue}
                     onChange={(e) =>
@@ -676,26 +681,7 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-                  <div>
-                    <CustomInput
-                      label="Incentive - Others"
-                      type="number"
-                      value={formik.values.salaryStructure.incentive.others}
-                      onChange={(e) =>
-                        formik.setFieldValue(
-                          "salaryStructure.incentive.others",
-                          Number(e.target.value)
-                        )
-                      }
-                    />
-                    {formik.touched.salaryStructure &&
-                      formik.errors.salaryStructure &&
-                      typeof formik.errors.salaryStructure === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.salaryStructure}
-                        </div>
-                      )}
-                  </div>
+
                   <div>
                     <div>
                       <CustomInput
