@@ -7,6 +7,7 @@ import { getAttendanceSummary } from "../../api/attendanceServices";
 import LineChart from "../../Components/LineChart";
 import { Icon } from "@iconify/react";
 import { getAllEvents } from "../../api/eventsServices";
+import dayjs from "dayjs";
 export default function DashBoard() {
   const { data } = useQuery({
     queryKey: ["Birthday"],
@@ -318,10 +319,15 @@ export default function DashBoard() {
             <LineChart />
           </div>
           <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
-            <p className="text-xs text-[#131313] mb-2">Upcoming Events</p>
-            <p className="font-semibold border-b-2 w-max border-[#0755E9] mb-2">
-              {upcomingEvent?.heading}
-            </p>
+            <p className="text-xs text-[#131313] mb-3">Upcoming Events</p>
+            <div className="flex items-end justify-between">
+              <p className="font-semibold text-xl border-b-2 w-max border-[#0755E9] mb-2">
+                {upcomingEvent?.heading}
+              </p>{" "}
+              <p className="mb-2 text-sm text-[#7d7d7d]">
+                {dayjs(upcomingEvent.joiningDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
             <img
               src={upcomingEvent?.coverImage}
               className="object-cover w-full rounded-lg h-80"
