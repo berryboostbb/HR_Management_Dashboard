@@ -34,6 +34,7 @@ export default function DashBoard() {
   ).sort(
     (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()
   )[0];
+  console.log("🚀 ~ DashBoard ~ upcomingEvent:", upcomingEvent);
 
   useEffect(() => {
     document.title = "HR-Management | DashBoard";
@@ -325,7 +326,7 @@ export default function DashBoard() {
                 {upcomingEvent?.heading}
               </p>{" "}
               <p className="mb-2 text-sm text-[#7d7d7d]">
-                {dayjs(upcomingEvent.joiningDate).format("YYYY-MM-DD")}
+                {dayjs(upcomingEvent?.date).format("YYYY-MM-DD")}
               </p>
             </div>
             <img
