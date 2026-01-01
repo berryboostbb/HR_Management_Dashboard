@@ -134,7 +134,7 @@ export default function Attendance() {
       v.date ? dayjs(v.date).format("YYYY-MM-DD") : "--",
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",
-      v?.checkInStatus,
+
       <GeoAddress
         lat={v.checkOut?.location?.lat}
         lng={v.checkOut?.location?.lng}

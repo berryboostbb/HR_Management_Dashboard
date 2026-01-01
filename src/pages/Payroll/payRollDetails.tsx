@@ -61,7 +61,7 @@ export default function PayrollDetails() {
 
       <div
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        className="w-full bg-white rounded-xl border h-[calc(79vh-0px)] overflow-y-auto border-[#0755E9] p-4 mt-3"
+        className="w-full bg-white rounded-xl border 2xl:h-[calc(79vh-0px)] xl:h-[calc(69vh-0px)] overflow-y-auto border-[#0755E9] p-4 mt-3"
       >
         <div className="flex flex-col md:flex-row items-center md:items-stretch justify-between border border-[#0755E9] rounded-lg overflow-hidden">
           <div className="flex items-center gap-3 p-4 md:w-1/3">
@@ -69,9 +69,9 @@ export default function PayrollDetails() {
             <p className="max-[564px] text-base">Himmel Pharma</p>
           </div>
 
-          <div className="text-center md:w-1/3 border-t md:border-t-0 md:border-l md:border-r py-4 md:py-7 border-[#0755E9] px-28">
-            <p className="text-[24px] max-[564px]:text-[18px]">Salary Slip</p>
-            <p className="text-[16px] max-[564px]:text-[14px] text-black">
+          <div className="text-center md:w-1/3 border-t md:border-t-0 md:border-l md:border-r  border-[#0755E9] flex justify-center items-center flex-col">
+            <p className="text-[24px]">Salary Slip</p>
+            <p className="text-[16px] text-black">
               {rowData?.month} {rowData?.year}
             </p>
           </div>
