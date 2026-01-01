@@ -24,7 +24,7 @@ export default function DashBoard() {
     queryFn: () => getAllEvents(),
     staleTime: 5 * 60 * 1000,
   });
-  let AllEvents = Events?.data;
+  const AllEvents = Events?.data || [];
 
   const today = new Date();
 

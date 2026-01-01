@@ -241,7 +241,6 @@ export default function Payroll() {
       }
     },
   });
-  console.log("🚀 ~ Payroll ~ formik:", formik.errors);
   useEffect(() => {
     document.title = "HR-Management | Payroll";
   }, []);
