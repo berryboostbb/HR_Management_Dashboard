@@ -61,7 +61,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="w-full text-xs text-white lg:text-lg lg:w-200">
+            <p className="w-full text-xs text-white lg:text-base lg:w-200">
               You have {birthdayData.length} birthday today, post on the social
               handle and also celebrate in the office.
             </p>
