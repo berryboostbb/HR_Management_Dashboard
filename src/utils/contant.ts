@@ -117,14 +117,9 @@ export const LeaveSchema = Yup.object().shape({
 
   leaveType: Yup.string().required("Leave type is required"),
 
-  startDate: Yup.date()
-    .required("Start date is required")
-    .typeError("Invalid start date"),
+  startDate: Yup.date().required("Start date is required"),
 
-  endDate: Yup.date()
-    .required("End date is required")
-    .typeError("Invalid end date")
-    .min(Yup.ref("startDate"), "End date cannot be before start date"),
+  endDate: Yup.date().required("End date is required"),
 
   reason: Yup.string().required("Reason is required"),
 });
