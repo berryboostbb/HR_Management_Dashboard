@@ -153,14 +153,14 @@ export default function Payroll() {
             >
               Edit
             </div>
-            <div
+            {/* <div
               onClick={() => {
                 setEditing(v);
               }}
               className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
             >
               Share Slip
-            </div>{" "}
+            </div>{" "} */}
             <div
               onClick={() => {
                 handleApprove(v);
@@ -170,14 +170,14 @@ export default function Payroll() {
             >
               Approved
             </div>{" "}
-            <div
+            {/* <div
               onClick={() => {
                 setEditing(v);
               }}
               className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
             >
               Print
-            </div>
+            </div> */}
           </div>
         )}
       </div>,
@@ -254,8 +254,12 @@ export default function Payroll() {
           />{" "}
           <div className="flex flex-wrap items-center w-full gap-5 md:gap-4 md:w-auto">
             <div className="flex flex-wrap items-center gap-2 md:flex-nowrap">
-              <SearchById value={searchId} onChange={setSearchId} />
-              <SearchByName value={searchName} onChange={setSearchName} />
+              <div className="md:w-62 lg:w-60 xl:w-70 2xl:w-70 w-full">
+                <SearchById value={searchId} onChange={setSearchId} />
+              </div>
+              <div className="md:w-62 lg:w-60 xl:w-70 2xl:w-70 w-full">
+                <SearchByName value={searchName} onChange={setSearchName} />
+              </div>
             </div>
             <button
               onClick={() => {

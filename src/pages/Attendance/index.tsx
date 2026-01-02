@@ -149,7 +149,7 @@ export default function Attendance() {
       </p>,
       <button
         disabled={v.status == "On Leave"}
-        className="text-[#0755E9] disabled:text-[#7d7d7d]"
+        className="text-[#0755E9] disabled:text-[#7d7d7d]/48"
       >
         <TbEdit
           key={v._id}
@@ -397,8 +397,6 @@ interface GeoAddressProps {
 }
 
 const GeoAddress: React.FC<GeoAddressProps> = ({ lat, lng }) => {
-  console.log("🚀 ~ GeoAddress ~ lng:", lng);
-  console.log("🚀 ~ GeoAddress ~ lat:", lat);
   const [address, setAddress] = useState<string>("Loading...");
 
   useEffect(() => {

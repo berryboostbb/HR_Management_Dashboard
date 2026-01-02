@@ -34,7 +34,6 @@ export default function DashBoard() {
   ).sort(
     (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()
   )[0];
-  console.log("🚀 ~ DashBoard ~ upcomingEvent:", upcomingEvent);
 
   useEffect(() => {
     document.title = "HR-Management | DashBoard";
@@ -299,7 +298,7 @@ export default function DashBoard() {
         </div>
         <div className="flex flex-wrap gap-4 mt-4 ">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
-            <div className="flex items-center gap-4 px-5 text-[#131313]">
+            <div className="flex items-center gap-4 mb-5 px-5 text-[#131313]">
               <p className="text-xl font-semibold">Employee Work Hours</p>{" "}
               <div className="border border-l-[#000000]/20 h-5"></div>{" "}
               <div className="flex items-center">
