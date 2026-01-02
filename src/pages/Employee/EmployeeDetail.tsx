@@ -1,4 +1,6 @@
-import { FaArrowLeft, FaUserTie } from "react-icons/fa";
+import Avatar from "../../assets/avatar.jpeg";
+import { FaArrowLeft } from "react-icons/fa";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,15 +34,17 @@ export default function EmployeeDetails() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#0755E9] p-4 flex-1 overflow-y-auto overflow-x-hidden">
+      <div className="bg-white rounded-xl border border-[#0755E9] p-4 flex-1 overflow-y-auto">
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="h-24 w-24 rounded-full bg-[#E5EBF7] flex items-center justify-center">
-            <FaUserTie size={40} className="text-[#0755E9]" />
+          <div className="h-24 p-4 w-24 rounded-full bg-[#E5EBF7] flex items-center justify-center">
+            <img src={Avatar} alt="Profile" className="rounded-full" />
           </div>
 
           <div className="flex items-center justify-between w-full md:w-auto gap-8">
             <div>
-              <h3 className="text-[14px] font-semibold">Cristofor Schleifer</h3>
+              <h3 className="text-[14px] font-semibold">
+                Saturo Gojo Jujutsu Kaisen
+              </h3>
               <p className="text-[#0755E9] text-[12px]">NSM-007</p>
             </div>
             <button
