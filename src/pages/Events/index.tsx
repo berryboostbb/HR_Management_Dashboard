@@ -219,75 +219,95 @@ export default function Events() {
               />
             </div>
             <form onSubmit={formik.handleSubmit} className="space-y-6">
-              <ImagePicker
-                placeholder="Upload Cover Photos"
-                label="Cover Photos"
-                fileType="Manage MR"
-                type="image"
-                value={formik.values.coverImage}
-                onChange={(val: any) => formik.setFieldValue("coverImage", val)}
-              />
-              {formik.touched.coverImage &&
-                formik.errors.coverImage &&
-                typeof formik.errors.coverImage === "string" && (
-                  <div className="text-xs text-red-500">
-                    * {formik.errors.coverImage}
-                  </div>
-                )}
-              <DatePicker
-                label="Date"
-                placeholder="Select the Date"
-                value={formik.values.date}
-                onChange={(date) => formik.setFieldValue("date", date)}
-              />
-              {formik.touched.date &&
-                formik.errors.date &&
-                typeof formik.errors.date === "string" && (
-                  <div className="text-xs text-red-500">
-                    * {formik.errors.date}
-                  </div>
-                )}
-              <CustomSelect
-                placeholder="Category"
-                value={formik.values.category}
-                options={["Office Staff", "Field Staff", "HR"]}
-                onChange={(val) => formik.setFieldValue("category", val)}
-              />
-              {formik.touched.category &&
-                formik.errors.category &&
-                typeof formik.errors.category === "string" && (
-                  <div className="text-xs text-red-500">
-                    * {formik.errors.category}
-                  </div>
-                )}
-              <CustomInput
-                label="Heading"
-                placeholder="Write the Heading"
-                value={formik.values.heading}
-                onChange={formik.handleChange}
-                name="heading"
-              />
-              {formik.touched.heading &&
-                formik.errors.heading &&
-                typeof formik.errors.heading === "string" && (
-                  <div className="text-xs text-red-500">
-                    * {formik.errors.heading}
-                  </div>
-                )}
-              <CustomTextarea
-                label="Overview Detail"
-                placeholder="Write the Overview Detail"
-                value={formik.values.overview}
-                onChange={formik.handleChange}
-                name="overview"
-              />{" "}
-              {formik.touched.overview &&
-                formik.errors.heading &&
-                typeof formik.errors.overview === "string" && (
-                  <div className="text-xs text-red-500">
-                    * {formik.errors.overview}
-                  </div>
-                )}
+              <div>
+                {" "}
+                <ImagePicker
+                  placeholder="Upload Cover Photos"
+                  label="Cover Photos"
+                  fileType="Manage MR"
+                  type="image"
+                  value={formik.values.coverImage}
+                  onChange={(val: any) =>
+                    formik.setFieldValue("coverImage", val)
+                  }
+                />
+                {formik.touched.coverImage &&
+                  formik.errors.coverImage &&
+                  typeof formik.errors.coverImage === "string" && (
+                    <div className="text-xs text-red-500">
+                      * {formik.errors.coverImage}
+                    </div>
+                  )}
+              </div>
+              <div>
+                {" "}
+                <DatePicker
+                  label="Date"
+                  placeholder="Select the Date"
+                  value={formik.values.date}
+                  onChange={(date) => formik.setFieldValue("date", date)}
+                />
+                {formik.touched.date &&
+                  formik.errors.date &&
+                  typeof formik.errors.date === "string" && (
+                    <div className="text-xs text-red-500">
+                      * {formik.errors.date}
+                    </div>
+                  )}
+              </div>
+
+              <div>
+                {" "}
+                <CustomSelect
+                  placeholder="Category"
+                  value={formik.values.category}
+                  options={["Office Staff", "Field Staff", "HR"]}
+                  onChange={(val) => formik.setFieldValue("category", val)}
+                />
+                {formik.touched.category &&
+                  formik.errors.category &&
+                  typeof formik.errors.category === "string" && (
+                    <div className="text-xs text-red-500">
+                      * {formik.errors.category}
+                    </div>
+                  )}
+              </div>
+
+              <div>
+                {" "}
+                <CustomInput
+                  label="Heading"
+                  placeholder="Write the Heading"
+                  value={formik.values.heading}
+                  onChange={formik.handleChange}
+                  name="heading"
+                />
+                {formik.touched.heading &&
+                  formik.errors.heading &&
+                  typeof formik.errors.heading === "string" && (
+                    <div className="text-xs text-red-500">
+                      * {formik.errors.heading}
+                    </div>
+                  )}
+              </div>
+
+              <div>
+                <CustomTextarea
+                  label="Overview Detail"
+                  placeholder="Write the Overview Detail"
+                  value={formik.values.overview}
+                  onChange={formik.handleChange}
+                  name="overview"
+                />{" "}
+                {formik.touched.overview &&
+                  formik.errors.heading &&
+                  typeof formik.errors.overview === "string" && (
+                    <div className="text-xs text-red-500">
+                      * {formik.errors.overview}
+                    </div>
+                  )}
+              </div>
+
               <div className="flex justify-end mt-5">
                 <button
                   type="submit"

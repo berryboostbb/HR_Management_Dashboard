@@ -37,8 +37,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     };
 
     return (
-      <div className="bg-white p-3 rounded-xl shadow-xl border border-gray-200">
-        <p className="text-sm font-semibold mb-1">{label}</p>
+      <div className="p-3 bg-white border border-gray-200 shadow-xl rounded-xl">
+        <p className="mb-1 text-sm font-semibold">{label}</p>
 
         {uniquePayload.map((item: any, index: number) => (
           <p key={index} className="text-xs text-[#7d7d7d]">
@@ -58,7 +58,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function LineChart() {
   return (
-    <div className="w-full h-82.5">
+    <div className="w-full h-81.5">
       <ResponsiveContainer width="100%" height="100%">
         <ReLineChart
           data={graphData}
