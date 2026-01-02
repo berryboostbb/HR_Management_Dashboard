@@ -44,7 +44,7 @@ export default function DashBoard() {
         <div className="relative">
           <img
             src={birthday}
-            className="hidden w-full lg:block lg:h-70 2xl:h-60"
+            className="hidden w-full lg:block lg:h-60 2xl:h-60"
           />
           <img src={birthday2} className="block w-full lg:hidden" />
           <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
