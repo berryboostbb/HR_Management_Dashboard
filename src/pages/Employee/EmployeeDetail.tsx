@@ -10,14 +10,26 @@ export default function EmployeeDetails() {
 
   return (
     <div className="bg-[#F7F7F7] h-[calc(100vh-110px)] rounded-xl p-4 flex flex-col">
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center justify-between gap-3 mb-3">
         <div
           onClick={() => navigate("/employees")}
           className="h-11 w-11 cursor-pointer rounded-lg border border-[#D2D2D2] flex justify-center items-center bg-white"
         >
           <FaArrowLeft size={16} />
         </div>
-        <h2 className="text-[20px] font-semibold">Employee Details</h2>
+        <button
+          onClick={() => setIsActive(true)}
+          className={`
+        h-11 px-4 rounded-md border text-sm transition cursor-pointer
+        ${
+          isActive
+            ? "bg-[#0755E9] text-white border-[#0755E9]"
+            : "bg-transparent text-[#0755E9] border-[#0755E9] hover:bg-[#0755E9] hover:text-white"
+        }
+      `}
+        >
+          Change Password
+        </button>
       </div>
 
       <div className="bg-white rounded-xl border border-[#0755E9] p-4 flex-1 overflow-y-auto overflow-x-hidden">

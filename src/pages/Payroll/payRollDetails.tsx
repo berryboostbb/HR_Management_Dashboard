@@ -104,7 +104,7 @@ export default function PayrollDetails() {
             {/* <p className="flex items-center text-xs lg:text-sm">
               <span className="text-[#7D7D7D] min-w-32.5">Employee Type:</span>
               <span className="font-medium"> {rowData?.year}</span>
-            </p> */}{" "}
+            </p> */}
             <p className="flex items-center text-xs lg:text-sm">
               <span className="text-[#7D7D7D] md:min-w-32.5 min-w-25">
                 Working Days:
