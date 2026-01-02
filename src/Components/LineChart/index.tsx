@@ -10,18 +10,18 @@ import {
 } from "recharts";
 
 const graphData = [
-  { month: "Jan", Target: 12000, Achievement: 9000 },
-  { month: "Feb", Target: 15000, Achievement: 11000 },
-  { month: "Mar", Target: 18000, Achievement: 14000 },
-  { month: "Apr", Target: 20000, Achievement: 16000 },
-  { month: "May", Target: 22000, Achievement: 19000 },
-  { month: "Jun", Target: 25000, Achievement: 21000 },
-  { month: "Jul", Target: 28000, Achievement: 24000 },
-  { month: "Aug", Target: 30000, Achievement: 26000 },
-  { month: "Sep", Target: 32000, Achievement: 29000 },
-  { month: "Oct", Target: 35000, Achievement: 31000 },
-  { month: "Nov", Target: 38000, Achievement: 34000 },
-  { month: "Dec", Target: 42000, Achievement: 39000 },
+  { month: "Jan", Work: 12000, Overtime: 9000 },
+  { month: "Feb", Work: 15000, Overtime: 11000 },
+  { month: "Mar", Work: 18000, Overtime: 14000 },
+  { month: "Apr", Work: 20000, Overtime: 16000 },
+  { month: "May", Work: 22000, Overtime: 19000 },
+  { month: "Jun", Work: 25000, Overtime: 21000 },
+  { month: "Jul", Work: 28000, Overtime: 24000 },
+  { month: "Aug", Work: 30000, Overtime: 26000 },
+  { month: "Sep", Work: 32000, Overtime: 29000 },
+  { month: "Oct", Work: 35000, Overtime: 31000 },
+  { month: "Nov", Work: 38000, Overtime: 34000 },
+  { month: "Dec", Work: 42000, Overtime: 39000 },
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -32,8 +32,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
 
     const dotColors: Record<string, string> = {
-      Target: "#0755E9",
-      Achievement: "#14CCC2",
+      Work: "#0755E9",
+      Overtime: "#14CCC2",
     };
 
     return (
@@ -58,7 +58,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function LineChart() {
   return (
-    <div className="w-full h-88.5">
+    <div className="w-full h-82.5">
       <ResponsiveContainer width="100%" height="100%">
         <ReLineChart
           data={graphData}
@@ -85,19 +85,19 @@ export default function LineChart() {
           <Tooltip content={<CustomTooltip />} cursor={false} />
           <Area
             type="monotone"
-            dataKey="Target"
+            dataKey="Work"
             stroke="none"
             fill="rgba(34, 197, 94, 0.2)"
           />
           <Area
             type="monotone"
-            dataKey="Achievement"
+            dataKey="Overtime"
             stroke="none"
             fill="rgba(59, 130, 246, 0.2)"
           />
           <Line
             type="monotone"
-            dataKey="Target"
+            dataKey="Work"
             stroke="#0755E9"
             strokeWidth={1}
             strokeDasharray="3 3"
@@ -110,7 +110,7 @@ export default function LineChart() {
           />
           <Line
             type="monotone"
-            dataKey="Achievement"
+            dataKey="Overtime"
             stroke="#14CCC2"
             strokeWidth={1}
             dot={{
