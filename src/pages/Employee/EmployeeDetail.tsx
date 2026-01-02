@@ -34,7 +34,10 @@ export default function EmployeeDetails() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#0755E9] p-4 flex-1 overflow-y-auto">
+      <div
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="bg-white rounded-xl border border-[#0755E9] p-4 flex-1 overflow-y-auto"
+      >
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="h-24 p-4 w-24 rounded-full bg-[#E5EBF7] flex items-center justify-center">
             <img src={Avatar} alt="Profile" className="rounded-full" />
