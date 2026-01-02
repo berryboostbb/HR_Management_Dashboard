@@ -11,6 +11,7 @@ import { notifyError, notifySuccess } from "../Toast";
 
 export default function SideBar({ link }: any) {
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function SideBar({ link }: any) {
   const handleLogout = () => {
     const { token } = store.getState().user;
 
+    setLoading(true);
     HTTP_CLIENT.post(
       "/auth/logout",
       {},
@@ -42,6 +44,9 @@ export default function SideBar({ link }: any) {
           err.response?.data?.message || err.message
         );
         notifyError(err.response?.data?.message || "Logout failed");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -196,7 +201,8 @@ export default function SideBar({ link }: any) {
           })}
         </nav>
 
-        <div
+        <button
+          disabled={loading}
           onClick={handleLogout}
           className="flex items-center gap-3 pl-5 mt-auto mb-2 text-base font-normal cursor-pointer text-heading"
         >
@@ -207,7 +213,7 @@ export default function SideBar({ link }: any) {
             color="#7d7d7d"
           />
           <p>Logout</p>
-        </div>
+        </button>
       </aside>
 
       {isOpen && (

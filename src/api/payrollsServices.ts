@@ -5,9 +5,11 @@ export const generatePayroll = (values: any) => {
   return HTTP_CLIENT.post(ENDPOINTS.GENERATE_PAYROLL, values);
 };
 
-// Frontend API call
-export const approvePayroll = (id: string) => {
-  return HTTP_CLIENT.put(`${ENDPOINTS.APPROVE_PAYROLL.replace(":id", id)}`);
+export const approvePayroll = (id: string, data: { approvedBy: string }) => {
+  return HTTP_CLIENT.put(
+    `${ENDPOINTS.APPROVE_PAYROLL.replace(":id", id)}`,
+    data
+  );
 };
 
 export const getAllPayrolls = (

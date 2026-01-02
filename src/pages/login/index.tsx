@@ -149,6 +149,7 @@ const Login = () => {
               </p>
             </div>
             <button
+              disabled={loading}
               type="submit"
               className="bg-[#0755E9] cursor-pointer text-white w-full h-13.75 mt-5 rounded-md text-xl font-medium flex items-center justify-center"
             >
