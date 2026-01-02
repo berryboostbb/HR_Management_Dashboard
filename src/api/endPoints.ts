@@ -17,6 +17,7 @@ export const ENDPOINTS = {
   ATTENDANCE_UPDATE: "/attendance/UpdateAttendance",
   ATTENDANCE_SUMMARY: "/attendance/getAttendanceSummary",
   ATTENDANCE_UpdateAttendanceAdmin: "/attendance/updateAttendanceAdmin",
+  ATTENDANCE_DAILYATTENDENCE: "/attendance/createDailyAttendance",
 
   //   -----------UploadFIle-------------
   UPLOAD_FILE: "/upload/uploadFile",

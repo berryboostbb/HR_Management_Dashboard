@@ -24,3 +24,15 @@ export const updateAttendanceAdmin = (id: string, values: any) => {
 export const getAttendanceSummary = () => {
   return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_SUMMARY);
 };
+
+export const createDailyAttendance = (token: string) => {
+  return HTTP_CLIENT.post(
+    ENDPOINTS.ATTENDANCE_DAILYATTENDENCE,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};

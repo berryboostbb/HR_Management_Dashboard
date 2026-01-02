@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import CustomTable from "../../Components/CustomTable";
 import {
+  createDailyAttendance,
   getAllAttendance,
   updateAttendanceAdmin,
 } from "../../api/attendanceServices";
@@ -19,6 +20,7 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 import type { AxiosResponse } from "axios";
 import { useDebounce } from "../../Components/Debounce";
 import { Icon } from "@iconify/react";
+import { useSelector } from "react-redux";
 
 const titles = [
   "Employee Id",
@@ -61,6 +63,7 @@ export default function Attendance() {
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
+  const [isloadingAttendance, setLoadingAttendance] = useState(false);
 
   const debouncedSearchId = useDebounce(searchId, 500);
   const debouncedSearchName = useDebounce(searchName, 500);
@@ -199,11 +202,63 @@ export default function Attendance() {
   const antIcon = (
     <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
   );
+  const { token } = useSelector((state: any) => {
+    return state.user;
+  });
+  const handleGenerateAttendance = async () => {
+    setLoadingAttendance(true);
+    try {
+      const res = await createDailyAttendance(token);
 
+      notifySuccess(
+        res.data?.message || "Daily attendance generated successfully"
+      );
+    } catch (error: any) {
+      console.error("Generate attendance error:", error);
+
+      notifyError(
+        error.response?.data?.message || "Failed to generate daily attendance"
+      );
+    } finally {
+      setLoadingAttendance(false);
+    }
+  };
   return (
     <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
-      <div className="flex flex-wrap-reverse items-center justify-between w-full gap-4 xl:flex-nowrap md:w-auto">
-        <div className="flex flex-wrap w-full gap-4 mb-4 xl:w-auto md:mb-0 ">
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-4 md:flex-nowrap">
+          <div className="flex flex-wrap w-full gap-3 sm:w-auto md:flex-nowrap">
+            <div
+              onClick={handleClickRefech}
+              className="flex items-center justify-center h-10 bg-[#E5EBF7] rounded-md cursor-pointer min-w-10"
+            >
+              <Icon
+                icon="ion:reload-outline"
+                className={`text-xl ${
+                  rotated ? "animate-spin" : ""
+                } transition-transform duration-200`}
+              />
+            </div>
+            <div className="w-[calc(100%-60px)] md:w-45 lg:w-48 xl:w-auto 2xl:w-auto">
+              <MonthYearPickerNumber
+                value={selectedMonthYear}
+                onChange={setSelectedMonthYear}
+              />{" "}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-3 md:flex-nowrap">
+            <div className="w-full md:w-53 lg:w-auto">
+              {" "}
+              <SearchById value={searchId} onChange={setSearchId} />
+            </div>
+            <div className="w-full md:w-53 lg:w-auto">
+              <SearchByName value={searchName} onChange={setSearchName} />
+            </div>
+          </div>
+        </div>
+      </div>{" "}
+      <div className="flex flex-wrap items-center justify-between w-full gap-4 mt-4 xl:flex-nowrap md:w-auto">
+        <div className="flex flex-wrap w-full gap-4 mb-4 md:w-auto md:mb-0 ">
           {["Field Staff", "Office Staff", "Admin"].map((role) => (
             <div
               key={role}
@@ -218,34 +273,17 @@ export default function Attendance() {
             </div>
           ))}
         </div>
-
-        <div className="flex flex-wrap items-center gap-3 md:flex-nowrap">
-          <div
-            onClick={handleClickRefech}
-            className="flex items-center justify-center h-10 bg-[#E5EBF7] rounded-md cursor-pointer min-w-10"
-          >
-            <Icon
-              icon="ion:reload-outline"
-              className={`text-xl ${
-                rotated ? "animate-spin" : ""
-              } transition-transform duration-200`}
-            />
-          </div>
-          <div className="w-[calc(100%-60px)] md:w-50 xl:w-45 2xl:w-50">
-            <MonthYearPickerNumber
-              value={selectedMonthYear}
-              onChange={setSelectedMonthYear}
-            />{" "}
-          </div>
-          <div className="md:w-50 lg:w-auto xl:w-45 2xl:w-70">
-            {" "}
-            <SearchById value={searchId} onChange={setSearchId} />
-          </div>
-          <div className="md:w-50 lg:w-auto xl:w-45 2xl:w-70">
-            <SearchByName value={searchName} onChange={setSearchName} />
-          </div>
-        </div>
-      </div>
+        <button
+          onClick={handleGenerateAttendance}
+          className="h-10 w-full md:mb-0 mb-4  text-white md:w-50 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
+        >
+          {isloadingAttendance ? (
+            <Spin indicator={antIcon} />
+          ) : (
+            "Generate Attendance"
+          )}
+        </button>
+      </div>{" "}
       <div
         className={`bg-[#E5EBF7] p-4 rounded-xl h-auto  ${
           activeTab === "Field Staff" ? "rounded-tl-none" : ""
@@ -258,7 +296,7 @@ export default function Attendance() {
             scrollbarWidth: "none",
             msOverflowStyle: "none",
           }}
-          className="mt-2 overflow-y-auto bg-white rounded-xl 2xl:h-[calc(73.2vh-0px)] xl:h-[calc(60vh-0px)]"
+          className="mt-2 overflow-y-auto bg-white rounded-xl 2xl:h-[calc(67.2vh-0px)] xl:h-[calc(51vh-0px)]"
         >
           <CustomTable
             titles={titles}
@@ -386,10 +424,6 @@ const MonthYearPickerNumber: React.FC<MonthYearPickerProps> = ({
     </div>
   );
 };
-
-// const res = await fetch(
-//   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&region=PK&language=en&key=AIzaSyBrNjsUsrJ0Mmjhe-WUKDKVaIsMkZ8iQ4A`
-// );
 
 interface GeoAddressProps {
   lat: number;

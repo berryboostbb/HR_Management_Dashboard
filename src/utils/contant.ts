@@ -56,44 +56,29 @@ export const employeeSchema = Yup.object({
   gender: Yup.string().required("Gender is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   phoneNumber: Yup.string().required("Phone number is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+  password: Yup.string().min(8).required("Password is required"),
   role: Yup.string().required("Role is required"),
   employeeType: Yup.string().required("Employee type is required"),
-  image: Yup.string().url("Invalid image URL").required("Image is required"),
+  image: Yup.string().required("Image is required"),
   department: Yup.string().required("Department is required"),
+  DOB: Yup.mixed().required("Date of Birth is required"),
   joiningDate: Yup.mixed().required("Joining date is required"),
+  employeeStatus: Yup.string().required("Employee Status is required"),
 
-  // Make leaveEntitlements optional
-  leaveEntitlements: Yup.object({
-    casualLeave: Yup.object({
-      total: Yup.number().min(0),
-      used: Yup.number().min(0),
-    }),
-    sickLeave: Yup.object({
-      total: Yup.number().min(0),
-      used: Yup.number().min(0),
-    }),
-    annualLeave: Yup.object({
-      total: Yup.number().min(0),
-      used: Yup.number().min(0),
-    }),
-    maternityLeave: Yup.object({
-      total: Yup.number().min(0),
-      used: Yup.number().min(0),
-    }),
-    paternityLeave: Yup.object({
-      total: Yup.number().min(0),
-      used: Yup.number().min(0),
-    }),
-  }).optional(),
+  // ✅ THIS IS THE KEY FIX
+  leaveMultiSelect: Yup.array()
+    .min(1, "At least one leave must be selected")
+    .required("At least one leave must be selected"),
 });
+
 export const payrollSchema = Yup.object({
   employeeId: Yup.string().required("Employee ID is required"),
   employeeName: Yup.string().required("Employee Name is required"),
+  position: Yup.string().required("Position Name is required"),
   month: Yup.string().required("Month is required"),
   year: Yup.number().required("Year is required"),
+  approvedLeaves: Yup.number().required("Approved Leaves is required"),
+  presentDays: Yup.number().required("Present Days is required"),
   basicSalary: Yup.number().required("Basic Salary is required"),
   totalWorkingDays: Yup.number().required("Total Working Days is required"),
   allowances: Yup.object({
@@ -141,7 +126,5 @@ export const LeaveSchema = Yup.object().shape({
     .typeError("Invalid end date")
     .min(Yup.ref("startDate"), "End date cannot be before start date"),
 
-  reason: Yup.string()
-    .max(500, "Reason cannot exceed 500 characters")
-    .nullable(),
+  reason: Yup.string().required("Reason is required"),
 });

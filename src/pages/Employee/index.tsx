@@ -43,8 +43,8 @@ const leaveOptions = [
 ];
 
 const titles = [
-  "Employees Id",
-  "Employees Name",
+  "Employee Id",
+  "Employee Name",
   "Phone No.",
   "Joining Date",
   "Role",

@@ -308,69 +308,156 @@ export default function Payroll() {
             <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div className="flex flex-wrap gap-6">
                 <div className="flex-1 space-y-4 min-w-70">
-                  <CustomInput
-                    label="Employee ID"
-                    placeholder="Enter Employee ID"
-                    name="employeeId"
-                    value={formik.values.employeeId}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Employee Name"
-                    placeholder="Enter Employee Name"
-                    name="employeeName"
-                    value={formik.values.employeeName}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Position"
-                    placeholder="Enter Position"
-                    name="position"
-                    value={formik.values.position}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Month"
-                    placeholder="Enter Month"
-                    name="month"
-                    value={formik.values.month}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Year"
-                    placeholder="Enter Year"
-                    name="year"
-                    value={formik.values.year}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Present Days"
-                    placeholder="Enter Present Days"
-                    name="presentDays"
-                    value={formik.values.presentDays}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Working Days"
-                    placeholder="Enter Working Days"
-                    name="totalWorkingDays"
-                    value={formik.values.totalWorkingDays}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Approved Leaves"
-                    placeholder="Enter Approved Leaves"
-                    name="approvedLeaves"
-                    value={formik.values.approvedLeaves}
-                    onChange={formik.handleChange}
-                  />
-                  <CustomInput
-                    label="Basic Salary"
-                    placeholder="Enter Basic Salary"
-                    name="basicSalary"
-                    value={formik.values.basicSalary}
-                    onChange={formik.handleChange}
-                  />
+                  <div>
+                    <CustomInput
+                      label="Employee ID"
+                      placeholder="Enter Employee ID"
+                      name="employeeId"
+                      value={formik.values.employeeId}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.employeeId &&
+                      formik.errors.employeeId &&
+                      typeof formik.errors.employeeId === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeId}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Employee Name"
+                      placeholder="Enter Employee Name"
+                      name="employeeName"
+                      value={formik.values.employeeName}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.employeeName &&
+                      formik.errors.employeeName &&
+                      typeof formik.errors.employeeName === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.employeeName}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <CustomInput
+                      label="Position"
+                      placeholder="Enter Position"
+                      name="position"
+                      value={formik.values.position}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.position &&
+                      formik.errors.position &&
+                      typeof formik.errors.position === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.position}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Month"
+                      placeholder="Enter Month"
+                      name="month"
+                      value={formik.values.month}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.month &&
+                      formik.errors.month &&
+                      typeof formik.errors.month === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.month}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Year"
+                      placeholder="Enter Year"
+                      name="year"
+                      value={formik.values.year}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.year &&
+                      formik.errors.year &&
+                      typeof formik.errors.year === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.year}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Present Days"
+                      placeholder="Enter Present Days"
+                      name="presentDays"
+                      value={formik.values.presentDays}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.presentDays &&
+                      formik.errors.presentDays &&
+                      typeof formik.errors.presentDays === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.presentDays}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Working Days"
+                      placeholder="Enter Working Days"
+                      name="totalWorkingDays"
+                      value={formik.values.totalWorkingDays}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.totalWorkingDays &&
+                      formik.errors.totalWorkingDays &&
+                      typeof formik.errors.totalWorkingDays === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.totalWorkingDays}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Approved Leaves"
+                      placeholder="Enter Approved Leaves"
+                      name="approvedLeaves"
+                      value={formik.values.approvedLeaves}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.approvedLeaves &&
+                      formik.errors.approvedLeaves &&
+                      typeof formik.errors.approvedLeaves === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.approvedLeaves}
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Basic Salary"
+                      placeholder="Enter Basic Salary"
+                      name="basicSalary"
+                      value={formik.values.basicSalary}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.basicSalary &&
+                      formik.errors.basicSalary &&
+                      typeof formik.errors.basicSalary === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.basicSalary}
+                        </div>
+                      )}
+                  </div>
                 </div>
 
                 <div className="flex-1 space-y-4 min-w-70">

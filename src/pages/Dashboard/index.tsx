@@ -299,7 +299,7 @@ export default function DashBoard() {
         <div className="flex flex-wrap gap-4 mt-4 ">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
             <div className="flex flex-wrap items-center gap-4 mb-5 pl-5 text-[#131313]">
-              <p className="lg:text-xl w-full md:w-auto font-semibold">
+              <p className="w-full font-semibold lg:text-xl md:w-auto">
                 Employee Work Hours
               </p>{" "}
               <div className="border border-l-[#000000]/20 md:w-px w-full md:h-5 h-px"></div>{" "}
