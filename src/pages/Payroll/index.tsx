@@ -191,6 +191,7 @@ export default function Payroll() {
       position: editing?.position || "",
       month: editing?.month || "",
       year: editing?.year || "",
+      totalWorkingDays: editing?.totalWorkingDays || "",
       presentDays: editing?.presentDays || 0,
       approvedLeaves: editing?.approvedLeaves || 0,
       basicSalary: editing?.basicSalary || 0,
@@ -240,7 +241,6 @@ export default function Payroll() {
       }
     },
   });
-
   useEffect(() => {
     document.title = "HR-Management | Payroll";
   }, []);
@@ -274,10 +274,10 @@ export default function Payroll() {
             </button>
           </div>
         </div>
-        <div className="bg-[#E5EBF7] p-4 mt-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
+        <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl h-auto">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            className="scroll-smooth w-full overflow-x-auto bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64vh-0px)] overflow-y-auto scrollbar-none"
+            className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"
           >
             <CustomTable
               titles={tableHeaders}
@@ -349,6 +349,13 @@ export default function Payroll() {
                     placeholder="Enter Present Days"
                     name="presentDays"
                     value={formik.values.presentDays}
+                    onChange={formik.handleChange}
+                  />
+                  <CustomInput
+                    label="Working Days"
+                    placeholder="Enter Working Days"
+                    name="totalWorkingDays"
+                    value={formik.values.totalWorkingDays}
                     onChange={formik.handleChange}
                   />
                   <CustomInput

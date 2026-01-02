@@ -168,8 +168,12 @@ export default function Leaves() {
             formik.resetForm();
             refetch();
           })
-          .catch(() => notifyError("Failed to add Leaves."))
-          .finally(() => setLoading(false));
+          .catch((error: any) => {
+            // Check if backend sent a message
+            const message =
+              error?.response?.data?.message || "Failed to add Leaves.";
+            notifyError(message);
+          });
       }
     },
   });
@@ -185,7 +189,11 @@ export default function Leaves() {
       })
       .catch((error) => {
         console.error("Failed to delete Leaves:", error);
-        notifyError("Failed to delete Leaves. Please try again.");
+        const message =
+          error.response?.data?.message ||
+          "Failed to delete Leaves. Please try again.";
+
+        notifyError(message);
       })
       .finally(() => setLoadingDelete(false));
   };
@@ -213,7 +221,7 @@ export default function Leaves() {
             <p className="text-base font-medium text-white">Add Leave</p>
           </button>
         </div>
-        <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]">
+        <div className="bg-[#E5EBF7] mt-4 p-4 rounded-xl h-auto">
           <div
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             className="scroll-smooth bg-white rounded-xl 2xl:h-[calc(76vh-0px)] xl:h-[calc(64.4vh-0px)]  overflow-y-auto scrollbar-none"

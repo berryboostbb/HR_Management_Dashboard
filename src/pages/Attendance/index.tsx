@@ -2,15 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import CustomTable from "../../Components/CustomTable";
 import {
   getAllAttendance,
-  updateAttendance,
+  updateAttendanceAdmin,
 } from "../../api/attendanceServices";
 import dayjs, { Dayjs } from "dayjs";
 import { TbEdit } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
-import CustomSelect from "../../Components/Select";
 import TimePicker from "../../Components/TimePicker";
-// import DatePicker from "../../Components/DatePicker";
 import { useFormik } from "formik";
 import { Spin } from "antd";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
@@ -21,7 +19,6 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 import type { AxiosResponse } from "axios";
 import { useDebounce } from "../../Components/Debounce";
 import { Icon } from "@iconify/react";
-// import { Icon } from "@iconify/react";
 
 const titles = [
   "Employee Id",
@@ -49,8 +46,6 @@ const months = [
   "December",
 ];
 
-const optionStatus = ["Present", "Late", "Absent", "Half-day", "On Leave"];
-
 export default function Attendance() {
   useEffect(() => {
     document.title = "HR-Management | Attendance";
@@ -76,6 +71,20 @@ export default function Attendance() {
   };
 
   const searchValue = debouncedSearchId || debouncedSearchName;
+  const getStatusClasses = (status: string) => {
+    switch (status) {
+      case "Present":
+        return "text-green-600 border border-green-600";
+      case "Absent":
+        return "text-red-600 border border-red-600";
+      case "Late":
+        return "text-orange-500 border border-orange-500";
+      case "On Leave":
+        return "text-blue-600 border border-blue-600";
+      default:
+        return "text-gray-500 border border-gray-500";
+    }
+  };
 
   const [selectedMonthYear, setSelectedMonthYear] = useState<{
     month: number;
@@ -125,29 +134,41 @@ export default function Attendance() {
       v.date ? dayjs(v.date).format("YYYY-MM-DD") : "--",
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",
-      v.checkOut?.location?.address || "--",
-      v?.status,
-      <TbEdit
-        key={v._id}
-        size={18}
-        className="cursor-pointer text-[#0755E9]"
-        onClick={() => {
-          setEditing(v);
-          setOpenModel(true);
-        }}
+
+      <GeoAddress
+        lat={v.checkOut?.location?.lat}
+        lng={v.checkOut?.location?.lng}
       />,
+
+      <p
+        className={`px-2 py-0.5 rounded inline-block text-center ${getStatusClasses(
+          v?.status
+        )}`}
+      >
+        {v?.status}
+      </p>,
+      <button
+        disabled={v.status == "On Leave"}
+        className="text-[#0755E9] disabled:text-[#7d7d7d]"
+      >
+        <TbEdit
+          key={v._id}
+          size={18}
+          className="cursor-pointer "
+          onClick={() => {
+            setEditing(v);
+            setOpenModel(true);
+          }}
+        />
+      </button>,
     ]) || [];
 
   const formik = useFormik<{
-    date: Dayjs | null;
-    status: string;
     checkIn: Dayjs | null;
     checkOut: Dayjs | null;
   }>({
     enableReinitialize: true,
     initialValues: {
-      date: editing?.date ? dayjs(editing.date) : null,
-      status: editing?.status || "",
       checkIn: editing?.checkIn?.time ? dayjs(editing.checkIn.time) : null,
       checkOut: editing?.checkOut?.time ? dayjs(editing.checkOut.time) : null,
     },
@@ -155,14 +176,14 @@ export default function Attendance() {
       setLoading(true);
 
       const payload = {
-        status: values.status,
-        checkIn: values.checkIn ? { time: values.checkIn.toISOString() } : null,
-        checkOut: values.checkOut
-          ? { time: values.checkOut.toISOString() }
-          : null,
+        checkInTime: values.checkIn ? values.checkIn.toISOString() : undefined,
+
+        checkOutTime: values.checkOut
+          ? values.checkOut.toISOString()
+          : undefined,
       };
 
-      updateAttendance(editing._id, payload)
+      updateAttendanceAdmin(editing._id, payload)
         .then(() => {
           notifySuccess("Attendance updated successfully");
           setOpenModel(false);
@@ -187,7 +208,7 @@ export default function Attendance() {
             <div
               key={role}
               onClick={() => setActiveTab(role as any)}
-              className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30 w-full ${
+              className={`cursor-pointer rounded-t-2xl rounded-b-2xl md:rounded-b-none h-10 md:h-14 flex justify-center items-center sm:w-30 xl:w-25 w-full ${
                 activeTab === role
                   ? "bg-[#E5EBF7] text-black"
                   : "bg-white text-[#7d7d7d]"
@@ -210,23 +231,23 @@ export default function Attendance() {
               } transition-transform duration-200`}
             />
           </div>
-          <div className="w-[calc(100%-60px)] md:w-50">
+          <div className="w-[calc(100%-60px)] md:w-50 xl:w-45 2xl:w-50">
             <MonthYearPickerNumber
               value={selectedMonthYear}
               onChange={setSelectedMonthYear}
             />{" "}
           </div>
-          <div className="md:w-50 lg:w-auto">
+          <div className="md:w-50 lg:w-auto xl:w-45 2xl:w-70">
             {" "}
             <SearchById value={searchId} onChange={setSearchId} />
           </div>
-          <div className="md:w-50 lg:w-auto">
+          <div className="md:w-50 lg:w-auto xl:w-45 2xl:w-70">
             <SearchByName value={searchName} onChange={setSearchName} />
           </div>
         </div>
       </div>
       <div
-        className={`bg-[#E5EBF7] p-4 rounded-xl 2xl:h-[calc(79.5vh-0px)] xl:h-[calc(69.4vh-0px)]  ${
+        className={`bg-[#E5EBF7] p-4 rounded-xl h-auto  ${
           activeTab === "Field Staff" ? "rounded-tl-none" : ""
         }`}
       >
@@ -260,33 +281,19 @@ export default function Attendance() {
 
             <form onSubmit={formik.handleSubmit} className="p-6">
               <div className="space-y-4">
-                {" "}
-                <CustomSelect
-                  placeholder="Update Status"
-                  value={formik.values.status}
-                  options={optionStatus}
-                  onChange={(val: string) =>
-                    formik.setFieldValue("status", val)
-                  }
-                />
-                {/* <SearchSelect /> */}
-                {/* <DatePicker
-                  label="Date"
-                  value={formik.values.date}
-                  onChange={(date) => formik.setFieldValue("date", date)}
-                /> */}
                 <TimePicker
                   label="CheckIn"
                   value={formik.values.checkIn}
                   onChange={(checkIn) =>
                     formik.setFieldValue("checkIn", checkIn)
                   }
-                />{" "}
+                />
+
                 <TimePicker
                   label="Check out"
                   value={formik.values.checkOut}
                   onChange={(checkOut) =>
-                    formik.setFieldValue("checkout", checkOut)
+                    formik.setFieldValue("checkOut", checkOut)
                   }
                 />
               </div>
@@ -352,7 +359,7 @@ const MonthYearPickerNumber: React.FC<MonthYearPickerProps> = ({
       {open && (
         <div className="absolute z-50 flex w-full gap-2 p-3 mt-1 text-xs bg-[#E5EBF7] rounded shadow-lg">
           <select
-            className="flex-1 p-1 border border-[#0755E9] rounded"
+            className="flex-1 p-1 w-10 border border-[#0755E9] rounded"
             value={value.month}
             onChange={(e) => handleMonthChange(Number(e.target.value))}
           >
@@ -378,4 +385,42 @@ const MonthYearPickerNumber: React.FC<MonthYearPickerProps> = ({
       )}
     </div>
   );
+};
+
+// const res = await fetch(
+//   `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&region=PK&language=en&key=AIzaSyBrNjsUsrJ0Mmjhe-WUKDKVaIsMkZ8iQ4A`
+// );
+
+interface GeoAddressProps {
+  lat: number;
+  lng: number;
+}
+
+const GeoAddress: React.FC<GeoAddressProps> = ({ lat, lng }) => {
+  console.log("🚀 ~ GeoAddress ~ lng:", lng);
+  console.log("🚀 ~ GeoAddress ~ lat:", lat);
+  const [address, setAddress] = useState<string>("Loading...");
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=street_address&language=en&key=AIzaSyBrNjsUsrJ0Mmjhe-WUKDKVaIsMkZ8iQ4A`
+        );
+        const data = await res.json();
+        if (data.status === "OK" && data.results.length > 0) {
+          setAddress(data.results[0].formatted_address);
+        } else {
+          setAddress("--");
+        }
+      } catch (error) {
+        console.error(error);
+        setAddress("Error fetching address");
+      }
+    };
+
+    fetchAddress();
+  }, [lat, lng]);
+
+  return <p>{address}</p>;
 };
