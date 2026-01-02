@@ -47,7 +47,7 @@ export default function DashBoard() {
             className="hidden w-full lg:block lg:h-60 2xl:h-60"
           />
           <img src={birthday2} className="block w-full lg:hidden" />
-          <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
+          <div className="absolute z-1 md:top-[40%] top-[20%] lg:left-[12%] md:left-[3%] left-[8%]">
             <div className="w-full text-base text-white lg:text-3xl md:text-xl">
               It’s{" "}
               <strong>
@@ -61,7 +61,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="w-full text-xs text-white lg:text-base lg:w-200">
+            <p className="md:w-full w-[60%] text-xs text-white lg:text-base lg:w-200">
               You have {birthdayData.length} birthday today, post on the social
               handle and also celebrate in the office.
             </p>
