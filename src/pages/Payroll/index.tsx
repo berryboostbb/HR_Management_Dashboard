@@ -21,6 +21,7 @@ import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { MonthYearPicker } from "../../Components/FilterMonthYear";
+import { useSelector } from "react-redux";
 
 const tableHeaders = [
   "Employee ID",
@@ -29,6 +30,7 @@ const tableHeaders = [
   "Present Days",
   "Gross Salary",
   "Net Pay",
+  "Approved By",
   "Payroll Status",
   "Action",
 ];
@@ -52,7 +54,9 @@ export default function Payroll() {
   const [editing, setEditing] = useState<any>(null);
   const [openModel, setOpenModel] = useState(false);
   const [isloading, setLoading] = useState(false);
-
+  const { user } = useSelector((state: any) => {
+    return state.user;
+  });
   const [searchId, setSearchId] = useState("");
   const [searchName, setSearchName] = useState("");
   const debouncedSearchId = useDebounce(searchId, 500);
@@ -88,7 +92,9 @@ export default function Payroll() {
       return;
     }
 
-    approvePayroll(rowData._id)
+    const approverName = user?.name || "Admin";
+
+    approvePayroll(rowData._id, { approvedBy: approverName })
       .then(() => {
         notifySuccess("Payroll approved successfully");
         refetch();
@@ -109,6 +115,8 @@ export default function Payroll() {
       });
     }
   };
+  data?.data;
+  console.log("🚀 ~ Payroll ~   data?.data:", data?.data);
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
@@ -117,6 +125,7 @@ export default function Payroll() {
       v.presentDays,
       v.grossSalary,
       v.netPay,
+      v?.approvedBy,
       <span
         key={v._id + "-status"}
         className={`px-3 py-0.5 rounded-sm font-medium text-sm border ${
@@ -143,41 +152,27 @@ export default function Payroll() {
 
         {openActionId === v._id && (
           <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
-            <div
+            <button
+              disabled={v.payrollStatus == "Approved"}
               onClick={() => {
                 setEditing(v);
                 setOpenModel(true);
                 setOpenActionId(null);
               }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 w-full text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2 disabled:text-[#7d7d7d]/48"
             >
               Edit
-            </div>
-            {/* <div
-              onClick={() => {
-                setEditing(v);
-              }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
-            >
-              Share Slip
-            </div>{" "} */}
-            <div
+            </button>
+            <button
+              disabled={v.payrollStatus == "Approved"}
               onClick={() => {
                 handleApprove(v);
                 setOpenActionId(null);
               }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 w-full text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2 disabled:text-[#7d7d7d]/48"
             >
               Approved
-            </div>{" "}
-            {/* <div
-              onClick={() => {
-                setEditing(v);
-              }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
-            >
-              Print
-            </div> */}
+            </button>{" "}
           </div>
         )}
       </div>,
@@ -254,10 +249,10 @@ export default function Payroll() {
           />{" "}
           <div className="flex flex-wrap items-center w-full gap-5 md:gap-4 md:w-auto">
             <div className="flex flex-wrap items-center gap-2 md:flex-nowrap">
-              <div className="md:w-62 lg:w-60 xl:w-70 2xl:w-70 w-full">
+              <div className="w-full md:w-62 lg:w-60 xl:w-70 2xl:w-70">
                 <SearchById value={searchId} onChange={setSearchId} />
               </div>
-              <div className="md:w-62 lg:w-60 xl:w-70 2xl:w-70 w-full">
+              <div className="w-full md:w-62 lg:w-60 xl:w-70 2xl:w-70">
                 <SearchByName value={searchName} onChange={setSearchName} />
               </div>
             </div>

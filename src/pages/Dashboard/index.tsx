@@ -47,7 +47,7 @@ export default function DashBoard() {
             className="hidden w-full lg:block lg:h-60 2xl:h-60"
           />
           <img src={birthday2} className="block w-full lg:hidden" />
-          <div className="absolute z-1 top-[40%] lg:left-[12%] md:left-[3%] left-[8%]">
+          <div className="absolute z-1 md:top-[40%] top-[20%] lg:left-[12%] md:left-[3%] left-[8%]">
             <div className="w-full text-base text-white lg:text-3xl md:text-xl">
               It’s{" "}
               <strong>
@@ -61,7 +61,7 @@ export default function DashBoard() {
               </strong>
               Today{" "}
             </div>{" "}
-            <p className="w-full text-xs text-white lg:text-lg lg:w-200">
+            <p className="md:w-full w-[60%] text-xs text-white lg:text-base lg:w-200">
               You have {birthdayData.length} birthday today, post on the social
               handle and also celebrate in the office.
             </p>
@@ -298,9 +298,11 @@ export default function DashBoard() {
         </div>
         <div className="flex flex-wrap gap-4 mt-4 ">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
-            <div className="flex items-center gap-4 mb-5 px-5 text-[#131313]">
-              <p className="text-xl font-semibold">Employee Work Hours</p>{" "}
-              <div className="border border-l-[#000000]/20 h-5"></div>{" "}
+            <div className="flex flex-wrap items-center gap-4 mb-5 pl-5 text-[#131313]">
+              <p className="lg:text-xl w-full md:w-auto font-semibold">
+                Employee Work Hours
+              </p>{" "}
+              <div className="border border-l-[#000000]/20 md:w-px w-full md:h-5 h-px"></div>{" "}
               <div className="flex items-center">
                 <Icon
                   icon="radix-icons:dot-filled"

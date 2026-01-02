@@ -101,26 +101,28 @@ export default function Leaves() {
 
         {openActionId === v._id && (
           <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
-            <div
+            <button
+              disabled={v.status == "Approved"}
               onClick={() => {
                 setEditing(v);
                 setOpenModel(true);
                 setOpenActionId(null);
               }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm w-full hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2 disabled:text-[#7d7d7d]/48"
             >
               Edit
-            </div>
+            </button>
 
-            <div
+            <button
+              disabled={v.status == "Approved"}
               onClick={() => {
                 setDeleteConfirmation(true);
                 setEditing(v);
               }}
-              className="px-4 py-2 text-sm hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm w-full hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2 disabled:text-[#7d7d7d]/48"
             >
               Delte
-            </div>
+            </button>
           </div>
         )}
       </div>,
