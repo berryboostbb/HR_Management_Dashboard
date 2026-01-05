@@ -5,8 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { updatePassword } from "../../api/adminServices";
+import { notifyError, notifySuccess } from "../../Components/Toast";
 
 interface EmployeeData {
+  _id: string;
   employeeId: string;
   image: string;
   name: string;
@@ -44,11 +47,25 @@ interface EmployeeData {
 
 export default function EmployeeDetails() {
   const location = useLocation();
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const { rowData } = (location.state as { rowData: EmployeeData }) || {};
-  console.log("🚀 ~ EmployeeDetails ~ rowData:", rowData);
   const navigate = useNavigate();
+  const handleUpdatePassword = async () => {
+    try {
+      await updatePassword(rowData._id, { password });
+      notifySuccess("Password updated successfully!");
+      setPassword("");
+      setOpenModel(false);
+    } catch (err: any) {
+      console.error(err);
+      notifyError(err?.response?.data?.message || "Failed to update password");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -325,8 +342,11 @@ export default function EmployeeDetails() {
                   name="password"
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
                 />
+
                 <span
                   className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
                   onClick={() => setPasswordVisible(!passwordVisible)}
@@ -338,6 +358,15 @@ export default function EmployeeDetails() {
                   )}
                 </span>
               </div>
+            </div>
+            <div className="flex justify-end mt-5">
+              <button
+                onClick={handleUpdatePassword}
+                disabled={loading}
+                className="px-4 py-2 cursor-pointer rounded-md bg-[#0755E9] text-white"
+              >
+                {loading ? "Updating..." : "Update Password"}
+              </button>
             </div>
           </div>
         </div>

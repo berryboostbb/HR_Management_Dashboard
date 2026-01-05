@@ -104,7 +104,10 @@ export default function Employee() {
 
   const objectToMultiSelect = (leave: any) =>
     Object.keys(leaveLabelMap)
-      .map((label) => ({ label, amount: leave?.[leaveLabelMap[label]] || 0 }))
+      .map((label) => ({
+        label,
+        amount: leave?.[leaveLabelMap[label]]?.total || 0, // total amount
+      }))
       .filter((v) => v.amount > 0);
 
   const multiSelectToObject = (arr: SelectedOption[]) => {
@@ -199,7 +202,7 @@ export default function Employee() {
       name: editing?.name || "",
       gender: editing?.gender || "",
       email: editing?.email || "",
-      password: editing?.password || "",
+      password: "",
       phoneNumber: editing?.phoneNumber || "",
       role: editing?.role || "",
       employeeType: editing?.employeeType || "",
@@ -222,17 +225,10 @@ export default function Employee() {
         pf: editing?.loanPF?.pf || 0,
       },
       image: editing?.image || "",
-      leaveMultiSelect: objectToMultiSelect(
-        editing?.leaveEntitlements || {
-          casualLeave: 0,
-          sickLeave: 0,
-          annualLeave: 0,
-          maternityLeave: 0,
-          paternityLeave: 0,
-        }
-      ), // UI
+      leaveMultiSelect: editing
+        ? objectToMultiSelect(editing.leaveEntitlements)
+        : [], // empty array for new
       leaveEntitlements: editing?.leaveEntitlements || {
-        // For validation & submission
         casualLeave: 0,
         sickLeave: 0,
         annualLeave: 0,
@@ -240,14 +236,13 @@ export default function Employee() {
         paternityLeave: 0,
       },
     },
-    validationSchema: employeeSchema,
+    validationSchema: employeeSchema(!!editing),
     onSubmit: (values) => {
       setLoading(true);
-      const payload = {
+      const payload: any = {
         name: values.name,
         gender: values.gender,
         email: values.email,
-        password: values.password,
         phoneNumber: values.phoneNumber,
         role: values.role,
         employeeType: values.employeeType,
@@ -260,6 +255,10 @@ export default function Employee() {
         image: values.image,
         leaveEntitlements: multiSelectToObject(values.leaveMultiSelect),
       };
+
+      if (values.password) {
+        payload.password = values.password;
+      }
 
       const action = editing
         ? updateAccount(editing._id, payload)
@@ -798,7 +797,7 @@ export default function Employee() {
                       placeholder="Select leave"
                       options={leaveOptions}
                       value={formik.values.leaveMultiSelect}
-                      onChange={(val) => {
+                      onChange={(val: SelectedOption[]) => {
                         formik.setFieldValue("leaveMultiSelect", val);
                         formik.setFieldValue(
                           "leaveEntitlements",
@@ -806,13 +805,6 @@ export default function Employee() {
                         );
                       }}
                     />
-                    {formik.touched.leaveMultiSelect &&
-                      formik.errors.leaveMultiSelect &&
-                      typeof formik.errors.leaveMultiSelect === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.leaveMultiSelect}
-                        </div>
-                      )}
                   </div>
                 </div>
               </div>

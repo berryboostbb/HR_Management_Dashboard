@@ -30,3 +30,10 @@ export const updateAccount = (id: string, values: any) => {
 export const deleteAccount = (id: string) => {
   return HTTP_CLIENT.delete(`${ENDPOINTS.ACCOUNTS_DELETE}/${id}`);
 };
+
+export const updatePassword = (id: string, values: { password: string }) => {
+  return HTTP_CLIENT.patch(
+    `${ENDPOINTS.ACCOUNTS_UPDATEPASSWORD}/${id}`,
+    values
+  );
+};

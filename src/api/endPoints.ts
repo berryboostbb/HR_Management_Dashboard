@@ -1,8 +1,6 @@
-// export const BASE_URL = "http://localhost:5001";
-export const BASE_URL =
-  "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
-
-// export const BASE_URL = "https://hr-management-backend-beta.vercel.app";
+export const BASE_URL = "http://localhost:5001";
+// export const BASE_URL =
+//   "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------
@@ -14,6 +12,7 @@ export const ENDPOINTS = {
   ACCOUNTS_ADD: "/auth/register",
   ACCOUNTS_BIRTHDAY: "/auth/birthdays",
   ACCOUNTS_ROLE: "/auth/getRoles",
+  ACCOUNTS_UPDATEPASSWORD: "/auth/updatePassword",
 
   //   ---------------Attendance----------
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",

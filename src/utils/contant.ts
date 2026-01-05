@@ -51,25 +51,29 @@ export const LoginSchema = Yup.object({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
 });
-export const employeeSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  gender: Yup.string().required("Gender is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  phoneNumber: Yup.string().required("Phone number is required"),
-  password: Yup.string().min(8).required("Password is required"),
-  role: Yup.string().required("Role is required"),
-  employeeType: Yup.string().required("Employee type is required"),
-  image: Yup.string().required("Image is required"),
-  department: Yup.string().required("Department is required"),
-  DOB: Yup.mixed().required("Date of Birth is required"),
-  joiningDate: Yup.mixed().required("Joining date is required"),
-  employeeStatus: Yup.string().required("Employee Status is required"),
 
-  // ✅ THIS IS THE KEY FIX
-  leaveMultiSelect: Yup.array()
-    .min(1, "At least one leave must be selected")
-    .required("At least one leave must be selected"),
-});
+export const employeeSchema = (isEditing: boolean) =>
+  Yup.object({
+    name: Yup.string().required("Name is required"),
+    gender: Yup.string().required("Gender is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    phoneNumber: Yup.string().required("Phone number is required"),
+    password: isEditing
+      ? Yup.string().min(8, "Password must be at least 8 characters")
+      : Yup.string()
+          .min(8, "Password must be at least 8 characters")
+          .required("Password is required"),
+    role: Yup.string().required("Role is required"),
+    employeeType: Yup.string().required("Employee type is required"),
+    image: Yup.string().required("Image is required"),
+    department: Yup.string().required("Department is required"),
+    DOB: Yup.mixed().required("Date of Birth is required"),
+    joiningDate: Yup.mixed().required("Joining date is required"),
+    employeeStatus: Yup.string().required("Employee Status is required"),
+    leaveMultiSelect: Yup.array()
+      .min(1, "At least one leave must be selected")
+      .required("At least one leave must be selected"),
+  });
 
 export const payrollSchema = Yup.object({
   employeeId: Yup.string().required("Employee ID is required"),
