@@ -273,6 +273,7 @@ export default function Employee() {
           notifyError(
             editing ? "Failed to update Employee." : "Failed to add Employee."
           );
+          setLoading(false);
         })
         .finally(() => setLoading(false));
     },
@@ -757,7 +758,7 @@ export default function Employee() {
                     <ImagePicker
                       label="Upload Image"
                       placeholder="Upload Image Here..."
-                      fileType="Manage MR"
+                      fileType="Hr-Management"
                       type="image"
                       value={formik.values.image}
                       onChange={(val: any) =>

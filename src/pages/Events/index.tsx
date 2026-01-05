@@ -224,7 +224,7 @@ export default function Events() {
                 <ImagePicker
                   placeholder="Upload Cover Photos"
                   label="Cover Photos"
-                  fileType="Manage MR"
+                  fileType="Hr-Management"
                   type="image"
                   value={formik.values.coverImage}
                   onChange={(val: any) =>

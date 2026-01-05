@@ -213,6 +213,7 @@ export default function Attendance() {
       notifySuccess(
         res.data?.message || "Daily attendance generated successfully"
       );
+      refetch();
     } catch (error: any) {
       console.error("Generate attendance error:", error);
 

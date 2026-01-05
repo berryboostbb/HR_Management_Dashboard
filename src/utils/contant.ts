@@ -117,8 +117,6 @@ export const LeaveSchema = Yup.object().shape({
 
   leaveType: Yup.string().required("Leave type is required"),
 
-  startDate: Yup.date().required("Start date is required"),
-
   endDate: Yup.date().required("End date is required"),
 
   reason: Yup.string().required("Reason is required"),
