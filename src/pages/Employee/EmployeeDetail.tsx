@@ -8,6 +8,8 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { updatePassword } from "../../api/adminServices";
 import { notifyError, notifySuccess } from "../../Components/Toast";
+import { Loading3QuartersOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 interface EmployeeData {
   _id: string;
@@ -51,15 +53,14 @@ export default function EmployeeDetails() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [openModel, setOpenModel] = useState(false);
   const { rowData } = (location.state as { rowData: EmployeeData }) || {};
   const navigate = useNavigate();
   const handleUpdatePassword = async () => {
+    setLoading(true);
     try {
       await updatePassword(rowData._id, { password });
       notifySuccess("Password updated successfully!");
       setPassword("");
-      setOpenModel(false);
     } catch (err: any) {
       console.error(err);
       notifyError(err?.response?.data?.message || "Failed to update password");
@@ -165,29 +166,51 @@ export default function EmployeeDetails() {
             <p className="text-sm font-medium text-[#131313] mb-3">Password</p>
 
             <div className="flex items-center gap-4">
-              <div className="relative flex-1">
-                <label className="absolute -top-2 left-4 bg-[#EEF3FB] px-1 text-xs text-[#7D7D7D]">
+              <div className="relative w-full">
+                <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
                   Password
                 </label>
-
                 <input
-                  type="password"
-                  value="********"
-                  disabled
-                  className="w-full h-12 rounded-md border border-[#8FB1FF] bg-[#EEF3FB] px-4 pr-12 text-sm text-[#131313]"
+                  id="password"
+                  name="password"
+                  type={passwordVisible ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="rounded-md w-full h-12 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
                 />
 
-                <span className="absolute right-4 top-3 text-[#0755E9] cursor-pointer">
-                  <FiEyeOff size={18} />
+                <span
+                  className="absolute right-4 top-3.5 cursor-pointer text-[#7D7D7D]"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? (
+                    <FiEye style={{ fontSize: "20px" }} />
+                  ) : (
+                    <FiEyeOff style={{ fontSize: "20px" }} />
+                  )}
                 </span>
               </div>
-
-              <button
-                onClick={() => setOpenModel(true)}
-                className="h-12 px-5 text-sm bg-[#0755E9] text-white rounded-md shadow-md"
-              >
-                Change Password
-              </button>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleUpdatePassword}
+                  disabled={loading}
+                  className="px-4 py-2 w-50  flex justify-center items-center h-12 cursor-pointer rounded-md bg-[#0755E9] text-white"
+                >
+                  {loading ? (
+                    <Spin
+                      indicator={
+                        <Loading3QuartersOutlined
+                          style={{ fontSize: 24, color: "white" }}
+                          spin
+                        />
+                      }
+                    />
+                  ) : (
+                    "Update Password"
+                  )}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -320,60 +343,6 @@ export default function EmployeeDetails() {
           </div>
         </div>
       </div>
-      {openModel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div
-            className="relative p-6 bg-white rounded-xl mx-3 w-150 max-h-[90vh] overflow-y-auto"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            <div className="flex justify-between mb-4">
-              <p className="text-xl font-medium">Update Password</p>
-              <IoMdCloseCircle
-                size={22}
-                onClick={() => setOpenModel(false)}
-                className="cursor-pointer text-[#0755E9]"
-              />
-            </div>
-            <div>
-              {" "}
-              <div className="relative w-full">
-                <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type={passwordVisible ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
-                />
-
-                <span
-                  className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                >
-                  {passwordVisible ? (
-                    <FiEye style={{ fontSize: "20px" }} />
-                  ) : (
-                    <FiEyeOff style={{ fontSize: "20px" }} />
-                  )}
-                </span>
-              </div>
-            </div>
-            <div className="flex justify-end mt-5">
-              <button
-                onClick={handleUpdatePassword}
-                disabled={loading}
-                className="px-4 py-2 cursor-pointer rounded-md bg-[#0755E9] text-white"
-              >
-                {loading ? "Updating..." : "Update Password"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
