@@ -72,7 +72,7 @@ export default function EmployeeDetails() {
             <div className="flex flex-col gap-4">
               <div className="relative border border-[#0755E9] rounded-md p-3 text-sm">
                 <span className="absolute left-3 -mt-8 translate-y-1 text-[#7D7D7D] text-sm bg-white border-3 border-white">
-                  DOB
+                  DOB 
                 </span>
                 <span className="ml-auto">March 28-1948</span>
               </div>
