@@ -28,6 +28,7 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 import { useDebounce } from "../../Components/Debounce";
 import type { AxiosResponse } from "axios";
 import { employeeSchema } from "../../utils/contant";
+import { useNavigate } from "react-router-dom";
 
 export interface SelectedOption {
   label: string;
@@ -53,6 +54,8 @@ const titles = [
 ];
 
 export default function Employee() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "HR-Management | Employees";
   }, []);
@@ -141,7 +144,12 @@ export default function Employee() {
         >
           {v?.employeeStatus}
         </div>,
-        <div className="relative">
+        <div
+          className="relative"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <Icon
             icon="ph:dots-three-outline-vertical-duotone"
             className="text-2xl text-[#0755E9] cursor-pointer"
@@ -310,7 +318,16 @@ export default function Employee() {
       })
       .catch(() => notifyError("Failed to update status"));
   };
+  const handleGoToDetails = (row: any[]) => {
+    console.log("Clicked row data:", row);
+    const rowData = data?.data?.find((v: any) => v.employeeId === row[0]);
 
+    if (rowData) {
+      navigate("/employees/employeeDetail", {
+        state: { rowData },
+      });
+    }
+  };
   return (
     <>
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
@@ -372,6 +389,7 @@ export default function Employee() {
               data={tableData}
               titles={titles}
               isFetching={isFetching}
+              handleGoToDetail={handleGoToDetails}
             />
           </div>
         </div>
@@ -443,40 +461,42 @@ export default function Employee() {
                         </div>
                       )}
                   </div>
-                  <div>
-                    {" "}
-                    <div className="relative w-full">
-                      <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
-                        Password
-                      </label>
-                      <input
-                        id="password"
-                        name="password"
-                        type={passwordVisible ? "text" : "password"}
-                        placeholder="Password"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
-                      />
-                      <span
-                        className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
-                        onClick={() => setPasswordVisible(!passwordVisible)}
-                      >
-                        {passwordVisible ? (
-                          <FiEye style={{ fontSize: "20px" }} />
-                        ) : (
-                          <FiEyeOff style={{ fontSize: "20px" }} />
+                  {!editing && (
+                    <div>
+                      {" "}
+                      <div className="relative w-full">
+                        <label className="absolute -top-2 left-5 bg-white px-1 text-xs text-[#7d7d7d]">
+                          Password
+                        </label>
+                        <input
+                          id="password"
+                          name="password"
+                          type={passwordVisible ? "text" : "password"}
+                          placeholder="Password"
+                          onChange={formik.handleChange}
+                          value={formik.values.password}
+                          className="rounded-md w-full h-14 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
+                        />
+                        <span
+                          className="absolute right-4 top-5 cursor-pointer text-[#7D7D7D]"
+                          onClick={() => setPasswordVisible(!passwordVisible)}
+                        >
+                          {passwordVisible ? (
+                            <FiEye style={{ fontSize: "20px" }} />
+                          ) : (
+                            <FiEyeOff style={{ fontSize: "20px" }} />
+                          )}
+                        </span>
+                      </div>
+                      {formik.touched.password &&
+                        formik.errors.password &&
+                        typeof formik.errors.password === "string" && (
+                          <div className="text-xs text-red-500">
+                            * {formik.errors.password}
+                          </div>
                         )}
-                      </span>
                     </div>
-                    {formik.touched.password &&
-                      formik.errors.password &&
-                      typeof formik.errors.password === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.password}
-                        </div>
-                      )}
-                  </div>
+                  )}
                   <div>
                     <CustomSelect
                       placeholder="Select Employee Role"
