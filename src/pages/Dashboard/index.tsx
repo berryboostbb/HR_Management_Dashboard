@@ -306,16 +306,16 @@ export default function DashBoard() {
               <div className="flex items-center">
                 <Icon
                   icon="radix-icons:dot-filled"
-                  className="text-2xl text-[#1ADDFA]"
+                  className="text-2xl text-[#0755E9]"
                 />
-                <p className="text-sm">Work</p>{" "}
+                <p className="text-sm">Total Employee</p>{" "}
               </div>{" "}
               <div className="flex items-center">
                 <Icon
                   icon="radix-icons:dot-filled"
-                  className="text-2xl text-[#0755E9]"
+                  className="text-2xl text-[#22C55E]"
                 />
-                <p className="text-sm">Overtime</p>{" "}
+                <p className="text-sm">Presents</p>{" "}
               </div>
             </div>
             <LineChart />

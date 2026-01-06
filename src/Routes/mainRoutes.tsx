@@ -4,6 +4,7 @@ import Events from "../pages/Events";
 import Employee from "../pages/Employee";
 import EmployeeDetail from "../pages/Employee/EmployeeDetail";
 import PayrollDetails from "../pages/Payroll/payRollDetails";
+import Setting from "../pages/Setting";
 const DashBoard = lazy(() => import("../pages/Dashboard"));
 const Leaves = lazy(() => import("../pages/Leaves"));
 const Payroll = lazy(() => import("../pages/Payroll"));
@@ -30,6 +31,7 @@ export default function MainRoutes() {
         <Route path="/payroll" element={<Payroll />} />
         <Route path="/payroll/payrollDetails" element={<PayrollDetails />} />
         <Route path="/salary" element={<Salary />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
     </Suspense>
   );

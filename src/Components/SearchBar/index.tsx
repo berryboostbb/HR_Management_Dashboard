@@ -19,6 +19,7 @@ export default function SearchBar() {
     "/events": "Events",
     "/payroll": "Payroll",
     "/payroll/payrollDetails": "Payroll Details",
+    setting: "Setting",
   } as const;
 
   const currentRoute = (

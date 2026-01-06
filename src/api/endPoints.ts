@@ -20,6 +20,9 @@ export const ENDPOINTS = {
   ATTENDANCE_SUMMARY: "/attendance/getAttendanceSummary",
   ATTENDANCE_UpdateAttendanceAdmin: "/attendance/updateAttendanceAdmin",
   ATTENDANCE_DAILYATTENDENCE: "/attendance/createDailyAttendance",
+  ATTENDANCE_GETATTENDANCEGRAPH: "/attendance/getMonthlyAttendanceGraph",
+  ATTENDANCE_UPDATECOMPANYTIMING: "/attendance/setCompanyTiming",
+  ATTENDANCE_COMPANYTIMING: "/attendance/getCompanyTiming",
 
   //   -----------UploadFIle-------------
   UPLOAD_FILE: "/upload/uploadFile",

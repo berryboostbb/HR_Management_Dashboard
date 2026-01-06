@@ -52,6 +52,10 @@ export default function EmployeeDetails() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const { rowData } = (location.state as { rowData: EmployeeData }) || {};
+  if (!rowData) {
+    // Data not yet available, or page accessed directly
+    return <p>Loading employee data...</p>;
+  }
   const navigate = useNavigate();
   const handleUpdatePassword = async () => {
     try {
@@ -242,13 +246,13 @@ export default function EmployeeDetails() {
                   <p className="font-medium ">
                     Total:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.annualLeave.total}
+                      {rowData.leaveEntitlements.annualLeave.total ?? 0}
                     </span>{" "}
                   </p>
                   <p className="font-medium ">
                     Consumed:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.annualLeave.consumed}
+                      {rowData.leaveEntitlements.annualLeave.consumed ?? 0}
                     </span>
                   </p>
                 </div>
@@ -257,13 +261,13 @@ export default function EmployeeDetails() {
                   <p className="font-medium ">
                     Total:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.casualLeave.total}
+                      {rowData.leaveEntitlements.casualLeave.total ?? 0}
                     </span>{" "}
                   </p>
                   <p className="font-medium ">
                     Consumed:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.casualLeave.consumed}
+                      {rowData.leaveEntitlements.casualLeave.consumed ?? 0}
                     </span>
                   </p>
                 </div>
@@ -272,13 +276,13 @@ export default function EmployeeDetails() {
                   <p className="font-medium ">
                     Total:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.maternityLeave.total}
+                      {rowData.leaveEntitlements.maternityLeave.total ?? 0}
                     </span>{" "}
                   </p>
                   <p className="font-medium ">
                     Consumed:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.maternityLeave.consumed}
+                      {rowData.leaveEntitlements.maternityLeave.consumed ?? 0}
                     </span>
                   </p>
                 </div>
@@ -287,13 +291,13 @@ export default function EmployeeDetails() {
                   <p className="font-medium ">
                     Total:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.paternityLeave.total}
+                      {rowData.leaveEntitlements.paternityLeave.total ?? 0}
                     </span>{" "}
                   </p>
                   <p className="font-medium ">
                     Consumed:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.paternityLeave.consumed}
+                      {rowData.leaveEntitlements.paternityLeave.consumed ?? 0}
                     </span>
                   </p>
                 </div>
@@ -302,13 +306,13 @@ export default function EmployeeDetails() {
                   <p className="font-medium ">
                     Total:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.sickLeave.total}
+                      {rowData.leaveEntitlements.sickLeave.total ?? 0}
                     </span>{" "}
                   </p>
                   <p className="font-medium ">
                     Consumed:{" "}
                     <span className="text-[#131313]">
-                      {rowData.leaveEntitlements.sickLeave.consumed}
+                      {rowData.leaveEntitlements.sickLeave.consumed ?? 0}
                     </span>
                   </p>
                 </div>

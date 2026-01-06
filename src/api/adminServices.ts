@@ -1,8 +1,26 @@
 import { HTTP_CLIENT } from "../utils/httpClient";
+import { getFCMToken } from "../utils/notifications";
 import { ENDPOINTS } from "./endPoints";
 
-export const adminLogin = (values: { email: string; password: string }) => {
-  return HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_LOGIN, values);
+export const adminLogin = async (values: {
+  email: string;
+  password: string;
+}) => {
+  try {
+    const fcmToken = await getFCMToken(); // get the device/browser FCM token
+
+    // Send login request with fcmToken
+    const response = await HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_LOGIN, {
+      ...values,
+      fcmToken, // include it in request body
+    });
+
+    console.log("Login response:", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("Login error:", error.response?.data || error.message);
+    throw error;
+  }
 };
 
 export const adminLogout = () => {

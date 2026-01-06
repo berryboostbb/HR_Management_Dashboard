@@ -1,3 +1,4 @@
+import axios from "axios";
 import { HTTP_CLIENT } from "../utils/httpClient";
 import { ENDPOINTS } from "./endPoints";
 
@@ -35,4 +36,22 @@ export const createDailyAttendance = (token: string) => {
       },
     }
   );
+};
+
+export const getAttendanceGraph = () => {
+  return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_GETATTENDANCEGRAPH);
+};
+
+export const setCompanyTimingAPI = (values: {
+  startTime: string;
+  endTime: string;
+  lateAfterMinutes: number;
+}) => {
+  return HTTP_CLIENT.post(
+    `${ENDPOINTS.ATTENDANCE_UPDATECOMPANYTIMING}`,
+    values
+  );
+};
+export const GetCompanyTimingAPI = () => {
+  return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_COMPANYTIMING);
 };

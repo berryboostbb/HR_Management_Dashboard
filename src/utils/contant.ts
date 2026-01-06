@@ -42,6 +42,11 @@ export const defaultLinks: SidebarLink[] = [
     path: "/payroll",
     icon: "ph:scroll-fill",
   },
+  {
+    name: "Setting",
+    path: "/setting",
+    icon: "lets-icons:setting-fill",
+  },
 ];
 
 // Schema

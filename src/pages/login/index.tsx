@@ -28,27 +28,40 @@ const Login = () => {
       await handleLogin(values);
     },
   });
+
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
     try {
       const response = await adminLogin(values);
-      const data = response.data;
+      const data = response.data ?? response;
 
-      const Role = data?.user?.role;
-      if (Role !== "admin") {
-        notifyError("You are not allowed to login.");
-        setLoading(false);
+      // console.log("Login response:", response);
+      // console.log("Full response:", response);
+      // console.log("Response data:", data);
+      // console.log("User:", data?.user);
+      // console.log("Token:", data?.token);
+
+      if (!data || !data.user || !data.token) {
+        notifyError("Invalid login response from server");
         return;
       }
+
+      const role = data.user.role?.toLowerCase();
+      if (role !== "admin") {
+        notifyError("You are not allowed to login.");
+        return;
+      }
+
       dispatch(setUser({ user: data.user, token: data.token }));
       dispatch(setIsLoggedIn(true));
       dispatch(setToken(data.token));
+
       notifySuccess("Successfully Logged In");
     } catch (error: any) {
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          "Something went wrong. Try again."
+          "Something went wrong."
       );
     } finally {
       setLoading(false);
