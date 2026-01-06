@@ -1,4 +1,3 @@
-import axios from "axios";
 import { HTTP_CLIENT } from "../utils/httpClient";
 import { ENDPOINTS } from "./endPoints";
 

@@ -14,10 +14,8 @@ export default function Setting() {
   const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [lateAfterMinutes, setLateAfterMinutes] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string>("");
 
-  // Fetch current company timing
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: ["GetCompanyTimingAPI"],
     queryFn: GetCompanyTimingAPI,
     staleTime: 5 * 60 * 1000,
@@ -35,12 +33,11 @@ export default function Setting() {
 
   const handleSubmit = async () => {
     if (!startTime || !endTime) {
-      setMessage("Please select both start and end time.");
+      notifyError("Please select both start and end time.");
       return;
     }
 
     setLoading(true);
-    setMessage("");
 
     try {
       const payload = {
