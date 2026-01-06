@@ -7,12 +7,12 @@ export const adminLogin = async (values: {
   password: string;
 }) => {
   try {
-    const fcmToken = await getFCMToken(); // get the device/browser FCM token
+    const fcmToken = await getFCMToken();
+    console.log("🚀 ~ adminLogin ~ fcmToken:", fcmToken);
 
-    // Send login request with fcmToken
     const response = await HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_LOGIN, {
       ...values,
-      fcmToken, // include it in request body
+      fcmToken,
     });
 
     console.log("Login response:", response.data);
