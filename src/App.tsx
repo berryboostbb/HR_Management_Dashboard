@@ -2,26 +2,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
 import Routes from "./Routes";
-import { useSelector } from "react-redux";
-import { messaging } from "./firebase";
-import { onMessage } from "firebase/messaging";
 
 // import { useNavigate } from "react-router-dom";
 // import { setupInterceptors } from "./utils/httpClient";
 
 function App() {
   const [isOnline, setIsOnline] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onMessage(messaging, (payload) => {
-      console.log("Message received: ", payload);
-      alert(`${payload.notification?.title}: ${payload.notification?.body}`);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);

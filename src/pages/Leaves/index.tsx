@@ -121,7 +121,7 @@ export default function Leaves() {
               }}
               className="px-4 py-2 text-sm w-full hover:bg-[#E5EBF7] cursor-pointer flex items-center gap-2 disabled:text-[#7d7d7d]/48"
             >
-              Delte
+              Delete
             </button>
           </div>
         )}
@@ -171,7 +171,6 @@ export default function Leaves() {
             refetch();
           })
           .catch((error: any) => {
-            // Check if backend sent a message
             const message =
               error?.response?.data?.message || "Failed to add Leaves.";
             notifyError(message);
@@ -197,7 +196,10 @@ export default function Leaves() {
 
         notifyError(message);
       })
-      .finally(() => setLoadingDelete(false));
+      .finally(() => {
+        setLoadingDelete(false);
+        setLoading(false);
+      });
   };
   return (
     <>
@@ -360,6 +362,7 @@ export default function Leaves() {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
+                  disabled={isloading}
                   className="h-14 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
                 >
                   {isloading ? (
