@@ -202,13 +202,11 @@ export default function Attendance() {
   const antIcon = (
     <Loading3QuartersOutlined style={{ fontSize: 24, color: "white" }} spin />
   );
-  const { token } = useSelector((state: any) => {
-    return state.user;
-  });
+
   const handleGenerateAttendance = async () => {
     setLoadingAttendance(true);
     try {
-      const res = await createDailyAttendance(token);
+      const res = await createDailyAttendance();
 
       notifySuccess(
         res.data?.message || "Daily attendance generated successfully"

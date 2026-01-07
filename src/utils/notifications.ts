@@ -1,5 +1,5 @@
 import { getToken } from "firebase/messaging";
-import { messaging } from "../firebase"; // corrected import
+import { messaging } from "../firebase";
 
 export const getFCMToken = async (): Promise<string | null> => {
   try {
@@ -7,14 +7,13 @@ export const getFCMToken = async (): Promise<string | null> => {
     console.log("Permission:", permission);
     if (permission !== "granted") return null;
 
-    // register service worker
     const registration = await navigator.serviceWorker.register(
       "/firebase-messaging-sw.js"
     );
 
     const token = await getToken(messaging, {
       vapidKey:
-        "BEGrhMnGLc3lc_74BpAjFF945tfrkKrdBQGZq3lYLVIpzKvSJJ4fXCszT3CIaQzI26qSnj-TcsuVsW6FwHRPLOs", // from Firebase console
+        "BEGrhMnGLc3lc_74BpAjFF945tfrkKrdBQGZq3lYLVIpzKvSJJ4fXCszT3CIaQzI26qSnj-TcsuVsW6FwHRPLOs",
       serviceWorkerRegistration: registration,
     });
 

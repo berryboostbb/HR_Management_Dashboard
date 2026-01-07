@@ -77,7 +77,7 @@ export default function DashBoard() {
         : "2xl:h-[calc(88.7vh-0px)] xl:h-[calc(83vh-0px)]"
     }`}
       >
-        <div className="flex flex-wrap items-center gap-3 ">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="bg-white rounded-2xl lg:w-[calc(20%-9.6px)] md:w-[calc(50%-6px)] w-full flex flex-col justify-between h-35 p-4">
             <div className="flex items-center justify-between">
               <p className="text-3xl text-[#0755E9] font-bold">
@@ -296,7 +296,7 @@ export default function DashBoard() {
             </div>
           </div>{" "}
         </div>
-        <div className="flex flex-wrap gap-4 mt-4 ">
+        <div className="flex flex-wrap gap-4 mt-4">
           <div className="lg:w-[calc(70%-8px)] w-full 2xl:w-[calc(80%-8px)] bg-white rounded-2xl pt-4 pr-5">
             <div className="flex flex-wrap items-center gap-4 mb-5 pl-5 text-[#131313]">
               <p className="w-full font-semibold lg:text-xl md:w-auto">
@@ -320,7 +320,7 @@ export default function DashBoard() {
             </div>
             <LineChart />
           </div>
-          <div className="bg-[#E5EBF7] p-3 lg:h-auto h-60 w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
+          <div className="bg-[#E5EBF7] p-3  w-full lg:w-[calc(30%-8px)]  2xl:w-[calc(20%-8px)] rounded-2xl">
             <p className="text-xs text-[#131313] mb-3">Upcoming Events</p>
             <div className="flex items-end justify-between">
               <p className="font-semibold text-base border-b-2 w-max border-[#0755E9] mb-2">
@@ -332,7 +332,7 @@ export default function DashBoard() {
             </div>
             <img
               src={upcomingEvent?.coverImage}
-              className="object-cover w-full rounded-lg h-80"
+              className="object-cover w-full rounded-lg 2xl:h-80 xl:h-65"
             />
           </div>
         </div>

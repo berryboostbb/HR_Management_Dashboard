@@ -174,7 +174,8 @@ export default function Leaves() {
             const message =
               error?.response?.data?.message || "Failed to add Leaves.";
             notifyError(message);
-          });
+          })
+          .finally(() => setLoading(false));
       }
     },
   });

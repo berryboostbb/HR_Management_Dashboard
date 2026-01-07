@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
 import Routes from "./Routes";
-
-// import { useNavigate } from "react-router-dom";
-// import { setupInterceptors } from "./utils/httpClient";
+import { setupInterceptors } from "./utils/httpClient";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [isOnline, setIsOnline] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -21,18 +20,19 @@ function App() {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
+  useEffect(() => {
+    setupInterceptors(navigate);
+  }, [navigate]);
 
   return (
     <>
       {!isOnline && (
-        <div className="bg-red-600 text-sm md:text-base text-white text-center py-2 fixed top-0 w-full z-[9999]">
+        <div className="fixed top-0 w-full py-2 text-sm text-center text-white bg-red-600 md:text-base z-9999">
           ⚠️ Internet connection lost. Please check your network.
         </div>
       )}
 
       <div>
-        {/* <AuthRoutes /> */}
-
         <Routes />
       </div>
     </>

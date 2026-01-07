@@ -51,7 +51,7 @@ export default function LineChart() {
 
   let Graph = data?.data?.data;
   return (
-    <div className="w-full h-81.5">
+    <div className="w-full h-68 2xl:h-81.5">
       <ResponsiveContainer width="100%" height="100%">
         <ReLineChart data={Graph}>
           <CartesianGrid vertical={false} horizontal={false} />

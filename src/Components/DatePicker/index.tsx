@@ -24,7 +24,8 @@ export default function DatePicker({
       <AntDatePicker
         {...props}
         placeholder={placeholder}
-        className={`custom-datepicker rounded-md w-full h-14 px-3 py-2 text-sm`}
+        getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+        className="w-full px-3 py-2 text-sm rounded-md custom-datepicker h-14"
         style={{
           height: "56px",
           width: "100%",

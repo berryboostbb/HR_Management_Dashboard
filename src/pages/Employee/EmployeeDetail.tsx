@@ -1,5 +1,5 @@
 import { FaArrowLeft, FaCheck, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -46,6 +46,9 @@ interface EmployeeData {
 }
 
 export default function EmployeeDetails() {
+  useEffect(() => {
+    document.title = "HR-Management | Employees Details";
+  }, []);
   const location = useLocation();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -96,16 +99,18 @@ export default function EmployeeDetails() {
 
         <div
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          className="bg-white rounded-xl shadow-md p-4 flex-1 overflow-y-auto"
+          className="flex-1 p-4 overflow-y-auto bg-white shadow-md rounded-xl"
         >
           <div className="bg-white rounded-xl border border-[#8FB1FF] p-4 flex-1">
             <div className="flex flex-col items-center gap-4 md:flex-row">
-              <div className="h-24 p-4 w-24 rounded-full bg-[#E5EBF7] flex items-center justify-center">
-                <img
-                  src={rowData.image}
-                  alt="Profile"
-                  className="rounded-full"
-                />
+              <div className="h-20 w-20 rounded-full bg-[#E5EBF7] flex items-center justify-center">
+                <div className="w-16 h-16 overflow-hidden rounded-full">
+                  <img
+                    src={rowData.image}
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-between w-full gap-8 md:w-auto">
@@ -230,7 +235,7 @@ export default function EmployeeDetails() {
           <div className="mt-6 bg-white border border-[#8FB1FF] rounded-xl p-5">
             <h4 className="text-[16px] mb-3">Salary Structure</h4>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
                 <p className="text-[#7D7D7D] text-sm">Basic Salary</p>
                 <p className="text-[#131313] font-medium">
@@ -255,7 +260,7 @@ export default function EmployeeDetails() {
 
             <h4 className="text-[16px] mt-4 mb-2">Deductions</h4>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-2">
+            <div className="grid grid-cols-1 gap-6 mb-2 md:grid-cols-3">
               <div>
                 <p className="text-[#7D7D7D] text-sm">Loan</p>
                 <p className="text-[#131313] font-medium">

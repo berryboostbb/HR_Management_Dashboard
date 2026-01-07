@@ -1,8 +1,9 @@
+// utils/axiosConfig.ts
 import axios from "axios";
 import { store } from "../redux/store";
-import { BASE_URL } from "../api/endPoints";
 import { setIsLoggedIn } from "../redux/userSlice";
 import { notifyError } from "../Components/Toast";
+import { BASE_URL } from "../api/endPoints";
 
 export const HTTP_CLIENT = axios.create({
   baseURL: BASE_URL,
@@ -10,32 +11,43 @@ export const HTTP_CLIENT = axios.create({
 
 let isSessionExpiredHandled = false;
 
-export const setupInterceptors = (navigate: any) => {
+export const setupInterceptors = (navigate: (path: string) => void) => {
+  // REQUEST INTERCEPTOR
   HTTP_CLIENT.interceptors.request.use(
-    (config: any) => {
+    (config) => {
       const token = store.getState().user?.token;
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`; // automatically add token
       }
       return config;
     },
-    (error: any) => Promise.reject(error)
+    (error) => Promise.reject(error)
   );
+
+  // RESPONSE INTERCEPTOR
   HTTP_CLIENT.interceptors.response.use(
-    (response: any) => response,
-    (error: any) => {
+    (response) => response,
+    (error) => {
       const status = error.response?.status;
 
       if (status === 401 && !isSessionExpiredHandled) {
         isSessionExpiredHandled = true;
 
+        // Logout user
         store.dispatch(setIsLoggedIn(false));
-        localStorage.clear();
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
         notifyError("Your session has expired. Please log in again.");
-        navigate("/");
+        navigate("/"); // redirect to login
+
         setTimeout(() => {
           isSessionExpiredHandled = false;
         }, 2000);
+      }
+
+      if (status === 403) {
+        notifyError("You do not have permission to perform this action.");
       }
 
       if (status === 500) {

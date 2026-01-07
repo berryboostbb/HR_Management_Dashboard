@@ -25,16 +25,8 @@ export const getAttendanceSummary = () => {
   return HTTP_CLIENT.get(ENDPOINTS.ATTENDANCE_SUMMARY);
 };
 
-export const createDailyAttendance = (token: string) => {
-  return HTTP_CLIENT.post(
-    ENDPOINTS.ATTENDANCE_DAILYATTENDENCE,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const createDailyAttendance = () => {
+  return HTTP_CLIENT.post(ENDPOINTS.ATTENDANCE_DAILYATTENDENCE);
 };
 
 export const getAttendanceGraph = () => {

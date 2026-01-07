@@ -8,8 +8,6 @@ export const adminLogin = async (values: {
 }) => {
   try {
     const fcmToken = await getFCMToken();
-    console.log("🚀 ~ adminLogin ~ fcmToken:", fcmToken);
-
     const response = await HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_LOGIN, {
       ...values,
       fcmToken,
