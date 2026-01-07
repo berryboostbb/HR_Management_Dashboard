@@ -20,7 +20,6 @@ import SearchByName from "../../Components/SearchBar/searchByName";
 import type { AxiosResponse } from "axios";
 import { useDebounce } from "../../Components/Debounce";
 import { Icon } from "@iconify/react";
-import { useSelector } from "react-redux";
 
 const titles = [
   "Employee Id",
