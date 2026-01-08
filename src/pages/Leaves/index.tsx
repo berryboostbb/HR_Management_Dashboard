@@ -67,6 +67,7 @@ export default function Leaves() {
     queryFn: () => getAllLeaves(searchValue),
     placeholderData: (previousData) => previousData,
   });
+  console.log("🚀 ~ Leaves ~  data?.data:", data?.data);
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
@@ -102,7 +103,7 @@ export default function Leaves() {
         {openActionId === v._id && (
           <div className="absolute right-0 z-50 w-40 mt-2 bg-white rounded-lg shadow-lg">
             <button
-              disabled={v.status == "Approved"}
+              disabled={v.status === "Approved" || v.status === "Rejected"}
               onClick={() => {
                 setEditing(v);
                 setOpenModel(true);
@@ -114,7 +115,7 @@ export default function Leaves() {
             </button>
 
             <button
-              disabled={v.status == "Approved"}
+              disabled={v.status === "Approved" || v.status === "Rejected"}
               onClick={() => {
                 setDeleteConfirmation(true);
                 setEditing(v);
@@ -459,17 +460,17 @@ const StatusDropdown: React.FC<StatusDropdownProps> = ({
   return (
     <>
       {/* STATUS DROPDOWN */}
-      <div className="relative w-40">
+      <div className="relative w-30">
         <div
           onClick={() => setOpen(!open)}
-          className={`border p-2 rounded cursor-pointer flex justify-between items-center ${statusStyles[status]}`}
+          className={`p-2 rounded cursor-pointer flex justify-between items-center ${statusStyles[status]}`}
         >
           {status}
-          <Icon icon="formkit:down" height={20} width={20} />
+          <Icon icon="formkit:down" height={18} width={18} />
         </div>
 
         {open && status === "Pending" && (
-          <div className="absolute left-0 z-20 w-full mt-1 bg-white border rounded shadow">
+          <div className="absolute left-0 z-20 w-full mt-1 bg-white rounded drop-shadow-xl">
             <div
               onClick={() => openConfirm("Approved")}
               className="p-2 text-green-700 cursor-pointer hover:bg-gray-100"

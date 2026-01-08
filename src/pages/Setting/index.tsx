@@ -15,6 +15,9 @@ export default function Setting() {
   const [lateAfterMinutes, setLateAfterMinutes] = useState<number>(0);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    document.title = "HR-Management | Setting";
+  }, []);
   const { data } = useQuery({
     queryKey: ["GetCompanyTimingAPI"],
     queryFn: GetCompanyTimingAPI,

@@ -1,6 +1,6 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Calender from "../../assets/calender.svg";
 import Logo from "../../assets/logo.svg";
 import html2canvas from "html2canvas";
@@ -42,6 +42,10 @@ export default function PayrollDetails() {
   const [isLoading, setLoading] = useState(false);
 
   const slipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.title = "HR-Management | Payroll Details";
+  }, []);
 
   const forceSafeColors = (el: HTMLElement) => {
     const computed = getComputedStyle(el);

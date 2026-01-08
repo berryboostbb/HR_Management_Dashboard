@@ -13,6 +13,8 @@ interface CustomTableProps {
   height?: string | number;
   show?: string;
   isFetching?: boolean;
+  titleswidth?: string;
+  datawidth?: string;
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -20,6 +22,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
   data,
   handleGoToDetail,
   height,
+  datawidth,
+  titleswidth,
   show,
   isFetching,
 }) => {
@@ -30,6 +34,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           <tr>
             {titles?.map((title, index) => (
               <th
+                style={{ width: titleswidth }}
                 key={index}
                 className="border-b border-[#0755E9] px-5 py-2 text-[12px] font-medium text-[#131313] text-left bg-white "
               >
@@ -53,7 +58,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               <tr
                 key={rowIndex}
                 className="hover:bg-[#E5EBF7] h-14 hover:text-black cursor-pointer"
-                style={{ cursor: show ? show : "pointer" }}
+                style={{ cursor: show ? show : "pointer", width: datawidth }}
                 onClick={() => handleGoToDetail?.(row)}
               >
                 {row.map((cell: any, colIndex: number) =>

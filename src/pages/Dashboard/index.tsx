@@ -14,12 +14,13 @@ export default function DashBoard() {
     queryFn: getBirthday,
     staleTime: 5 * 60 * 1000,
   });
+  let birthdayData = data?.data?.data;
   const { data: summary } = useQuery({
     queryKey: ["getAttendanceSummary"],
     queryFn: getAttendanceSummary,
     staleTime: 5 * 60 * 1000,
   });
-  let birthdayData = data?.data?.data;
+
   const { data: Events } = useQuery({
     queryKey: ["AllEvents"],
     queryFn: () => getAllEvents(),
@@ -73,7 +74,7 @@ export default function DashBoard() {
         className={`bg-[#F7F7F7] overflow-x-auto h-auto rounded-xl p-4 mt-3 
     ${
       birthdayData && birthdayData.length > 0
-        ? "2xl:h-[calc(62vh-0px)] xl:h-[calc(37.6vh-0px)]"
+        ? "2xl:h-[calc(62vh-0px)] xl:h-[calc(43.8vh-0px)]"
         : "2xl:h-[calc(88.7vh-0px)] xl:h-[calc(83vh-0px)]"
     }`}
       >

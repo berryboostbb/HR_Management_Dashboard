@@ -389,6 +389,8 @@ export default function Employee() {
               titles={titles}
               isFetching={isFetching}
               handleGoToDetail={handleGoToDetails}
+              titleswidth="14%"
+              datawidth="14%"
             />
           </div>
         </div>

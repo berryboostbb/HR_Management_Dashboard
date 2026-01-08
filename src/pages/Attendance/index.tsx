@@ -24,7 +24,7 @@ import { Icon } from "@iconify/react";
 const titles = [
   "Employee Id",
   "Employee Name",
-  "Employee Role",
+  // "Employee Role",
   "Date",
   "CheckIn",
   "CheckOut",
@@ -120,19 +120,19 @@ export default function Attendance() {
     filteredData?.map((v: any) => [
       v.employee?.employeeId,
       v.employee.employeeName,
-      <p>
-        {v.employee.employeeRole === "mr"
-          ? "Medical Rep"
-          : v.employee.employeeRole === "am"
-          ? "Area Manager"
-          : v.employee.employeeRole === "rm"
-          ? "Regional Manager"
-          : v.employee.employeeRole === "hr"
-          ? "HR"
-          : v.employee.employeeRole === "admin"
-          ? "Admin"
-          : "Unknown Role"}
-      </p>,
+      // <p>
+      //   {v.employee.employeeRole === "mr"
+      //     ? "Medical Rep"
+      //     : v.employee.employeeRole === "am"
+      //     ? "Area Manager"
+      //     : v.employee.employeeRole === "rm"
+      //     ? "Regional Manager"
+      //     : v.employee.employeeRole === "hr"
+      //     ? "HR"
+      //     : v.employee.employeeRole === "admin"
+      //     ? "Admin"
+      //     : "Unknown Role"}
+      // </p>,
       v.date ? dayjs(v.date).format("YYYY-MM-DD") : "--",
       v.checkIn?.time ? dayjs(v.checkIn.time).format("HH:mm") : "--",
       v.checkOut?.time ? dayjs(v.checkOut.time).format("HH:mm") : "--",

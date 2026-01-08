@@ -1,6 +1,6 @@
-// export const BASE_URL = "http://localhost:5001";
-export const BASE_URL =
-  "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
+export const BASE_URL = "http://localhost:5001";
+// export const BASE_URL =
+//   "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------

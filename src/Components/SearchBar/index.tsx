@@ -14,6 +14,7 @@ export default function SearchBar() {
   const routeNames = {
     "/dashboard": "Dashboard",
     "/employees": "Employees",
+    "/employees/employeeDetail": "Employees Details",
     "/attendance": "Attendance",
     "/leaves": "Leaves",
     "/events": "Events",
