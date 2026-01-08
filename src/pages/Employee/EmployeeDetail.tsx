@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { updatePassword } from "../../api/adminServices";
+import { updatePassword } from "../../api/authServices";
 import { notifyError, notifySuccess } from "../../Components/Toast";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { Spin } from "antd";

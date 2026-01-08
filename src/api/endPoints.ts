@@ -1,9 +1,10 @@
-export const BASE_URL = "http://localhost:5001";
-// export const BASE_URL =
-//   "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
+// export const BASE_URL = "http://localhost:5001";
+export const BASE_URL =
+  "https://hr-management-backend-85d6dc3117a3.herokuapp.com";
 
 export const ENDPOINTS = {
   //   -----------Accounts-------------
+
   ACCOUNTS_LOGIN: "/auth/login",
   ACCOUNTS_LOGOUT: "/auth/logout",
   ACCOUNTS_GETALL: "/auth/getAllUsers",
@@ -15,6 +16,7 @@ export const ENDPOINTS = {
   ACCOUNTS_UPDATEPASSWORD: "/auth/updatePassword",
 
   //   ---------------Attendance----------
+
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",
   ATTENDANCE_UPDATE: "/attendance/UpdateAttendance",
   ATTENDANCE_SUMMARY: "/attendance/getAttendanceSummary",
@@ -25,6 +27,7 @@ export const ENDPOINTS = {
   ATTENDANCE_COMPANYTIMING: "/attendance/getCompanyTiming",
 
   //   -----------UploadFIle-------------
+
   UPLOAD_FILE: "/upload/uploadFile",
 
   //   -----------Leaves-------------
@@ -43,7 +46,9 @@ export const ENDPOINTS = {
   GET_EMPLOYEE_PAYROLLS: "/payroll/employee",
   GENERATE_SALARY_SLIP: "/payroll/generateSalarySlip",
   DOWNLOAD_SALARY_SLIP: "/payroll/salarySlip",
+
   //   -----------Leaves-------------
+
   EVENTS_CREATE: "/events/createEvent",
   EVENTS_GET_ALL: "/events/getAllEvents",
   EVENTS_GET_SINGLE: "/events/getEventById",

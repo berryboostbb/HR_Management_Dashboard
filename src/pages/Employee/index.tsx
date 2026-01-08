@@ -8,7 +8,7 @@ import {
   getAllAccounts,
   getRole,
   updateAccount,
-} from "../../api/adminServices";
+} from "../../api/authServices";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { IoMdCloseCircle } from "react-icons/io";

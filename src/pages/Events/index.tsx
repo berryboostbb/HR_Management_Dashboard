@@ -104,7 +104,6 @@ export default function Events() {
   };
   return (
     <>
-      {" "}
       <div className="bg-[#F7F7F7] md:h-[calc(100vh-108px)] h-auto rounded-xl p-4">
         <div className="flex flex-wrap items-start justify-end gap-4">
           <button
@@ -128,7 +127,7 @@ export default function Events() {
           className="bg-[#E5EBF7] overflow-y-auto mt-4 p-4 rounded-lg 2xl:h-[calc(79.4vh-0px)] xl:h-[calc(69.4vh-0px)]"
         >
           <p className="text-sm text-[#7d7d7d] leading-[100%]">Events List</p>
-          <div className="flex flex-wrap items-center gap-5 mt-4">
+          <div className="flex flex-wrap items-center gap-4 mt-4">
             {isLoading || isFetching ? (
               <div className="flex items-center justify-center w-full py-10">
                 <Spin indicator={antIcon22} />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "../Debounce";
-import { getAllAccounts } from "../../api/adminServices";
+import { getAllAccounts } from "../../api/authServices";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { Icon } from "@iconify/react";

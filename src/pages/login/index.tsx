@@ -9,7 +9,7 @@ import LoginImage from "../../assets/loginImage.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { setIsLoggedIn, setToken, setUser } from "../../redux/userSlice";
-import { adminLogin } from "../../api/adminServices";
+import { adminLogin } from "../../api/authServices";
 import { LoginSchema } from "../../utils/contant";
 const Login = () => {
   useEffect(() => {

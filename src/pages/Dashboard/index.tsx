@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import birthday from "../../assets/Birthday Banner.png";
 import birthday2 from "../../assets/Birthday Banner2.png";
 import { useQuery } from "@tanstack/react-query";
-import { getBirthday } from "../../api/adminServices";
+import { getBirthday } from "../../api/authServices";
 import { getAttendanceSummary } from "../../api/attendanceServices";
 import LineChart from "../../Components/LineChart";
 import { Icon } from "@iconify/react";
