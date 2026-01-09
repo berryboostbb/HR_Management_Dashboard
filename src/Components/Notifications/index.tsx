@@ -4,9 +4,7 @@ import { FaBell } from "react-icons/fa";
 import { messaging } from "../../firebase";
 import { Icon } from "@iconify/react";
 import { notifyInfo } from "../Toast";
-import { adminLogout } from "../../api/authServices";
 import { store } from "../../redux/store";
-import { HTTP_CLIENT } from "../../utils/httpClient";
 
 interface NotificationType {
   id: string;
