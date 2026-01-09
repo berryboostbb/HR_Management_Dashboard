@@ -5,6 +5,8 @@ import { messaging } from "../../firebase";
 import { Icon } from "@iconify/react";
 import { notifyInfo } from "../Toast";
 import { adminLogout } from "../../api/authServices";
+import { store } from "../../redux/store";
+import { HTTP_CLIENT } from "../../utils/httpClient";
 
 interface NotificationType {
   id: string;
@@ -20,21 +22,20 @@ export default function Notification() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { token } = store.getState().user;
+  console.log("🚀 ~ Notification ~ token:", token);
 
   useEffect(() => {
-    const unsubscribe = onMessage(messaging, (payload) => {
+    const unsubscribe = onMessage(messaging, async (payload) => {
       const title = payload.notification?.title;
       const body = payload.notification?.body;
 
       if (title) {
         notifyInfo(`Notification: ${title}`);
       }
-
-      // Play sound
       const audio = new Audio("/notification.mp3");
       audio.play().catch(() => {});
 
-      // Add notification to state
       const newNotification: NotificationType = {
         id: crypto.randomUUID(),
         title: title || "New Notification",
@@ -44,17 +45,10 @@ export default function Notification() {
 
       setNotifications((prev) => [newNotification, ...prev]);
       setUnreadCount((prev) => prev + 1);
-
-      // ✅ Check for inactive status and logout
-      if (body === "You are now inactive. Please contact your admin.") {
-        console.log("User is inactive. Logging out...");
-        // Call your logout function here
-        adminLogout(); // Replace with your actual logout function
-      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -8,6 +8,7 @@ import {
   getAllAccounts,
   getRole,
   updateAccount,
+  updateEmployeeStatus,
 } from "../../api/authServices";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
@@ -305,18 +306,25 @@ export default function Employee() {
   const roleData = Role?.data || [];
 
   const roleOptions = roleData.map((r: any) => r.title);
-  const handleToggleStatus = (employee: any) => {
-    const newStatus =
-      employee.employeeStatus === "Active" ? "Inactive" : "Active";
+  const handleToggleStatus = async (employee: any) => {
+    try {
+      const newStatus =
+        employee.employeeStatus === "Active" ? "Inactive" : "Active";
 
-    updateAccount(employee._id, { employeeStatus: newStatus })
-      .then(() => {
-        notifySuccess(`Employee ${newStatus} successfully`);
-        refetch();
-        setOpenActionId(null);
-      })
-      .catch(() => notifyError("Failed to update status"));
+      await updateEmployeeStatus({
+        userId: employee._id,
+        employeeStatus: newStatus,
+      });
+
+      notifySuccess(`Employee ${newStatus} successfully`);
+      refetch();
+      navigate("/");
+      setOpenActionId(null);
+    } catch (error) {
+      notifyError("Failed to update employee status");
+    }
   };
+
   const handleGoToDetails = (row: any[]) => {
     const rowData = data?.data?.find((v: any) => v.employeeId === row[0]);
 

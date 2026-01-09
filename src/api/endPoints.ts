@@ -14,7 +14,7 @@ export const ENDPOINTS = {
   ACCOUNTS_BIRTHDAY: "/auth/birthdays",
   ACCOUNTS_ROLE: "/auth/getRoles",
   ACCOUNTS_UPDATEPASSWORD: "/auth/updatePassword",
-
+  ACCOUNTS_STATUS: "/auth/employee-status",
   //   ---------------Attendance----------
 
   ATTENDANCE_GETALL: "/attendance/getAllAttendance",
