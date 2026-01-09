@@ -22,6 +22,7 @@ import type { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { MonthYearPicker } from "../../Components/FilterMonthYear";
 import { useSelector } from "react-redux";
+import CustomSelect from "../../Components/Select";
 
 const tableHeaders = [
   "Employee ID",
@@ -115,8 +116,6 @@ export default function Payroll() {
       });
     }
   };
-  data?.data;
-  console.log("🚀 ~ Payroll ~   data?.data:", data?.data);
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
@@ -358,12 +357,11 @@ export default function Payroll() {
                   </div>
                   <div>
                     {" "}
-                    <CustomInput
-                      label="Month"
+                    <CustomSelect
+                      options={months}
                       placeholder="Enter Month"
-                      name="month"
                       value={formik.values.month}
-                      onChange={formik.handleChange}
+                      onChange={(val) => formik.setFieldValue("month", val)}
                     />{" "}
                     {formik.touched.month &&
                       formik.errors.month &&
@@ -376,7 +374,7 @@ export default function Payroll() {
                   <div>
                     {" "}
                     <CustomInput
-                      label="Year"
+                      label="Enter Year"
                       placeholder="Enter Year"
                       name="year"
                       value={formik.values.year}
@@ -387,6 +385,23 @@ export default function Payroll() {
                       typeof formik.errors.year === "string" && (
                         <div className="text-xs text-red-500">
                           * {formik.errors.year}
+                        </div>
+                      )}
+                  </div>{" "}
+                  <div>
+                    {" "}
+                    <CustomInput
+                      label="Working Days"
+                      placeholder="Enter Working Days"
+                      name="totalWorkingDays"
+                      value={formik.values.totalWorkingDays}
+                      onChange={formik.handleChange}
+                    />{" "}
+                    {formik.touched.totalWorkingDays &&
+                      formik.errors.totalWorkingDays &&
+                      typeof formik.errors.totalWorkingDays === "string" && (
+                        <div className="text-xs text-red-500">
+                          * {formik.errors.totalWorkingDays}
                         </div>
                       )}
                   </div>
@@ -404,23 +419,6 @@ export default function Payroll() {
                       typeof formik.errors.presentDays === "string" && (
                         <div className="text-xs text-red-500">
                           * {formik.errors.presentDays}
-                        </div>
-                      )}
-                  </div>
-                  <div>
-                    {" "}
-                    <CustomInput
-                      label="Working Days"
-                      placeholder="Enter Working Days"
-                      name="totalWorkingDays"
-                      value={formik.values.totalWorkingDays}
-                      onChange={formik.handleChange}
-                    />{" "}
-                    {formik.touched.totalWorkingDays &&
-                      formik.errors.totalWorkingDays &&
-                      typeof formik.errors.totalWorkingDays === "string" && (
-                        <div className="text-xs text-red-500">
-                          * {formik.errors.totalWorkingDays}
                         </div>
                       )}
                   </div>

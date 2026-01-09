@@ -173,13 +173,13 @@ export default function PayrollDetails() {
                 <span className="text-[#7D7D7D] md:min-w-32.5 min-w-25">
                   Employee Name:
                 </span>
-                <span className="font-medium">{rowData?.employeeId}</span>
+                <span className="font-medium">{rowData?.employeeName}</span>
               </p>
               <p className="flex items-center text-xs lg:text-sm">
                 <span className="text-[#7D7D7D] md:min-w-32.5 min-w-25">
                   Employee ID:
-                </span>
-                <span className="font-medium">{rowData?.employeeName}</span>
+                </span>{" "}
+                <span className="font-medium">{rowData?.employeeId}</span>
               </p>
               <p className="flex items-center text-xs lg:text-sm">
                 <span className="text-[#7D7D7D] md:min-w-32.5 min-w-25">
@@ -213,16 +213,14 @@ export default function PayrollDetails() {
                   Approved By:
                 </span>
                 <span className="px-2 py-0.5 text-xs border border-[#0755E9] text-[#0755E9] rounded">
-                  {rowData?.payrollStatus}
+                  {rowData?.approvedBy || "Not Approved"}
                 </span>
               </p>{" "}
               <p className="flex items-center text-xs lg:text-sm">
                 <span className="text-[#7D7D7D] md:min-w-32.5 min-w-25">
                   Payroll Status:
                 </span>
-                <span className="font-medium">
-                  {rowData?.approvedBy || "Not Approvrd"}
-                </span>
+                <span className="font-medium">{rowData?.payrollStatus}</span>
               </p>
             </div>
           </div>
