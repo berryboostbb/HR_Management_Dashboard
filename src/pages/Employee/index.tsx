@@ -318,7 +318,6 @@ export default function Employee() {
       .catch(() => notifyError("Failed to update status"));
   };
   const handleGoToDetails = (row: any[]) => {
-    console.log("Clicked row data:", row);
     const rowData = data?.data?.find((v: any) => v.employeeId === row[0]);
 
     if (rowData) {

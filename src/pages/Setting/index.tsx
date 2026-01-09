@@ -23,7 +23,6 @@ export default function Setting() {
     queryFn: GetCompanyTimingAPI,
     staleTime: 5 * 60 * 1000,
   });
-  console.log("🚀 ~ Setting ~ data:", data);
 
   // Set default values when data is loaded
   useEffect(() => {

@@ -67,7 +67,6 @@ export default function Leaves() {
     queryFn: () => getAllLeaves(searchValue),
     placeholderData: (previousData) => previousData,
   });
-  console.log("🚀 ~ Leaves ~  data?.data:", data?.data);
   const tableData =
     data?.data?.map((v: any) => [
       v.employeeId,
