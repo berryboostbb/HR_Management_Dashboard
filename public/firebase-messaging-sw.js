@@ -10,7 +10,7 @@ firebase.initializeApp({
   apiKey: "AIzaSyC5t9alZgGw4-IQrsBInVj_5Wj6HVk3rgA",
   authDomain: "hr-mamangement.firebaseapp.com",
   projectId: "hr-mamangement",
-  storageBucket: "hr-mamangement.appspot.com", // fix: remove extra ".firebasestorage.app"
+  storageBucket: "hr-mamangement.appspot.com",
   messagingSenderId: "469059695994",
   appId: "1:469059695994:web:0d54345267bcba884dd2c3",
 });

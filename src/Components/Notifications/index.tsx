@@ -4,6 +4,7 @@ import { FaBell } from "react-icons/fa";
 import { messaging } from "../../firebase";
 import { Icon } from "@iconify/react";
 import { notifyInfo } from "../Toast";
+import { adminLogout } from "../../api/authServices";
 
 interface NotificationType {
   id: string;
@@ -22,22 +23,34 @@ export default function Notification() {
 
   useEffect(() => {
     const unsubscribe = onMessage(messaging, (payload) => {
-      if (payload.notification?.title) {
-        const f = `Notification: ${payload.notification.title}`;
-        notifyInfo(f);
+      const title = payload.notification?.title;
+      const body = payload.notification?.body;
+
+      if (title) {
+        notifyInfo(`Notification: ${title}`);
       }
+
+      // Play sound
       const audio = new Audio("/notification.mp3");
       audio.play().catch(() => {});
 
+      // Add notification to state
       const newNotification: NotificationType = {
         id: crypto.randomUUID(),
-        title: payload.notification?.title || "New Notification",
-        message: payload.notification?.body || "",
+        title: title || "New Notification",
+        message: body || "",
         read: false,
       };
 
       setNotifications((prev) => [newNotification, ...prev]);
       setUnreadCount((prev) => prev + 1);
+
+      // ✅ Check for inactive status and logout
+      if (body === "You are now inactive. Please contact your admin.") {
+        console.log("User is inactive. Logging out...");
+        // Call your logout function here
+        adminLogout(); // Replace with your actual logout function
+      }
     });
 
     return () => unsubscribe();
@@ -98,7 +111,7 @@ export default function Notification() {
       >
         <div className="p-3 font-medium border-b">Notifications</div>
 
-        <div className="p-4 space-y-2 max-h-80 overflow-y-auto">
+        <div className="p-4 space-y-2 overflow-y-auto max-h-80">
           {notifications.length > 0 ? (
             notifications.map((note) => (
               <div
@@ -118,14 +131,14 @@ export default function Notification() {
 
                 <button
                   onClick={() => removeNotification(note.id)}
-                  className="text-gray-500 hover:text-red-500 transition"
+                  className="text-gray-500 transition hover:text-red-500"
                 >
                   <Icon icon="eva:close-fill" className="text-lg" />
                 </button>
               </div>
             ))
           ) : (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-sm text-center text-gray-500">
               No notifications
             </p>
           )}
