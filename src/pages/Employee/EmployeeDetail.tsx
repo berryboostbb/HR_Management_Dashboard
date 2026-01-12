@@ -134,7 +134,7 @@ export default function EmployeeDetails() {
         <div className="flex items-center justify-between gap-3 mb-3">
           <div
             onClick={() => navigate("/employees")}
-            className="h-11 w-11 cursor-pointer rounded-lg border border-[#D2D2D2] flex justify-center items-center bg-white"
+            className="h-10 w-10 cursor-pointer rounded-lg border border-[#D2D2D2] flex justify-center items-center bg-white"
           >
             <FaArrowLeft size={16} />
           </div>
@@ -237,7 +237,7 @@ export default function EmployeeDetails() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="rounded-md w-full h-12 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
+                  className="rounded-md w-full h-10 pr-15 px-3 py-2 text-sm outline-none border-[#0755E9] border-[0.5px]"
                 />
 
                 <span
@@ -254,7 +254,7 @@ export default function EmployeeDetails() {
               <button
                 onClick={handleUpdatePassword}
                 disabled={loading}
-                className="px-4 py-2 md:w-50 w-full flex justify-center items-center h-12 cursor-pointer rounded-md bg-[#0755E9] text-white"
+                className="px-4 py-2 h-10 md:w-50 w-full flex justify-center items-center  cursor-pointer rounded-md bg-[#0755E9] text-white"
               >
                 {loading ? (
                   <Spin

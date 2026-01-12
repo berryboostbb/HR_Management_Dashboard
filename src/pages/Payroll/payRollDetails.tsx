@@ -120,12 +120,12 @@ export default function PayrollDetails() {
         <div className="flex flex-wrap gap-3 items-center w-full md:w-auto max-[564px]:gap-2">
           <div
             onClick={handleGoBack}
-            className="h-11 w-11 cursor-pointer rounded-lg border border-[#D2D2D2] flex justify-center items-center"
+            className="h-10 w-10 cursor-pointer rounded-lg border border-[#D2D2D2] flex justify-center items-center"
           >
             <FaArrowLeft size={16} color="#000000" />
           </div>
 
-          <button className="h-12 flex-1 md:flex-none md:w-50 max-[564px]:w-full bg-white border border-[#0755E9] rounded-md gap-2 flex justify-center items-center">
+          <button className="h-10 flex-1 md:flex-none md:w-50 max-[564px]:w-full bg-white border border-[#0755E9] rounded-md gap-2 flex justify-center items-center">
             <img src={Calender} alt="calendar" className="w-5 h-5" />
             <p className="text-base font-medium text-[#0755E9]">
               {rowData?.month}-{rowData?.year}
@@ -135,7 +135,7 @@ export default function PayrollDetails() {
 
         <button
           onClick={handleDownloadPDF}
-          className="h-12 w-full md:w-50 text-white bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
+          className="h-10 w-full md:w-50 text-white bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center"
         >
           {isLoading ? <Spin indicator={antIcon} /> : " Generate Salary Slip"}
         </button>

@@ -8,6 +8,7 @@ import {
   getAllAccounts,
   getRole,
   updateAccount,
+  updateEmployeeStatus,
 } from "../../api/authServices";
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
@@ -305,18 +306,24 @@ export default function Employee() {
   const roleData = Role?.data || [];
 
   const roleOptions = roleData.map((r: any) => r.title);
-  const handleToggleStatus = (employee: any) => {
-    const newStatus =
-      employee.employeeStatus === "Active" ? "Inactive" : "Active";
+  const handleToggleStatus = async (employee: any) => {
+    try {
+      const newStatus =
+        employee.employeeStatus === "Active" ? "Inactive" : "Active";
 
-    updateAccount(employee._id, { employeeStatus: newStatus })
-      .then(() => {
-        notifySuccess(`Employee ${newStatus} successfully`);
-        refetch();
-        setOpenActionId(null);
-      })
-      .catch(() => notifyError("Failed to update status"));
+      await updateEmployeeStatus({
+        userId: employee._id,
+        employeeStatus: newStatus,
+      });
+
+      notifySuccess(`Employee ${newStatus} successfully`);
+      refetch();
+      setOpenActionId(null);
+    } catch (error) {
+      notifyError("Failed to update employee status");
+    }
   };
+
   const handleGoToDetails = (row: any[]) => {
     const rowData = data?.data?.find((v: any) => v.employeeId === row[0]);
 
@@ -812,7 +819,7 @@ export default function Employee() {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
-                  className="h-14 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
+                  className="h-10 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
                 >
                   {isloading ? (
                     <Spin indicator={antIcon} />
@@ -843,13 +850,13 @@ export default function Employee() {
             <div className="flex justify-between gap-4 mt-5">
               <button
                 onClick={() => setDeleteConfirmation(false)}
-                className="py-2 bg-gray-200 rounded cursor-pointer px-7 hover:bg-gray-300"
+                className="h-10 py-2 bg-gray-200 rounded cursor-pointer px-7 hover:bg-gray-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-7 py-2 bg-[#E90761] cursor-pointer text-white rounded"
+                className="px-7 h-10 py-2 bg-[#E90761] cursor-pointer text-white rounded"
               >
                 {isloadingDelete ? <Spin indicator={antIcon} /> : "Delete"}
               </button>

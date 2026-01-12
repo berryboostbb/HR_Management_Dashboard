@@ -310,7 +310,7 @@ export default function Events() {
               <div className="flex justify-end mt-5">
                 <button
                   type="submit"
-                  className="h-14 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
+                  className="h-10 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
                 >
                   {isloading ? (
                     <Spin indicator={antIcon} />
@@ -340,13 +340,13 @@ export default function Events() {
             <div className="flex justify-between gap-4 mt-5">
               <button
                 onClick={() => setDeleteConfirmation(false)}
-                className="py-2 bg-gray-200 rounded cursor-pointer px-7 hover:bg-gray-300"
+                className="h-10 py-2 bg-gray-200 rounded cursor-pointer px-7 hover:bg-gray-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-7 py-2 bg-[#E90761] cursor-pointer text-white rounded"
+                className="px-7 h-10 py-2 bg-[#E90761] cursor-pointer text-white rounded"
               >
                 {isloadingDelete ? <Spin indicator={antIcon} /> : "Delete"}
               </button>

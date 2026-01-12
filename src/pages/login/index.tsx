@@ -18,9 +18,7 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    document.title = "MediRep | Login";
-  }, []);
+
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: LoginSchema,
@@ -34,13 +32,6 @@ const Login = () => {
     try {
       const response = await adminLogin(values);
       const data = response.data ?? response;
-
-      // console.log("Login response:", response);
-      // console.log("Full response:", response);
-      // console.log("Response data:", data);
-      // console.log("User:", data?.user);
-      // console.log("Token:", data?.token);
-
       if (!data || !data.user || !data.token) {
         notifyError("Invalid login response from server");
         return;

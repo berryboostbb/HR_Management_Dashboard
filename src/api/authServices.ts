@@ -21,9 +21,18 @@ export const adminLogin = async (values: {
   }
 };
 
-export const adminLogout = () => {
-  return HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_LOGOUT);
+export const adminLogout = (token: string) => {
+  return HTTP_CLIENT.post(
+    "/auth/logout",
+    {}, // empty body
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
+
 export const addAccount = (values: any) => {
   return HTTP_CLIENT.post(ENDPOINTS.ACCOUNTS_ADD, values);
 };
@@ -52,4 +61,21 @@ export const updatePassword = (id: string, values: { password: string }) => {
     `${ENDPOINTS.ACCOUNTS_UPDATEPASSWORD}/${id}`,
     values
   );
+};
+
+interface UpdateEmployeeStatusPayload {
+  userId: string;
+  employeeStatus: "Active" | "Inactive";
+}
+export const updateEmployeeStatus = async (
+  payload: UpdateEmployeeStatusPayload
+) => {
+  const { userId, employeeStatus } = payload;
+
+  const response = await HTTP_CLIENT.patch(
+    `${ENDPOINTS.ACCOUNTS_STATUS}/${userId}`,
+    { employeeStatus }
+  );
+
+  return response.data;
 };

@@ -495,7 +495,7 @@ export default function Payroll() {
               <div className="flex justify-end mt-5">
                 <button
                   type="submit"
-                  className="h-14 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
+                  className="h-10 w-full md:w-45 bg-[#0755E9] rounded-md gap-3 cursor-pointer flex justify-center items-center text-white font-medium"
                 >
                   {isloading ? (
                     <Spin

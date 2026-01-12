@@ -91,7 +91,7 @@ export default function Setting() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="px-4 py-2 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700"
+            className="h-10 px-4 py-2 mt-4 text-white bg-blue-600 rounded cursor-pointer hover:bg-blue-700"
           >
             {loading ? "Saving..." : "Save Timing"}
           </button>
