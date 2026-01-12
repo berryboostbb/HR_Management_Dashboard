@@ -364,7 +364,7 @@ export default function Leaves() {
                 <button
                   type="submit"
                   disabled={isloading}
-                  className="h-14 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
+                  className="h-10 md:w-48 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center gap-2"
                 >
                   {isloading ? (
                     <Spin indicator={antIcon} />

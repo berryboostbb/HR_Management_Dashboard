@@ -337,7 +337,7 @@ export default function Attendance() {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
-                  className="h-13.75 md:w-50 w-full bg-[#0755E9] text-white rounded-md flex justify-center items-center"
+                  className="h-10 md:w-50 w-full cursor-pointer bg-[#0755E9] text-white rounded-md flex justify-center items-center"
                 >
                   {isloading ? (
                     <Spin indicator={antIcon} />
